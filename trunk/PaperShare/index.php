@@ -1,0 +1,86 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><!-- InstanceBegin template="/Templates/paper_share.dwt.php" codeOutsideHTMLIsLocked="false" -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!-- InstanceBeginEditable name="doctitle" -->
+<title>Trang chủ</title>
+<!-- InstanceEndEditable -->
+<?php
+include "chk_login.inc";
+if ((logged_in())&& (!isset($strConn)))
+{
+	include "config.php";
+	include "dbconnect.php";
+}
+?>
+<!-- InstanceBeginEditable name="head" -->
+<!-- InstanceEndEditable -->
+</head>
+
+<body>
+<table width="800" border="0" align="center">
+  <tr bgcolor="#CCCC66">
+    <th scope="col" width="33%"><?php echo "<a href=\"index.php\">Trang chủ</a>"; ?> </th>
+    <th scope="col" width="33%">
+	<?php 
+	if (logged_in())
+	{
+		echo "<a href=\"account.php\">Hồ sơ cá nhân </a>";
+	}
+	else
+	{
+		echo "<a href=\"register.php\">Đăng ký thành viên</a>";
+	}
+	?>	</th>
+    <th scope="col" width="33%"> <?php echo "<a href=\"about.php\">Về chúng tôi</a>"; ?></th>
+  </tr>
+  <tr>
+    <td colspan="2">
+<!-- InstanceBeginEditable name="body" -->
+
+<!-- InstanceEndEditable -->
+	</td>
+    <td bgcolor="#CCCC66" align="center">
+	<?php
+		if (logged_in())
+		{
+			//////////// Select user from database /////////////
+	$strMyQuery = "SELECT * FROM $strTableUserName WHERE username = '".$_SESSION['username']."'";
+	$result = mysql_query($strMyQuery) or die(mysql_error());
+	$arrUserData = mysql_fetch_array($result);
+	////////////////////////////////////////////////////
+
+			echo "Chào mừng ".$_SESSION["username"]."!<button onClick=\"javascript:window.location = 'login.php?action=logout'\">Khắc xuất</button><br>\n";
+
+		echo "Bạn đã gửi ".$arrUserData['request_number']." yêu cầu! <a href=\"account.php?type=submit_request\">Yêu cầu bài báo</a><br>\n";
+		if ($arrUserData['supplier']) 
+		{
+			////////	Get list of requests pending	/////////////
+			$strMysqlQuery = "SELECT * FROM $strTableRequestName WHERE (supplier = '".$_SESSION['username']."') AND (status >=0)";
+			$result = mysql_query($strMysqlQuery) or die(mysql_error());
+			$request_pending = mysql_num_rows($result);
+			if ($request_pending>0)
+			{	echo "Hiện tại bạn có ".$request_pending." yêu cầu đang chờ <a href=\"account.php?type=request\">xử lý!</a><br>\n";
+			}
+			else
+			{
+				echo "Hiện tại bạn không có yêu cầu nào đang chờ!<br>\n";
+			}
+		}
+		echo "<a href=\"account.php?type=change\"> Thay đổi thông tin cá nhân </a><br>";			
+	
+			//////// Close connection to database /////////
+			include "dbclose.php";
+		}
+		else
+		{	
+			echo "Bạn chưa đăng nhập";
+			require "login_form.inc";
+
+		}
+	?>	</td>
+   </tr>
+</table>
+<center>Beta version! Please send feedback to: <a href="mailto:admin@articleexchange.byethost7.com">admin@articleexchange.byethost7.com</a></center>
+</body>
+<!-- InstanceEnd --></html>
