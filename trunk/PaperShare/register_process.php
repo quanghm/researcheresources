@@ -1,3 +1,6 @@
+<?php
+include "chk_login.inc";
+?>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -5,7 +8,7 @@
 </head>
 <body>
 <?php
-include "chk_login.inc";
+
 if ($_SESSION["username"] != "")
 {
 	echo "<center> $_SESSION[username]: bạn đã là thành viên! Đang quay trở lại trang cá nhân...</center";
@@ -27,8 +30,8 @@ else
 	
 	if (!($row === false))
 	{
-		$_SESSION["messError"] = "<center> Bí danh hoặc email đã được sử dụng. Nếu bạn quên mật khẩu xin nhấn vào <a href=\"forgotpassword.php\"> đây.</a></center>\n";
-		header("location: register.php");
+		$_SESSION["messError"] = "<center> Bí danh hoặc email đã được sử dụng. Nếu bạn quên mật khẩu xin nhấn vào <a href=\"forgotpassword.php\"> đây</a>.</center>\n";
+		echo('<script language="javascript"> window.location='."'register.php'".';</script>');
 	}
 	else
 	{

@@ -1,10 +1,11 @@
+<?php
+include "chk_login.inc";
+?>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Đăng ký thành viên</title>
 <?php
-session_start();	
 include "config.php";
-include "chk_login.inc";
 if (logged_in())
 {
 	echo "<center> $_SESSION[username]: bạn đã là thành viên! Đang quay trở lại trang cá nhân...</center>";
@@ -14,8 +15,8 @@ if (logged_in())
 <script language="javascript">
 function DataVerify()
 {
-	const MinLength = <?php echo constMinLength;?>;
-	const MaxLength = <?php echo constMaxLength;?>;
+	MinLength = <?php echo constMinLength;?>;
+	MaxLength = <?php echo constMaxLength;?>;
 	//////// check username ///////////////
 	if (frmRegistration.frmUsername.value == "")
 	{
@@ -79,20 +80,24 @@ function DataVerify()
 	}
 	return true;}
 </script>
+<link href="../Style/style.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
-<table width="800" border="0" align="center" cellpadding="0"  bgcolor="#CCCC66" >
-  <tr>
-    <th scope="col" width="33%"><a href=<?php echo "\"index.php\""; ?> >Trang chủ </a></td>
-    <th scope="col" width="33%"><?php 
-			echo "<a href=\"register.php\"> Đăng kí thành viên </a>";
-		?></td>
-    <th scope="col" width="33%"><a href=<?php echo "\"about.php\""; ?>>Về chúng tôi </a></td>
+<table width="999" border="0" align="center" bgcolor="#FFFFFF" >
+  <tr bgcolor="#CCCC66">
+    <td width="33%" height="40" align="center"><?php echo "<a href=\"index.php\" class=\"menu\">"?><span class="menu">Trang chủ</span><?php echo"</a>"; ?></td>
+    <td width="33%" height="40" align="center">      <?php 
+	echo "<a href=\"register.php\" class=\"menu\">Đăng ký thành viên</a>";
+	?>	
+    </td>
+    <td height="40" align="center"> <?php echo "<a href=\"about.php\" class=\"menu\">Về chúng tôi</a>"; ?></td>
   </tr>
-</table>
-<!---------- End of Menu ----------------->
-	<?php
+  <!---------- End of Menu ----------------->
+  <tr bgcolor="#CCCC66">
+    <td height="500" colspan="4" nowrap="nowrap" bgcolor="#FFFFFF" >
+	<div align="center" class="error">
+      <?php
 	$lines = file('term.txt');
 		// Loop tdrough our array, show HTML source as HTML source; and line numbers too.
 	$strTermOfUse ='';
@@ -103,27 +108,24 @@ function DataVerify()
 	}
 	if (isset($_SESSION["messError"]))
 	{	
-		echo '<table align="center" width="800" border="0">'."\n";
-		echo '	<tr>
-    				<td>'."\n";
 		echo $_SESSION["messError"];
-		echo '</td></tr></table>';	
 		$_SESSION["messError"] ='';
 	}
 	?>
+    </div>
 <form method="POST" onSubmit="return DataVerify();" action="register_process.php" onReset="return confirm('Thế nhất định là làm lại à?')" name="frmRegistration">
 <table align="center" width="800" border="0">
   <tr>
     <td width="25%">&nbsp;</td>
     <td width="25%">Bí danh </td>
     <td colspan="2"><input type="text" name="frmUsername"></td>
-    <td width="25" > <em>(Từ <?php echo constMinLength; ?> đến <?php echo constMaxLength; ?> ký tự) </em></td>
+    <td width="25%" > <em>(Từ <?php echo constMinLength; ?> đến <?php echo constMaxLength; ?> ký tự) </em></td>
   </tr>
   <tr>
     <td width="25%">&nbsp;</td>
     <td width="25%">Mật khẩu</td>
     <td colspan="2"><input type="password" name="frmPassword"></td>
-    <td width="25" ><em>(Từ <?php echo constMinLength; ?> đến <?php echo constMaxLength; ?> ký tự)</em> </td>
+    <td width="25%" ><em>(Từ <?php echo constMinLength; ?> đến <?php echo constMaxLength; ?> ký tự)</em> </td>
   </tr>
   <tr>
     <td width="25%">&nbsp;</td>
@@ -180,8 +182,7 @@ function DataVerify()
     <td colspan="3" align="center">
 	<label>
       <input name="frmAgreeToTerm" type="checkbox"> 
-      Tớ đồng ý!!!</label>
-      	</td>
+      Tớ đồng ý!!!</label>   	  </td>
     <td width="25" >&nbsp;</td>
   </tr>
   <tr>
@@ -191,6 +192,9 @@ function DataVerify()
     <td width="25" >&nbsp;</td>
   </tr>
 </table>
-</form>
+</form></td>
+  </tr>
+</table>
+	
 </body>
 </html>

@@ -1,10 +1,3 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"><!-- InstanceBegin template="/Templates/paper_share.dwt.php" codeOutsideHTMLIsLocked="false" -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<!-- InstanceBeginEditable name="doctitle" -->
-<title>Chúng tôi nói về chúng tôi</title>
-<!-- InstanceEndEditable -->
 <?php
 include "chk_login.inc";
 if ((logged_in())&& (!isset($strConn)))
@@ -13,35 +6,45 @@ if ((logged_in())&& (!isset($strConn)))
 	include "dbconnect.php";
 }
 ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><!-- InstanceBegin template="/Templates/paper_share.dwt.php" codeOutsideHTMLIsLocked="false" -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!-- InstanceBeginEditable name="doctitle" -->
+<title>Chúng tôi nói về chúng tôi</title>
+<!-- InstanceEndEditable -->
+
 <!-- InstanceBeginEditable name="head" -->
 <!-- InstanceEndEditable -->
+<link href="../../Style/style.css" rel="stylesheet" type="text/css" />
+
+<link href="Theme/Default/style.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
-<table width="800" border="0" align="center">
+<table width="999" border="0" align="center">
   <tr bgcolor="#CCCC66">
-    <th scope="col" width="33%"><?php echo "<a href=\"index.php\">Trang chủ</a>"; ?> </th>
-    <th scope="col" width="33%">
+    <th width="33%" height="40" nowrap="nowrap" scope="col"><?php echo "<a href=\"index.php\" class=\"menu\">"?><span class="menu">Trang chủ</span><?php echo"</a>"; ?></th>
+    <th width="33%" height="40" scope="col">
 	<?php 
 	if (logged_in())
 	{
-		echo "<a href=\"account.php\">Hồ sơ cá nhân </a>";
+		echo "<a href=\"account.php\" class=\"menu\">Hồ sơ cá nhân</a>";
 	}
 	else
 	{
-		echo "<a href=\"register.php\">Đăng ký thành viên</a>";
+		echo "<a href=\"register.php\" class=\"menu\">Đăng ký thành viên</a>";
 	}
 	?>	</th>
-    <th scope="col" width="33%"> <?php echo "<a href=\"about.php\">Về chúng tôi</a>"; ?></th>
+    <th height="40" colspan="2" scope="col"> <?php echo "<a href=\"about.php\" class=\"menu\">Về chúng tôi</a>"; ?></th>
   </tr>
   <tr>
-    <td colspan="2">
+    <td height="500" width="70%"colspan="3" valign="top">
 <!-- InstanceBeginEditable name="body" -->
 
-<!-- InstanceEndEditable -->
+<!-- InstanceEndEditable -->	
 	</td>
-    <td bgcolor="#CCCC66" align="center">
-	<?php
+    <td width="30%" align="center" valign="top" bgcolor="#CCCC66"><?php
 		if (logged_in())
 		{
 			//////////// Select user from database /////////////
@@ -78,8 +81,8 @@ if ((logged_in())&& (!isset($strConn)))
 			require "login_form.inc";
 
 		}
-	?>	</td>
-   </tr>
+	?></td>
+  </tr>
 </table>
 <center>Beta version! Please send feedback to: <a href="mailto:admin@articleexchange.byethost7.com">admin@articleexchange.byethost7.com</a></center>
 </body>

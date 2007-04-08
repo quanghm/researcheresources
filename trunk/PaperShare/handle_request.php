@@ -1,10 +1,13 @@
+<?php
+include "chk_login.inc";
+?>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <?php
 include "config.php";
 include "dbconnect.php";
-include "chk_login.inc";
+
 
 if (!(logged_in()))
 {
@@ -53,7 +56,7 @@ elseif ($_GET['action']=='passing')
 		{
 			$strMysqlQuery .= "AND (username !='".$arrPreviousSuppliers[$i]."') ";
 		}
-		$strMysqlQuery .= "ORDER BY request_handle_number";
+		$strMysqlQuery .= "ORDER BY request_pending_number ASC, request_handle_number ASC";
 		//echo $strMysqlQuery.'<br>';
 		$result = mysql_query($strMysqlQuery) or die(mysql_error());
 		$arrSupplierList = mysql_fetch_array($result);

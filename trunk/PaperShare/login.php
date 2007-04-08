@@ -1,3 +1,6 @@
+<?php
+include "chk_login.inc";
+?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -12,7 +15,6 @@
 /////////////////////////////
 ////	 logging out	 ////
 /////////////////////////////
-include "chk_login.inc";
 $strErrMessage = "Bí danh hoặc mật khẩu không chính xác!<br>Nếu bạn quên mật khẩu, vào <a href=\"forgotpassword.php\">đây</a> để lấy lại";
 if ($_GET["action"]=="logout")
 {
@@ -25,9 +27,7 @@ if ($_GET["action"]=="logout")
 		echo "<div align=\"center\"> Logged out successfully!<br> Directing back to Homepage</div>";
 		mysql_close($strConn);
 	}
-	$delay = 3;
-	$url="index.php";
-	echo '<meta http-equiv="refresh" content="'.$delay.';url='.$url.'">';
+	echo '<script language="javascript"> setTimeout("window.location='."'index.php'".'",3000);</script>';
 }
 ///////////////////////////////////
 ///////     logging in      ///////

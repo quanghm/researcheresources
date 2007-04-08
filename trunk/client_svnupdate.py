@@ -7,7 +7,7 @@ A simple echo client
 import socket
 
 host = 'cs-grad30.cs.uiuc.edu'
-port = 50000
+port = 8080
 size = 1024
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.connect((host,port))

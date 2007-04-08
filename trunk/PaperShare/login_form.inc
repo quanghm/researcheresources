@@ -2,7 +2,7 @@
 		if (!isset($_SESSION["ErrMess"]))	{$_SESSION["ErrMess"] = "";	}
 		if ($_SESSION["ErrMess"] !== "")
 		{
-			echo "<br>".$_SESSION["ErrMess"];
+			echo "<center><span class=\"error\">".$_SESSION["ErrMess"]."</span>";
 			$_SESSION["ErrMess"] = "";
 		}
 		echo "<form action=\"login.php?action=login\" method=\"POST\">";

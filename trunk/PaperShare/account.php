@@ -1,10 +1,3 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"><!-- InstanceBegin template="/Templates/paper_share.dwt.php" codeOutsideHTMLIsLocked="false" -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<!-- InstanceBeginEditable name="doctitle" -->
-<title>Hồ sơ cá nhân</title>
-<!-- InstanceEndEditable -->
 <?php
 include "chk_login.inc";
 if ((logged_in())&& (!isset($strConn)))
@@ -13,29 +6,40 @@ if ((logged_in())&& (!isset($strConn)))
 	include "dbconnect.php";
 }
 ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><!-- InstanceBegin template="/Templates/paper_share.dwt.php" codeOutsideHTMLIsLocked="false" -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!-- InstanceBeginEditable name="doctitle" -->
+<title>Hồ sơ cá nhân</title>
+<!-- InstanceEndEditable -->
+
 <!-- InstanceBeginEditable name="head" -->
 <!-- InstanceEndEditable -->
+<link href="../../Style/style.css" rel="stylesheet" type="text/css" />
+
+<link href="Theme/Default/style.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
-<table width="800" border="0" align="center">
+<table width="999" border="0" align="center">
   <tr bgcolor="#CCCC66">
-    <th scope="col" width="33%"><?php echo "<a href=\"index.php\">Trang chủ</a>"; ?> </th>
-    <th scope="col" width="33%">
+    <th width="33%" height="40" nowrap="nowrap" scope="col"><?php echo "<a href=\"index.php\" class=\"menu\">"?><span class="menu">Trang chủ</span><?php echo"</a>"; ?></th>
+    <th width="33%" height="40" scope="col">
 	<?php 
 	if (logged_in())
 	{
-		echo "<a href=\"account.php\">Hồ sơ cá nhân </a>";
+		echo "<a href=\"account.php\" class=\"menu\">Hồ sơ cá nhân</a>";
 	}
 	else
 	{
-		echo "<a href=\"register.php\">Đăng ký thành viên</a>";
+		echo "<a href=\"register.php\" class=\"menu\">Đăng ký thành viên</a>";
 	}
 	?>	</th>
-    <th scope="col" width="33%"> <?php echo "<a href=\"about.php\">Về chúng tôi</a>"; ?></th>
+    <th height="40" colspan="2" scope="col"> <?php echo "<a href=\"about.php\" class=\"menu\">Về chúng tôi</a>"; ?></th>
   </tr>
   <tr>
-    <td colspan="2">
+    <td height="500" width="70%"colspan="3" valign="top">
 <!-- InstanceBeginEditable name="body" -->
 	  <?php 
 	if (logged_in())
@@ -47,13 +51,19 @@ if ((logged_in())&& (!isset($strConn)))
 		////////////////////////////////////////////////////
 	
 		///////////  	Set up user's menu      ////////////
-		echo "<table width=\"100%\" cellpadding=\"0\" align=\"center\">\n";
+		echo "<table width=\"100%\" cellpadding=\"1\" align=\"center\" cellspacing=\"1\">\n";
 		echo "  <tr bgcolor=\"#CCCCCC\">\n";
-		echo "    <th bgcolor=\"#CCCCCC\" scope=\"col\"><a href=\"account.php\">Thông tin chung</a> </th>\n";
-		echo "    <th bgcolor=\"#CCCCCC\" scope=\"col\"><a href=\"account.php?type=articles\">Bài báo đã yêu cầu</a> </th>\n";
+		echo "    <th height=\"30\" bgcolor=\"#CCCCCC\" scope=\"row\"";
+		if ($arrUserData['supplier']) {echo 'width="33%"';}
+		else {echo 'width ="50%"';}
+		echo "><a href=\"account.php\" class=\"submenu\" >Thông tin chung</a> </th>\n";
+		echo "    <th bgcolor=\"#CCCCCC\" scope=\"row\"";
+		if ($arrUserData['supplier']) {echo 'width="33%"';}
+		else {echo 'width ="50%"';}
+		echo "><a href=\"account.php?type=articles\"class=\"submenu\">Bài báo đã yêu cầu</a> </th>\n";
 		if ($arrUserData['supplier'])
 		{
-			echo "	  <th bgcolor=\"#CCCCCC\" scope=\"col\"><a href=\"account.php?type=request\">Các yêu cầu gửi tới bạn</a> </th>\n";
+			echo "	  <th bgcolor=\"#CCCCCC\" scope=\"row\"><a href=\"account.php?type=request\"class=\"submenu\">Các yêu cầu gửi tới bạn</a> </th>\n";
 		}
 			echo "  </tr>\n</table>\n";
 		/////////////////////////////////////////////////////
@@ -74,8 +84,8 @@ if ((logged_in())&& (!isset($strConn)))
 			}
 			else
 			{
-				echo "<table width=\"100%\" border=\"1\" cellpadding=\"1\" cellspacing=\"0\">";
-				echo "	<tr>\n";
+				echo "<table width=\"100%\" border=\"0\" cellpadding=\"1\" cellspacing=\"1\">";
+				echo "	<tr >\n";
 				echo "		<th scope=\"col\">Id</th>\n";
 				echo "      <th scope=\"col\">Title</th>\n";
 				echo "      <th scope=\"col\">Author</th>\n";
@@ -85,9 +95,19 @@ if ((logged_in())&& (!isset($strConn)))
 				echo "      <th scope=\"col\">Status</th>\n";
 				echo "  </tr>";
 				$ArticleIndex = 1;
+				$row = 0;
 				while ($arrArticleList = mysql_fetch_array($result))
 				{
-					echo "	<tr>
+					echo "	<tr ";
+					if (($row % 2) == 1)
+					{
+						echo 'class="odd"';						
+					}
+					else
+					{
+						echo 'class="even"';
+					}
+					echo ">
 								<td >".$ArticleIndex++."</td>\n";
 					echo "      <td >".$arrArticleList['title']."</td>\n";
 					echo "      <td >".$arrArticleList['author']."</td>\n";
@@ -112,6 +132,7 @@ if ((logged_in())&& (!isset($strConn)))
 						echo "      <td ><a href=\"".$arrArticleList['download_link']."\">Ready</a></td>\n";				
 					}
 					echo "  </tr>\n";
+					$row++;
 				}
 				echo "</table>";
 			}
@@ -297,7 +318,7 @@ if ((logged_in())&& (!isset($strConn)))
 			}
 			else	
 			{
-				if (document.frmChangeInfo.frmNewPassword.value.length < 6)
+				if ((document.frmChangeInfo.frmNewPassword.value.length < 6)&& (document.frmChangeInfro.frmNewPassword.value.length >0))
 					{
 						alert("Mật khẩu mới quá ngắn");
 						return false;
@@ -322,8 +343,9 @@ if ((logged_in())&& (!isset($strConn)))
 		}
 		</script>';
 	
-			echo "<center>Thông tin cá nhân</center>";	
-			if ($_SESSION['ErrMess']!=='') { echo "<center> ".$_SESSION['ErrMess']."</center>";}
+			echo "<center>Thông tin cá nhân";
+			echo"</center>";	
+			if ($_SESSION['ErrMess']!=='') { echo '<center> <font color="#FF0000">'.$_SESSION['ErrMess']."</font></center>";$_SESSION['ErrMess']='';}
 			echo '<form id="frmChangeInfo" method="POST" onSubmit="return DataVerify()" action="change_info.php" name="frmChangeInfo">
 			<table align="center" width="100%" border="0">
 			  <tr>
@@ -381,7 +403,7 @@ if ((logged_in())&& (!isset($strConn)))
 				</td>
 			   </tr>
 			  <tr>
-				<td align="center"><button type="submit" name="btnSubmit">Cho tớ tham gia với</button></td>
+				<td align="center"><button type="submit" name="btnSubmit">Úm ba la, hô BIẾN</button></td>
 				<td colspan="2" align="center"><button type="reset" name="button" onClick="javascript: history.back();">Quay trở lại trang trước </button></td>
 			  </tr>
 			</table>
@@ -484,14 +506,13 @@ if ((logged_in())&& (!isset($strConn)))
 	}
 	else
 	{
-	echo "<center>Bạn chưa đăng nhập</center>";
+	echo '<center><span class="error">Bạn chưa đăng nhập!</span></center>';
 	}
 	?>
   </p>
-<!-- InstanceEndEditable -->
+<!-- InstanceEndEditable -->	
 	</td>
-    <td bgcolor="#CCCC66" align="center">
-	<?php
+    <td width="30%" align="center" valign="top" bgcolor="#CCCC66"><?php
 		if (logged_in())
 		{
 			//////////// Select user from database /////////////
@@ -528,8 +549,8 @@ if ((logged_in())&& (!isset($strConn)))
 			require "login_form.inc";
 
 		}
-	?>	</td>
-   </tr>
+	?></td>
+  </tr>
 </table>
 <center>Beta version! Please send feedback to: <a href="mailto:admin@articleexchange.byethost7.com">admin@articleexchange.byethost7.com</a></center>
 </body>
