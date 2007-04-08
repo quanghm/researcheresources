@@ -16,16 +16,14 @@ if ((logged_in())&& (!isset($strConn)))
 
 <!-- InstanceBeginEditable name="head" -->
 <!-- InstanceEndEditable -->
-<link href="../../Style/style.css" rel="stylesheet" type="text/css" />
-
-<link href="Theme/Default/style.css" rel="stylesheet" type="text/css" />
+<?php echo'<link href="Theme/Default/style.css" rel="stylesheet" type="text/css" />'; ?>
 </head>
 
 <body>
 <table width="999" border="0" align="center">
-  <tr bgcolor="#CCCC66">
-    <th width="33%" height="40" nowrap="nowrap" scope="col"><?php echo "<a href=\"index.php\" class=\"menu\">"?><span class="menu">Trang chủ</span><?php echo"</a>"; ?></th>
-    <th width="33%" height="40" scope="col">
+  <tr bgcolor="#CCCC66" align="center">
+    <td width="33%" height="40" nowrap="nowrap" ><?php echo "<a href=\"index.php\" class=\"menu\">"?><span class="menu">Trang chủ</span><?php echo"</a>"; ?></td>
+    <td width="33%" height="40" >
 	<?php 
 	if (logged_in())
 	{
@@ -35,15 +33,14 @@ if ((logged_in())&& (!isset($strConn)))
 	{
 		echo "<a href=\"register.php\" class=\"menu\">Đăng ký thành viên</a>";
 	}
-	?>	</th>
-    <th height="40" colspan="2" scope="col"> <?php echo "<a href=\"about.php\" class=\"menu\">Về chúng tôi</a>"; ?></th>
+	?>	</td>
+    <td height="40" colspan="2" > <?php echo "<a href=\"about.php\" class=\"menu\">Về chúng tôi</a>"; ?></td>
   </tr>
   <tr>
-    <td height="500" width="70%"colspan="3" valign="top">
+    <td width="70%" height="500"colspan="3" valign="top">
 <!-- InstanceBeginEditable name="body" -->
 
-<!-- InstanceEndEditable -->	
-	</td>
+<!-- InstanceEndEditable -->	</td>
     <td width="30%" align="center" valign="top" bgcolor="#CCCC66"><?php
 		if (logged_in())
 		{

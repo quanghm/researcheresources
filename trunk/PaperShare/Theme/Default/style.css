@@ -73,3 +73,9 @@ tr.odd:hover{
 tr.even:hover{
 	background-color: #CCCC99;
 }
+th{
+	background-image:url(Images/tbl_th.png);
+}
+th:hover{
+	background-image: url(Images/tbl_th_hover.png);
+}

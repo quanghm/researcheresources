@@ -16,16 +16,14 @@ if ((logged_in())&& (!isset($strConn)))
 
 <!-- InstanceBeginEditable name="head" -->
 <!-- InstanceEndEditable -->
-<link href="../../Style/style.css" rel="stylesheet" type="text/css" />
-
-<link href="Theme/Default/style.css" rel="stylesheet" type="text/css" />
+<?php echo'<link href="Theme/Default/style.css" rel="stylesheet" type="text/css" />'; ?>
 </head>
 
 <body>
 <table width="999" border="0" align="center">
-  <tr bgcolor="#CCCC66">
-    <th width="33%" height="40" nowrap="nowrap" scope="col"><?php echo "<a href=\"index.php\" class=\"menu\">"?><span class="menu">Trang chủ</span><?php echo"</a>"; ?></th>
-    <th width="33%" height="40" scope="col">
+  <tr bgcolor="#CCCC66" align="center">
+    <td width="33%" height="40" nowrap="nowrap" ><?php echo "<a href=\"index.php\" class=\"menu\">"?><span class="menu">Trang chủ</span><?php echo"</a>"; ?></td>
+    <td width="33%" height="40" >
 	<?php 
 	if (logged_in())
 	{
@@ -35,11 +33,11 @@ if ((logged_in())&& (!isset($strConn)))
 	{
 		echo "<a href=\"register.php\" class=\"menu\">Đăng ký thành viên</a>";
 	}
-	?>	</th>
-    <th height="40" colspan="2" scope="col"> <?php echo "<a href=\"about.php\" class=\"menu\">Về chúng tôi</a>"; ?></th>
+	?>	</td>
+    <td height="40" colspan="2" > <?php echo "<a href=\"about.php\" class=\"menu\">Về chúng tôi</a>"; ?></td>
   </tr>
   <tr>
-    <td height="500" width="70%"colspan="3" valign="top">
+    <td width="70%" height="500"colspan="3" valign="top">
 <!-- InstanceBeginEditable name="body" -->
 	  <?php 
 	if (logged_in())
@@ -52,31 +50,40 @@ if ((logged_in())&& (!isset($strConn)))
 	
 		///////////  	Set up user's menu      ////////////
 		echo "<table width=\"100%\" cellpadding=\"1\" align=\"center\" cellspacing=\"1\">\n";
-		echo "  <tr bgcolor=\"#CCCCCC\">\n";
-		echo "    <th height=\"30\" bgcolor=\"#CCCCCC\" scope=\"row\"";
+		echo "  <tr align=\"center\" bgcolor=\"#CCCCCC\">\n";
+		echo "    <td height=\"30\" bgcolor=\"#CCCCCC\"";
 		if ($arrUserData['supplier']) {echo 'width="33%"';}
 		else {echo 'width ="50%"';}
 		echo "><a href=\"account.php\" class=\"submenu\" >Thông tin chung</a> </th>\n";
-		echo "    <th bgcolor=\"#CCCCCC\" scope=\"row\"";
+		echo "    <td bgcolor=\"#CCCCCC\"";
 		if ($arrUserData['supplier']) {echo 'width="33%"';}
 		else {echo 'width ="50%"';}
-		echo "><a href=\"account.php?type=articles\"class=\"submenu\">Bài báo đã yêu cầu</a> </th>\n";
+		echo "><a href=\"account.php?type=articles\"class=\"submenu\">Bài báo đã yêu cầu</a> </td>\n";
 		if ($arrUserData['supplier'])
 		{
-			echo "	  <th bgcolor=\"#CCCCCC\" scope=\"row\"><a href=\"account.php?type=request\"class=\"submenu\">Các yêu cầu gửi tới bạn</a> </th>\n";
+			echo "	  <td bgcolor=\"#CCCCCC\"><a href=\"account.php?type=request\"class=\"submenu\">Các yêu cầu gửi tới bạn</a> </td>\n";
 		}
-			echo "  </tr>\n</table>\n";
+		echo "  </tr>\n</table>\n";
 		/////////////////////////////////////////////////////
 		
-		//////  Print out requested user's information 	//////
 		//////	Default is view general information 	//////
 		if (!(isset($_GET['type'])))
 		{
 			$_GET['type'] = '';
 		}
+		
+		//////  Print out requested user's information 	//////
 		if ($_GET['type'] == 'articles')    //// If view the articles user requested
 		{
-			$strMyQuery = "SELECT * FROM $strTableRequestName WHERE requester = '".$_SESSION['username']."' ORDER BY date_request DESC";
+			if (!isset($_GET['sortby']))
+			{
+				$_GET['sortby']= "date_request";
+			}
+			if (!isset($_GET['order']))
+			{
+				$_GET['order']="DESC";
+			}
+			$strMyQuery = "SELECT * FROM $strTableRequestName WHERE requester = '".$_SESSION['username']."' ORDER BY ".$_GET['sortby']." ".$_GET['order'];
 			$result = mysql_query($strMyQuery) or die(mysql_error());
 			if (mysql_num_rows($result) == 0)
 			{	
@@ -87,17 +94,24 @@ if ((logged_in())&& (!isset($strConn)))
 				echo "<table width=\"100%\" border=\"0\" cellpadding=\"1\" cellspacing=\"1\">";
 				echo "	<tr >\n";
 				echo "		<th scope=\"col\">Id</th>\n";
-				echo "      <th scope=\"col\">Title</th>\n";
-				echo "      <th scope=\"col\">Author</th>\n";
-				echo "      <th scope=\"col\">Journal</th>\n";
-				echo "      <th scope=\"col\">Year</th>\n";
-				echo "      <th scope=\"col\">Date Requested</th>\n";
-				echo "      <th scope=\"col\">Status</th>\n";
+				echo "      <th scope=\"col\" onclick=\"window.location='account.php?type=articles&sortby=title&order=".str_replace($_GET['order'],"",'ASCDESC');
+				echo "';\">Title</th>\n";
+				echo "      <th scope=\"col\" onclick=\"window.location='account.php?type=articles&sortby=author&order=".str_replace($_GET['order'],"",'ASCDESC');
+				echo "';\">Author</th>\n";
+				echo "      <th scope=\"col\" onclick=\"window.location='account.php?type=articles&sortby=journal&order=".str_replace($_GET['order'],"",'ASCDESC');
+				echo "';\">Journal</th>\n";
+				echo "      <th scope=\"col\" onclick=\"window.location='account.php?type=articles&sortby=year&order=".str_replace($_GET['order'],"",'ASCDESC');
+				echo "';\">Year</th>\n";
+				echo "      <th scope=\"col\" onclick=\"window.location='account.php?type=articles&sortby=date_request&order=".str_replace($_GET['order'],"",'ASCDESC');
+				echo "';\">Date Requested</th>\n";
+				echo "      <th scope=\"col\" onclick=\"window.location='account.php?type=articles&sortby=status&order=".str_replace($_GET['order'],"",'ASCDESC');
+				echo "';\">Status</th>\n";
 				echo "  </tr>";
 				$ArticleIndex = 1;
 				$row = 0;
 				while ($arrArticleList = mysql_fetch_array($result))
 				{
+					
 					echo "	<tr ";
 					if (($row % 2) == 1)
 					{
@@ -138,9 +152,16 @@ if ((logged_in())&& (!isset($strConn)))
 			}
 		}
 		elseif ($_GET['type'] == 'request')   /////// If View the requests pending
-		{
-			$strMysqlQuery = "SELECT * FROM $strTableRequestName WHERE (supplier = '".$_SESSION['username']."') AND (status>=0) ORDER BY date_request ";
-
+		{			
+			if (!isset($_GET['sortby']))
+			{
+				$_GET['sortby']= "date_request";
+			}
+			if (!isset($_GET['order']))
+			{
+				$_GET['order']="DESC";
+			}
+			$strMysqlQuery = "SELECT * FROM $strTableRequestName WHERE (supplier = '".$_SESSION['username']."') AND (status>=0) ORDER BY ".$_GET['sortby']." ".$_GET['order'];
 			$result = mysql_query($strMysqlQuery) or die(mysql_error());
 
 			if (mysql_num_rows($result) == 0)
@@ -149,27 +170,45 @@ if ((logged_in())&& (!isset($strConn)))
 			}
 			else
 			{
-				echo "<table width=\"100%\" border=\"1\" cellpadding=\"0\" cellspacing=\"0\">";
+				echo "<table width=\"100%\" cellpadding=\"1\" cellspacing=\"1\">";
 				echo "	<tr>\n";
 				echo "		<th scope=\"col\">Id</th>\n";
-				echo "      <th scope=\"col\">Title</th>\n";
-				echo "      <th scope=\"col\">Author</th>\n";
-				echo "      <th scope=\"col\">Journal</th>\n";
-				echo "      <th scope=\"col\">Year</th>\n";
-				echo "      <th scope=\"col\">Date Requested</th>\n";
-				echo "      <th scope=\"col\">Status</th>\n";
+				echo "      <th scope=\"col\" onclick=\"window.location='account.php?type=articles&sortby=title&order=".str_replace($_GET['order'],"",'ASCDESC');
+				echo "';\">Title</th>\n";
+				echo "      <th scope=\"col\" onclick=\"window.location='account.php?type=articles&sortby=author&order=".str_replace($_GET['order'],"",'ASCDESC');
+				echo "';\">Author</th>\n";
+				echo "      <th scope=\"col\" onclick=\"window.location='account.php?type=articles&sortby=journal&order=".str_replace($_GET['order'],"",'ASCDESC');
+				echo "';\">Journal</th>\n";
+				echo "      <th scope=\"col\" onclick=\"window.location='account.php?type=articles&sortby=year&order=".str_replace($_GET['order'],"",'ASCDESC');
+				echo "';\">Year</th>\n";
+				echo "      <th scope=\"col\" onclick=\"window.location='account.php?type=articles&sortby=date_request&order=".str_replace($_GET['order'],"",'ASCDESC');
+				echo "';\">Date Requested</th>\n";
+				echo "      <th scope=\"col\" onclick=\"window.location='account.php?type=articles&sortby=status&order=".str_replace($_GET['order'],"",'ASCDESC');
+				echo "';\">Status</th>\n";
 				echo "  </tr>";
 				$ArticleIndex = 1;
+				$row=1;
 				while ($arrArticleList = mysql_fetch_array($result))
 				{
-					echo "	<tr>
-								<td >".$ArticleIndex++."</td>\n";
+					//$row++;
+					echo "	<tr ";
+					if ($row++%2)
+					{
+						echo 'class="even"';
+					}
+					else
+					{
+						echo 'class="odd"';
+					}
+					echo " onclick=\"document.frm$ArticleIndex.submit();\"";
+					echo ">
+								<td >".$ArticleIndex."</td>\n";
 					echo "      <td >".$arrArticleList['title']."</td>\n";
 					echo "      <td >".$arrArticleList['author']."</td>\n";
 					echo "      <td >".$arrArticleList['journal']."</td>\n";
 					echo "      <td >".$arrArticleList['year']."</td>\n";
 					echo "      <td >".$arrArticleList['date_request']."</td>\n";
-					echo "      <td ><form method=\"POST\" action=\"account.php?type=handle_request\">
+					echo "      <td align=\"center\"><form name=\"frm".$ArticleIndex++."\" method=\"POST\" action=\"account.php?type=handle_request\">
 									<input type=\"hidden\" name=\"frmRequestID\" value=\"".$arrArticleList['id']."\"/>
 									<input type=\"submit\" name=\"frmSubmiHandle\" value=\" Giết \"/>
 									</form></td>\n";
@@ -510,8 +549,7 @@ if ((logged_in())&& (!isset($strConn)))
 	}
 	?>
   </p>
-<!-- InstanceEndEditable -->	
-	</td>
+<!-- InstanceEndEditable -->	</td>
     <td width="30%" align="center" valign="top" bgcolor="#CCCC66"><?php
 		if (logged_in())
 		{

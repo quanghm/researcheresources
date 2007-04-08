@@ -8,11 +8,11 @@
 		echo "<form action=\"login.php?action=login\" method=\"POST\">";
 		echo "<table width=\"90%\" border=\"0\" align=\"center\">\n";
 		echo "  <tr>\n";
-		echo "	  <th scope=\"row\" align=\"left\">Bí danh</th>\n";
+		echo "	  <td scope=\"row\" align=\"left\">Bí danh</td>\n";
 		echo "    <td><input type=\"text\" name=\"frmUsername\"></td>\n";
 		echo "  </tr>\n";
 		echo "  <tr>\n";
-		echo "    <th scope=\"row\" align=\"left\">Mật khẩu</th>\n";
+		echo "    <td scope=\"row\" align=\"left\">Mật khẩu</td>\n";
 		echo "    <td><input type=\"password\" name=\"frmPassword\"></td>";
 		echo "  </tr>";
 		echo "  <tr>\n";

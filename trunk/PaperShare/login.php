@@ -1,5 +1,9 @@
 <?php
 include "chk_login.inc";
+if (!isset($_GET['action']))
+{
+	$_GET['action']='hura';
+}
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -77,15 +81,17 @@ else
 ///////     Display loggin form     ////////
 ////////////////////////////////////////////
 {
+	include "login_form.inc";
+	/*
 	if ($_SESSION["ErrMess"]!=="")
 	{
 		echo $_SESSION["ErrMess"];
 		$_SESSION["ErrMess"]="";
 	}
 	echo "<form method=\"POST\" action=\"login.php?action=login\">";
-	echo "<table width=\"800%\">\n";
+	echo "<table width=\"300\">\n";
 	echo "<tr>\n";
-	echo "<td width=\"30%\"> Tên tài khoản </td> <td><input type=\"text\" name=\"frmUsername\"></td> ";
+	echo "<td width=\"30%\"> Bí danh </td> <td><input type=\"text\" name=\"frmUsername\"></td> ";
 	echo "</tr> \n <tr>\n";
 	echo "<td width=\"30%\"> Mật khẩu </td> <td><input type=\"password\" name=\"frmPassword\"></td> ";		
 	echo "</tr>";
@@ -93,6 +99,7 @@ else
 	echo "</table>";
 	echo "</form>";
 	echo "<a href=\"register.php\">Đăng ký tài khoản</a> \n";
+	*/
 }
 ?>
 </td>
