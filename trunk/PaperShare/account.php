@@ -286,41 +286,41 @@ if ((logged_in())&& (!isset($strConn)))
 			echo '<form name="frmRequest" onSubmit="return ChkForm();" method="post" action="submit_request.php">
 		  <table width="100%" cellpadding="0">
 			<tr>
-			  <th scope="row" width="31%"><div align="left">Tên bài báo </div></th>
+			  <td width="31%"><div align="left">Tên bài báo </div></td>
 			  <td>
 				<input name="txtTitle" type="text" size="50" />
 			  </td>
 			</tr>
 			<tr>
-			  <th scope="row" ><div align="left">Tác giả </div></th>
+			  <td ><div align="left">Tác giả </div></td>
 			  <td>
 				<input name="txtAuthor" type="text" size="50"/>
 			  </td>
 			</tr>
 			<tr>
-			  <th scope="row"><div align="left">Tạp chí </div></th>
+			  <td><div align="left">Tạp chí </div></td>
 			  <td><input name="txtJournal" type="text" size="50" /></td>
 			</tr>
 			<tr>
-			  <th scope="row"><div align="left">Link</div></th>
+			  <td><div align="left">Link</div></td>
 			  <td>
 				<input name="txtLink" type="text" size="50" />
 			  </td>
 			</tr>
 			<tr>
-			  <th scope="row"><div align="left">Số</div></th>
+			  <td><div align="left">Số</div></td>
 			  <td>
 				<input name="txtIssue" type="text" size="15" />
 			  </td>
 			</tr>
 			<tr>
-			  <th scope="row"><div align="left">Năm xuất bản </div></th>
+			  <td><div align="left">Năm xuất bản </div></td>
 			  <td>
 				<input name="txtYear" type="text" size="15" />
 			  </td>
 			</tr>
 			<tr>
-			  <th scope="row"><div align="left">Chuyên ngành </div></th>
+			  <td><div align="left">Chuyên ngành </div></td>
 			  <td><select name="optField">
 			  <option selected="selected" value="0">Choose a Field of Study...</option>'."\n";
 		  	for ($index=0;$index<$NumberOfField;$index++)
@@ -331,12 +331,12 @@ if ((logged_in())&& (!isset($strConn)))
 			echo '		</select></td>
 			</tr>
 			<tr>
-			  <th colspan="2" scope="row">        
+			  <td colspan="2">        
 				<div align="center">
 				  <input name="frmSubmit" type="submit" value="Gửi yêu cầu" />
 				  <input name="frmReset" type="reset" value="Làm lại từ đầu" />
 				</div>
-			  </th>
+			  </td>
 			</tr>
 		  </table>
 		</form>';				/////	User's Interface
