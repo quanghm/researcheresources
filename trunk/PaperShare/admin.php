@@ -56,8 +56,9 @@ else	//start admin
 		$result = mysql_query($strMyQuery) or die (mysql_error());
 		if (mysql_num_rows($result)>0)		// updated
 		{
-			echo "Data Updated";
 			$arrLastUpdate = mysql_fetch_array($result);
+			echo "Email đã được gửi bởi ".$arrLastUpdate['username']." vào ngày ".$arrLastUpdate['lastupdate'];
+
 		}
 		else
 		{	
