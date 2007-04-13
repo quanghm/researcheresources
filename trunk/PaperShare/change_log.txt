@@ -4,3 +4,7 @@
 Apr 08
 1. Add style for table of requests
 2. Sort table of requests by fields
+//////////////////////////////////
+Apr 13
+1. Add admin page which sends email to suppliers about requests pending
+2. Fix a bug in passing requests

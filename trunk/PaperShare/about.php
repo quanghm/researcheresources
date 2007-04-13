@@ -13,7 +13,6 @@ if ((logged_in())&& (!isset($strConn)))
 <!-- InstanceBeginEditable name="doctitle" -->
 <title>Chúng tôi nói về chúng tôi</title>
 <!-- InstanceEndEditable -->
-
 <!-- InstanceBeginEditable name="head" -->
 <!-- InstanceEndEditable -->
 <?php echo'<link href="Theme/Default/style.css" rel="stylesheet" type="text/css" />'; ?>
@@ -40,7 +39,8 @@ if ((logged_in())&& (!isset($strConn)))
     <td width="70%" height="500"colspan="3" valign="top">
 <!-- InstanceBeginEditable name="body" -->
 
-<!-- InstanceEndEditable -->	</td>
+<!-- InstanceEndEditable -->	
+	</td>
     <td width="30%" align="center" valign="top" bgcolor="#CCCC66"><?php
 		if (logged_in())
 		{
@@ -68,7 +68,7 @@ if ((logged_in())&& (!isset($strConn)))
 			}
 		}
 		echo "<a href=\"account.php?type=change\"> Thay đổi thông tin cá nhân </a><br>";			
-	
+		if ($arrUserData['admin']){echo "<a href=\"admin.php\"> Gửi email nhắc việc tới suppliers </a>";}
 			//////// Close connection to database /////////
 			include "dbclose.php";
 		}

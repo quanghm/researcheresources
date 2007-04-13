@@ -6,8 +6,11 @@ $strAdminPass = 'test123';
 $strDatabaseName = 'papershare';
 $strTableUserName = 'tbl_user';
 $strTableRequestName = 'tbl_request';
-
+$strTableAdmin = 'tbl_update';
 ////// Config site's options////////
+	$strWebsiteName = "Article Resource";
+	$strAdminEmail = "test@".$_SERVER['DOCUMENT_ROOT'];
+	////////////////////////////////
 	$store_article_on_server = false;
 	$archive_request = true;
 	////////////////////////////////

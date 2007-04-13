@@ -43,6 +43,7 @@ elseif ($_GET['action']=='passing')
 	
 	///////// Decrease request_pending_number
 	$strMysqlQuery = "UPDATE $strTableUserName SET request_pending_number = request_pending_number - 1  WHERE (username = '".$_SESSION['username']."')";
+	mysql_query($strMysqlQuery);
 	///////// Assign a new supplier ////////////
 		$strPassSupplier ='';
 		////////	Get the previous supplier	//////
