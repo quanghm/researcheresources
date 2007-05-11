@@ -1,5 +1,9 @@
 <?php
 	include "chk_login.inc";
+	if (!isset($_GET['action']))
+	{
+		$_GET['action']='';
+	}
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><!-- InstanceBegin template="/Templates/paper_share.dwt.php" codeOutsideHTMLIsLocked="false" -->
 <head>
@@ -34,7 +38,7 @@
 <?php
 if (!logged_in())
 {
-	echo "Bạn chưa đăng nhập!";
+	$_SESSION['ErrMess']="Bạn chưa đăng nhập!";
 	echo '<script language="javascript" > setTimeout("window.location=\'index.php\'",3000);</script>';
 }
 else	//start admin 
@@ -49,7 +53,7 @@ else	//start admin
 		echo "Bạn không phải người quản trị	!";
 		echo '<script language="javascript" > setTimeout("window.location=\'account.php\'",3000);</script>';
 	}
-	else	// Send email to suppliers
+	elseif ($_GET['action']=='mail')	// Send email to suppliers
 	{	
 		$today = date("Y-m-d");
 		$strMyQuery = "SELECT * FROM $strTableAdmin WHERE lastupdate >= '$today' ORDER BY lastupdate DESC";
@@ -87,18 +91,27 @@ else	//start admin
 	</html>";
 				$To = $arrSupplierData['email'];
 				$Subject = "Bạn có yêu cầu đang chờ ở $arrSupplierData";
-				$Headers = "content-type: txt/html, charset= utf-8";
-				$Headers .= "From: \"".$_SESSION['username']."\"";
+				$From = 'Admin <admin@ArticleResource.org>';
+				$Headers = "content-type: txt/html, charset= utf-8\n";
+				$Headers .= "From: admin@localhost";
 				if (mail($To, $Subject, $message, $Headers))
 				{
 					echo" Send email to ".$arrSupplierData['username'].": DONE.<br>\n";
 				}
 				else
 				{
-					echo" Send email to ".$arrSupplierData['username'].": FAILED.<br>\n";
+					echo (" Send email to ".$arrSupplierData['username'].": FAILED.<br>\n");
 				}
 			}
 		}
+	echo "\n".'<br /><button onClick="javascript:window.location=\'admin.php\'">Quay lại trang điều khiển</button>';
+	}
+	else
+	{
+		echo '<a href="admin.php?action=mail">Gửi email nhắc việc cho các suppliers</a><br />'."\n";
+		echo '<a href="admin.php?action=admins"> Sửa danh sách admins </a><br />'."\n";
+		echo '<a href="admin.php?action=users"> Danh sách thành viên </a><br />'."\n";
+		echo '<a href="admin.php?action=requests"> Danh sách bài báo </a><br />'."\n";
 	}
 }
 	// Make a MySQL Connection
@@ -135,7 +148,7 @@ else	//start admin
 			}
 		}
 		echo "<a href=\"account.php?type=change\"> Thay đổi thông tin cá nhân </a><br>";			
-		if ($arrUserData['admin']){echo "<a href=\"admin.php\"> Gửi email nhắc việc tới suppliers </a>";}
+		if ($arrUserData['admin']){echo "<a href=\"admin.php?action=mail\"> Gửi email nhắc việc tới suppliers </a>";}
 			//////// Close connection to database /////////
 			include "dbclose.php";
 		}
