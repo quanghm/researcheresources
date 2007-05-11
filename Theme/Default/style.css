@@ -1,0 +1,81 @@
+a:visited {
+  color: #0033CC;
+}
+
+a:hover {
+	text-decoration: none;
+}
+
+a:active {
+	color: #FF0000;
+}
+
+a.menu {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-weight: bold;
+	color:#0000CC;
+	font-size:16px;
+	text-decoration: none;
+}
+
+a.menu:hover {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-weight: bold;
+	color: #0033CC;
+	font-size:16px;
+	text-decoration: none;
+	letter-spacing: 1px;
+	}
+
+a.submenu{
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	font-weight:bold;
+	color: #0000CC;
+	text-decoration: none;
+}
+a.submenu:hover{
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+	font-weight:bold;
+	color: #0000CC;
+	font-size: 14px;
+	text-decoration: none;
+	letter-spacing:1px;
+}
+
+.error {
+	font-family: "Times New Roman", Times, serif;
+	font-size: medium;
+	font-weight: bold;
+	color: #FF0000;
+}
+input.myButton{
+	font-family:Arial, Helvetica, sans-serif;
+	color:#FF3333;
+}
+table.tblImg {
+	border: 2px solid #FFFFFF;
+}
+
+table.tblImg:hover {
+	border: 2px solid #0000CC;
+}
+
+tr.odd {
+	background-color: #EBEBEB;
+}
+tr.even{
+	background-color: #E2E2E2;
+}
+tr.odd:hover{
+	background-color: #CCCC99;
+}
+tr.even:hover{
+	background-color: #CCCC99;
+}
+th{
+	background-image:url(Images/tbl_th.png);
+}
+th:hover{
+	background-image: url(Images/tbl_th_hover.png);
+}
