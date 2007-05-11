@@ -68,7 +68,7 @@ if ((logged_in())&& (!isset($strConn)))
 			}
 		}
 		echo "<a href=\"account.php?type=change\"> Thay đổi thông tin cá nhân </a><br>";			
-		if ($arrUserData['admin']){echo "<a href=\"admin.php\"> Gửi email nhắc việc tới suppliers </a>";}
+		if ($arrUserData['admin']){echo "<a href=\"admin.php?action=mail\"> Gửi email nhắc việc tới suppliers </a>";}
 			//////// Close connection to database /////////
 			include "dbclose.php";
 		}

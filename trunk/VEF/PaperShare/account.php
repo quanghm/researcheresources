@@ -371,7 +371,7 @@ if ((logged_in())&& (!isset($strConn)))
 						alert("Xác nhận email không đúng!");
 						return false;
 					}
-				if (document.frmChangeInfo.frmField.value==0)
+				if (document.frmChangeInfo.frmNewField.value==0)
 					{
 						alert("Bạn phải chọn một chuyên ngành!");
 						return false;
@@ -412,7 +412,7 @@ if ((logged_in())&& (!isset($strConn)))
 				</tr>
 			  <tr>
 				<td >Chuyên ngành</td>
-				<td colspan="2"><select name="frmField">
+				<td colspan="2"><select name="frmNewField">
 				  <option value="0">Choose a Field of Study...</option>'."\n";
 					for ($index=0;$index<$NumberOfField;$index++)
 					{
@@ -425,12 +425,12 @@ if ((logged_in())&& (!isset($strConn)))
 			  <tr>
 				<td >Bạn có muốn làm người cung cấp</td>
 				<td width="25%"><label>
-				  <input name="frmSupplier" type="radio" value="1"';
+				  <input name="frmNewSupplier" type="radio" value="1"';
 			if ($arrUserData['supplier']) {echo "checked";}	  
 			echo'>
 				Có</label></td>
 				<td width="25%"><label>
-				  <input name="frmSupplier" type="radio" value="0"';
+				  <input name="frmNewSupplier" type="radio" value="0"';
 			if (!($arrUserData['supplier'])) {echo "checked";}	  
 			echo'>
 				Không</label></td>
@@ -577,7 +577,7 @@ if ((logged_in())&& (!isset($strConn)))
 			}
 		}
 		echo "<a href=\"account.php?type=change\"> Thay đổi thông tin cá nhân </a><br>";			
-		if ($arrUserData['admin']){echo "<a href=\"admin.php\"> Gửi email nhắc việc tới suppliers </a>";}
+		if ($arrUserData['admin']){echo "<a href=\"admin.php?action=mail\"> Gửi email nhắc việc tới suppliers </a>";}
 			//////// Close connection to database /////////
 			include "dbclose.php";
 		}

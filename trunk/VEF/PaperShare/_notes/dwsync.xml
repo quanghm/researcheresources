@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <dwsync>
-<file name="login_form.inc" server="C:/WebServer/htdocs/mySite/" local="128233932531734112" remote="128233932530000000" />
-<file name="chk_login.inc" server="C:/WebServer/htdocs/mySite/" local="128233932532034544" remote="128233932530000000" />
-<file name="config.php" server="C:/WebServer/htdocs/mySite/" local="128233932530131808" remote="128233932530000000" />
-<file name="dbconnect.php" server="C:/WebServer/htdocs/mySite/" local="128233932529631088" remote="128233932520000000" />
-<file name="dbclose.php" server="C:/WebServer/htdocs/mySite/" local="128233932531433680" remote="128233932530000000" />
-<file name="admin.php" server="C:/WebServer/htdocs/mySite/" local="128233932532435120" remote="128233932530000000" />
+<file name="index.php" server="c:/Program Files/Apache/htdocs/" local="128209228187500000" remote="128209228180000000" />
+<file name="chk_login.inc" server="c:/Program Files/Apache/htdocs/" local="128209228126718750" remote="128209228120000000" />
+<file name="config.php" server="c:/Program Files/Apache/htdocs/" local="128230090114055824" remote="128230090110000000" />
+<file name="dbconnect.php" server="c:/Program Files/Apache/htdocs/" local="128209228196718750" remote="128209228190000000" />
+<file name="dbclose.php" server="c:/Program Files/Apache/htdocs/" local="128209228206875000" remote="128209228200000000" />
+<file name="login_form.inc" server="c:/Program Files/Apache/htdocs/" local="128209228131093750" remote="128209228130000000" />
+<file name="admin.php" server="c:/Program Files/Apache/htdocs/" local="128227392709184032" remote="128227392700000000" />
 </dwsync>
