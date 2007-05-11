@@ -18,7 +18,7 @@ if (logged_in())
 		$_SESSION["ErrMess"]="Email đã được người khác chọn!";
 	echo '<script language="javascript"> window.location=\'account.php?type=change\';</script>';
 	}
-	$strMysqlQuery = "UPDATE $strTableUserName SET username='".$_POST['frmUsername']."', email='".$_POST['frmNewEmail']."', field='".$_POST['frmField']."'";
+	$strMysqlQuery = "UPDATE $strTableUserName SET supplier='".$_POST['frmNewSupplier']."', email='".$_POST['frmNewEmail']."', field='".$_POST['frmNewField']."'";
 	if ($_POST['frmNewPassword']!=='')
 	{
 		$strCryptedPassword = crypt($_POST['frmNewPassword']);
