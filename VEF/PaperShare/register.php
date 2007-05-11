@@ -173,7 +173,7 @@ function DataVerify()
   </tr>
   <tr>
 	<td colspan="5"><div align="center">
-	  <textarea name="txtTermOfUse" rows="10" cols="60" disabled="disabled"><?php 	echo $strTermOfUse; ?>
+	  <textarea name="txtTermOfUse" rows="10" cols="60" readonly="readonly"><?php 	echo $strTermOfUse; ?>
     </textarea>
 	  </div></td>
     </tr>
