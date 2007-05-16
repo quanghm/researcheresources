@@ -35,8 +35,8 @@ if ((logged_in())&& (!isset($strConn)))
 	?>	</td>
     <td height="40" colspan="2" > <?php echo "<a href=\"about.php\" class=\"menu\">Về chúng tôi</a>"; ?></td>
   </tr>
-  <tr>
-    <td width="70%" height="500"colspan="3" valign="top">
+  <tr >
+    <td width="70%" height="700"colspan="3" valign="top">
 <!-- InstanceBeginEditable name="body" -->
 
 <!-- InstanceEndEditable -->	

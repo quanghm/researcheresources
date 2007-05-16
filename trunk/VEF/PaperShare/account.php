@@ -35,8 +35,8 @@ if ((logged_in())&& (!isset($strConn)))
 	?>	</td>
     <td height="40" colspan="2" > <?php echo "<a href=\"about.php\" class=\"menu\">Về chúng tôi</a>"; ?></td>
   </tr>
-  <tr>
-    <td width="70%" height="500"colspan="3" valign="top">
+  <tr >
+    <td width="70%" height="700"colspan="3" valign="top">
 <!-- InstanceBeginEditable name="body" -->
 	  <?php 
 	if (logged_in())
@@ -92,19 +92,19 @@ if ((logged_in())&& (!isset($strConn)))
 			{
 				echo "<table width=\"100%\" border=\"0\" cellpadding=\"1\" cellspacing=\"1\">";
 				echo "	<tr >\n";
-				echo "		<th scope=\"col\">Id</th>\n";
+				echo "		<th scope=\"col\">STT</th>\n";
 				echo "      <th scope=\"col\" onclick=\"window.location='account.php?type=articles&sortby=title&order=".str_replace($_GET['order'],"",'ASCDESC');
-				echo "';\">Title</th>\n";
+				echo "';\">Tiêu đề</th>\n";
 				echo "      <th scope=\"col\" onclick=\"window.location='account.php?type=articles&sortby=author&order=".str_replace($_GET['order'],"",'ASCDESC');
-				echo "';\">Author</th>\n";
+				echo "';\">Tác giả</th>\n";
 				echo "      <th scope=\"col\" onclick=\"window.location='account.php?type=articles&sortby=journal&order=".str_replace($_GET['order'],"",'ASCDESC');
-				echo "';\">Journal</th>\n";
+				echo "';\">Tạp chí</th>\n";
 				echo "      <th scope=\"col\" onclick=\"window.location='account.php?type=articles&sortby=year&order=".str_replace($_GET['order'],"",'ASCDESC');
-				echo "';\">Year</th>\n";
+				echo "';\">Năm</th>\n";
 				echo "      <th scope=\"col\" onclick=\"window.location='account.php?type=articles&sortby=date_request&order=".str_replace($_GET['order'],"",'ASCDESC');
-				echo "';\">Date Requested</th>\n";
+				echo "';\">Ngày yêu cầu</th>\n";
 				echo "      <th scope=\"col\" onclick=\"window.location='account.php?type=articles&sortby=status&order=".str_replace($_GET['order'],"",'ASCDESC');
-				echo "';\">Status</th>\n";
+				echo "';\">Tình trạng</th>\n";
 				echo "  </tr>";
 				$ArticleIndex = 1;
 				$row = 0;
@@ -129,15 +129,15 @@ if ((logged_in())&& (!isset($strConn)))
 					echo "      <td >".$arrArticleList['date_request']."</td>\n";
 					if ($arrArticleList['status'] >= 0)				// Status is pending
 					{
-						echo "      <td >Pending</td>\n";
+						echo "      <td >Đang chờ</td>\n";
 					}
 					elseif ($arrArticleList['status'] == -2)		// Status is Failed
 					{
-						echo "      <td > Failed </td>\n";
+						echo "      <td >Thất bại</td>\n";
 					}
 					elseif ($arrArticleList['status'] == -1)		// Status is finished
 					{
-						echo "      <td >Finished </td>\n";
+						echo "      <td >Hoàn tất</td>\n";
 	
 					}
 					elseif ($store_article_on_server)
@@ -171,19 +171,19 @@ if ((logged_in())&& (!isset($strConn)))
 			{
 				echo "<table width=\"100%\" cellpadding=\"1\" cellspacing=\"1\">";
 				echo "	<tr>\n";
-				echo "		<th scope=\"col\">Id</th>\n";
+				echo "		<th scope=\"col\">STT</th>\n";
 				echo "      <th scope=\"col\" onclick=\"window.location='account.php?type=request&sortby=title&order=".str_replace($_GET['order'],"",'ASCDESC');
-				echo "';\">Title</th>\n";
+				echo "';\">Tiêu đề</th>\n";
 				echo "      <th scope=\"col\" onclick=\"window.location='account.php?type=request&sortby=author&order=".str_replace($_GET['order'],"",'ASCDESC');
-				echo "';\">Author</th>\n";
+				echo "';\">Tác giả</th>\n";
 				echo "      <th scope=\"col\" onclick=\"window.location='account.php?type=request&sortby=journal&order=".str_replace($_GET['order'],"",'ASCDESC');
-				echo "';\">Journal</th>\n";
+				echo "';\">Tạp chí</th>\n";
 				echo "      <th scope=\"col\" onclick=\"window.location='account.php?type=request&sortby=year&order=".str_replace($_GET['order'],"",'ASCDESC');
-				echo "';\">Year</th>\n";
+				echo "';\">Năm</th>\n";
 				echo "      <th scope=\"col\" onclick=\"window.location='account.php?type=request&sortby=date_request&order=".str_replace($_GET['order'],"",'ASCDESC');
-				echo "';\">Date Requested</th>\n";
+				echo "';\">Ngày yêu cầu</th>\n";
 				echo "      <th scope=\"col\" onclick=\"window.location='account.php?type=request&sortby=status&order=".str_replace($_GET['order'],"",'ASCDESC');
-				echo "';\">Status</th>\n";
+				echo "';\">Trạng thái</th>\n";
 				echo "  </tr>";
 				$ArticleIndex = 1;
 				$row=1;
@@ -209,7 +209,7 @@ if ((logged_in())&& (!isset($strConn)))
 					echo "      <td >".$arrArticleList['date_request']."</td>\n";
 					echo "      <td align=\"center\"><form name=\"frm".$ArticleIndex++."\" method=\"POST\" action=\"account.php?type=handle_request\">
 									<input type=\"hidden\" name=\"frmRequestID\" value=\"".$arrArticleList['id']."\"/>
-									<input type=\"submit\" name=\"frmSubmiHandle\" value=\" Giết \"/>
+									<input type=\"submit\" name=\"frmSubmiHandle\" value=\" Chi tiết \"/>
 									</form></td>\n";
 
 				/*	if ($arrArticleList['status'] == 'pending')
@@ -271,8 +271,8 @@ if ((logged_in())&& (!isset($strConn)))
 			return true;
 		}
 		</script>';				///// javascript function to deal with request data
-			echo "<center> Yêu cầu bài báo<br>";
-			echo "Bạn cần điền vào <strong>tất cả</strong> các thông tin\n";
+			echo "<center> Yêu cầu bài báo<br>\n";
+			echo "Bạn cần điền vào <strong>tất cả</strong> các thông tin "."<a onclick=\"javascript:window.open('help.php','wnd_help','height=300,width=400,toolbar=no,menubar=no,location=no')\"><img height=\"20\" src=\"Theme/Default/Images/questionmark.jpg\"></a>\n";
 			if (isset($_SESSION['ErrMess']))
 			{
 				if ($_SESSION['ErrMess']==!"")
@@ -303,7 +303,7 @@ if ((logged_in())&& (!isset($strConn)))
 			<tr>
 			  <td><div align="left">Link</div></td>
 			  <td>
-				<input name="txtLink" type="text" size="50" />
+				<input name="txtLink" type="text" size="50" /> 
 			  </td>
 			</tr>
 			<tr>
