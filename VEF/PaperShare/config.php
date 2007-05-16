@@ -1,3 +1,4 @@
+
 <?php
 
 /////// Config database   //////////
@@ -24,6 +25,7 @@ $strTableAdmin = 'tbl_update';
 	
 	$strWebsiteName="Ngu?i duong th?i";
 
+	$strAdminEmail="admin@localhost";
 	////////////////////////////////
 
 	

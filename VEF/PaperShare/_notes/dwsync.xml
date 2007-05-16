@@ -7,4 +7,11 @@
 <file name="dbclose.php" server="c:/Program Files/Apache/htdocs/" local="128209228206875000" remote="128209228200000000" />
 <file name="login_form.inc" server="c:/Program Files/Apache/htdocs/" local="128209228131093750" remote="128209228130000000" />
 <file name="admin.php" server="c:/Program Files/Apache/htdocs/" local="128227392709184032" remote="128227392700000000" />
+<file name="chk_login.inc" server="C:/WebServer/htdocs/mySite/" local="128209228126718750" remote="128209228120000000" />
+<file name="dbconnect.php" server="C:/WebServer/htdocs/mySite/" local="128209228196718750" remote="128209228190000000" />
+<file name="dbclose.php" server="C:/WebServer/htdocs/mySite/" local="128209228206875000" remote="128209228200000000" />
+<file name="login_form.inc" server="C:/WebServer/htdocs/mySite/" local="128209228131093750" remote="128209228130000000" />
+<file name="account.php" server="C:/WebServer/htdocs/mySite/" local="128234759410000000" remote="128234759410000000" />
+<file name="submit_request.php" server="C:/WebServer/htdocs/mySite/" local="128209228105468750" remote="128209228100000000" />
+<file name="config.php" server="C:/WebServer/htdocs/mySite/" local="128234733214377232" remote="128234733210000000" />
 </dwsync>
