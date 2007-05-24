@@ -65,10 +65,9 @@ else	//start admin
 
 		}
 		else
-		{	
-			$strMyQuery = "INSERT INTO $strTableAdmin (lastupdate, username) VALUES ('$today', '".$_SESSION['username']."')";
+		{	$strMyQuery = "INSERT INTO $strTableAdmin (lastupdate, username) VALUES ('$today', '".$_SESSION['username']."')";
 			mysql_query($strMyQuery) or die(mysql_error());
-			////	Get List of supplier
+			////	Get List of suppliers that have pending requests
 			$strMyQuery = "SELECT * FROM $strTableUserName WHERE (supplier =1) AND (request_pending_number>0)";
 			$result = mysql_query($strMyQuery) or die(mysql_error());
 			if (mysql_num_rows($result) == 0)
@@ -77,6 +76,7 @@ else	//start admin
 			}
 			else while ($arrSupplierData = mysql_fetch_array($result))
 			{
+			//////	Supplier found, sending maili
 				$message = "<html>
 	<head>
 	<title>Bạn có email đang chờ</title>

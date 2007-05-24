@@ -272,7 +272,7 @@ if ((logged_in())&& (!isset($strConn)))
 		}
 		</script>';				///// javascript function to deal with request data
 			echo "<center> Yêu cầu bài báo<br>\n";
-			echo "Bạn cần điền vào <strong>tất cả</strong> các thông tin "."<a onclick=\"javascript:window.open('help.php','wnd_help','height=300,width=400,toolbar=no,menubar=no,location=no')\"><img height=\"20\" src=\"Theme/Default/Images/questionmark.jpg\"></a>\n";
+			echo "Bạn cần điền vào <strong>tất cả</strong> các thông tin "."<a onclick=\"javascript:window.open('help.php','wnd_help','height=600,width=500')\"><img height=\"20\" src=\"Theme/Default/Images/questionmark.jpg\"></a>\n";
 			if (isset($_SESSION['ErrMess']))
 			{
 				if ($_SESSION['ErrMess']==!"")
