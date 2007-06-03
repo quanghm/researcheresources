@@ -77,22 +77,23 @@ else	//start admin
 			else while ($arrSupplierData = mysql_fetch_array($result))
 			{
 			//////	Supplier found, sending maili
-				$message = "<html>
+			$strDir=dirname($_SERVER['PHP_SELF']);
+			$message = "<html>
 	<head>
 	<title>Bạn có email đang chờ</title>
 	</head>
 	
 	<body>
-	Đây là email tự động gửi từ ban quản trị của $strWebsiteName.
-				Hiện thời bạn có ".$arrSupplierData['request_pending_number']." yêu cầu cần giải quyết.
-				
-				Xin hãy đăng nhập vào trang web <a href=\"".dirname($_SERVER['PHP_SELF'])."\">$strWebsiteName </a> để xử lý các yêu cầu.
+	Đây là email tự động gửi từ ban quản trị của $strWebsiteName.<br/>
+	Hiện thời bạn có ".$arrSupplierData['request_pending_number']." yêu cầu cần giải quyết.<br />
+	Xin hãy đăng nhập vào trang web <a href=\"".'http://'.$_SERVER['SERVER_NAME'].$strDir."\">$strWebsiteName </a> để xử lý các yêu cầu.
 	</body>
 	</html>";
 				$To = $arrSupplierData['email'];
 				$Subject = "Bạn có yêu cầu đang chờ ở $arrSupplierData";
-				$Headers = "content-type: text/html, charset= utf-8\r\n";
-				$Headers = "From: ".$strAdminEmail;
+				$Headers = "From: ".$strAdminEmail."\r\n";
+    			$Headers .= "MIME-Version: 1.0\r\n"; 
+				$Headers .= "content-type: text/html, charset= utf-8\r\n";
 				if (mail($To, $Subject, $message, $Headers))
 				{
 					echo" Send email to ".$arrSupplierData['username'].": DONE.<br>\n";
