@@ -91,8 +91,8 @@ else	//start admin
 	</html>";
 				$To = $arrSupplierData['email'];
 				$Subject = "Bạn có yêu cầu đang chờ ở $arrSupplierData";
-				$Headers = "content-type: txt/html, charset= utf-8\n";
-				$Headers .= "From: ".$strAdminEmail;
+				$Headers = "content-type: text/html, charset= utf-8\r\n";
+				$Headers = "From: ".$strAdminEmail;
 				if (mail($To, $Subject, $message, $Headers))
 				{
 					echo" Send email to ".$arrSupplierData['username'].": DONE.<br>\n";

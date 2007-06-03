@@ -23,7 +23,7 @@ $strTableAdmin = 'tbl_update';
 
 	$archive_request = true;
 	
-	$strWebsiteName="Ngu?i duong th?i";
+	$strWebsiteName="Article Resource";
 
 	$strAdminEmail="admin@localhost";
 	////////////////////////////////
