@@ -90,7 +90,7 @@ else	//start admin
 	</body>
 	</html>";
 				$To = $arrSupplierData['email'];
-				$Subject = "Ban co yeu cau dang cho o $arrSupplierData";
+				$Subject = "Ban co yeu cau dang cho o website $strWebsiteName";
 				$Headers = "From: ".$strAdminEmail."\r\n";
     			$Headers .= "MIME-Version: 1.0\r\n"; 
 				$Headers .= "content-type: text/html; charset=utf-8\r\n";
