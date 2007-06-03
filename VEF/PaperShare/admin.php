@@ -93,7 +93,7 @@ else	//start admin
 				$Subject = "Bạn có yêu cầu đang chờ ở $arrSupplierData";
 				$Headers = "From: ".$strAdminEmail."\r\n";
     			$Headers .= "MIME-Version: 1.0\r\n"; 
-				$Headers .= "content-type: text/html, charset= utf-8\r\n";
+				$Headers .= "content-type: text/html\r\n";
 				if (mail($To, $Subject, $message, $Headers))
 				{
 					echo" Send email to ".$arrSupplierData['username'].": DONE.<br>\n";
