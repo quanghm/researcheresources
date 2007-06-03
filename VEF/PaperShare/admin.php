@@ -81,6 +81,7 @@ else	//start admin
 			$message = "<html>
 	<head>
 	<title>Bạn có email đang chờ</title>
+	<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />
 	</head>
 	
 	<body>
