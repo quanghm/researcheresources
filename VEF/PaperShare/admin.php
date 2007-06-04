@@ -161,6 +161,5 @@ else	//start admin
 	?></td>
   </tr>
 </table>
-<center>Beta version! Please send feedback to: <a href="mailto:admin@articleexchange.byethost7.com">admin@articleexchange.byethost7.com</a></center>
 </body>
 <!-- InstanceEnd --></html>

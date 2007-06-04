@@ -74,6 +74,5 @@ if ((logged_in())&& (!isset($strConn)))
 </div><p align="justify"><em>Để website  hoạt động có hiệu quả, chúng tôi tha thiết kêu gọi những ai có khả năng làm  người cung cấp đối với một trong các lĩnh vực nêu trên, bất kể đang ở Anh,  Pháp, Mỹ, Đức...tình nguyện <a href="register.php">đăng ký</a> tham gia website. Thời gian và công sức mà  các bạn bỏ ra sẽ là vô cùng quý báu. Cảm ơn các bạn.</em></p>	</td>
   </tr>
 </table>
-<center>Beta version! Please send feedback to: <a href="mailto:admin@articleexchange.byethost7.com">admin@articleexchange.byethost7.com</a></center>
 </body>
 </html>
