@@ -25,7 +25,7 @@ $strTableAdmin = 'tbl_update';
 	
 	$strWebsiteName="Article Resource";
 
-	$strAdminEmail="admin@localhost";
+	$strAdminEmail="admin@articleresource.vn";
 	////////////////////////////////
 
 	
