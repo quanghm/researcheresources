@@ -76,7 +76,7 @@ $strTableAdmin = 'tbl_update';
 
 	// this is used for status of a request.
 
-	$max_pass = 3;		
+	$max_pass = 2;		
 
 	//  array of request status					
 

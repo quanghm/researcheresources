@@ -46,7 +46,7 @@ elseif ($_GET['action']=='passing')
 	mysql_query($strMysqlQuery);
 	///////// Assign a new supplier ////////////
 		$strPassSupplier ='';
-		////////	Get the previous supplier	//////
+		////////	Get the previous supplier and
 		////////	put to array $arrPreviousSuppliers
 		parse_str($arrRequestData['previous_suppliers']);
 		
@@ -67,20 +67,53 @@ elseif ($_GET['action']=='passing')
 			///// 	Change request's status to Failed
 			$strMysqlQuery = "UPDATE $strTableRequestName SET status = -2 WHERE id=".$_POST['frmHandlingRequestID'];
 			mysql_query($strMysqlQuery) or die(mysql_error());	
-			////////////////////////////////////////////////
+			
+			/////	email requesters
+				$strMysqlQuery = "SELECT * FROM $strTableUserName WHERE (username = '".$arrRequestData['username']."')";
+				$result = mysql_query($strMysqlQuery) or die(mysql_error());
+				$arrRequester = mysql_fetch_array($result);
+				$emlTo = $arrRequester['email'];
+				$strSubject	= "khong tim duoc bai bao cua ban";
+				$Headers = "From: ".$strAdminEmail."\r\n";
+				$Headers .= "MIME-Version: 1.0\r\n"; 
+				$Headers .= "content-type: text/html; charset=utf-8\r\n";
+			
+				$strDir=dirname($_SERVER['PHP_SELF']);
+				$message = "<html>
+				<head>
+				<title>Yêu cầu thất bại</title>
+				</head>
+				<body>
+				Đây là email tự động gửi từ ban quản trị của $strWebsiteName.<br/>
+				Chúng tôi không tìm được một trong những bài báo theo yêu cầu của bạn tại $strWebsiteName .<br />
+				Xin hãy đăng nhập vào trang web <a href=\"".'http://'.$_SERVER['SERVER_NAME'].$strDir."\">$strWebsiteName </a> để biết thêm chi tiết.
+				</body>
+				</html>";
+				if (mail($emlTo, $Subject, $message, $Headers))
+				{
+					echo" Send email to ".$arrSupplierData['username'].": DONE.<br>\n";
+				}
+				else
+				{
+					echo (" Send email to ".$arrSupplierData['username'].": FAILED.<br>\n");
+				}
+
+
 			echo "<center>Đang quay lại trang thông tin cá nhân...</center>";
 			die('<meta http-equiv="refresh" content="3;url=account.php?type=request">');
 		}
 		else		//passing request to new supplier
 		{
 			$strPreviousSuppliers = $arrRequestData['previous_suppliers'].'arrPreviousSuppliers[]='.$_SESSION['username'].'&';
-			//echo $strPreviousSuppliers."<br>";
 			$strMysqlQuery = "UPDATE $strTableRequestName SET previous_suppliers = '".$strPreviousSuppliers."', status = status + 1, supplier = '".$arrSupplierList['username']."' WHERE id = ".$arrRequestData['id'];
 			mysql_query($strMysqlQuery) or die(mysql_error());
-			//echo $strMysqlQuery;
+			/////// update new supplier's request pending number
+			$strMysqlQuery = "UPDATE $strTableUserName SET request_pending_number = request_pending_number +1 WHERE username = '".$arrSupplierList['username']."'";
+			mysql_query($strMysqlQuery) or die(mysql_error());
 		}
 		echo "<center> Chuyển yêu cầu thành công! Đang quay trở lại trang trước...</center>";
-		echo ('<meta http-equiv="refresh" content="3;url=account.php?type=request">');}
+		echo ('<meta http-equiv="refresh" content="3;url=account.php?type=request">');
+}
 elseif ($_GET['action']=='failing')
 {
 	//////////	Change request's status to failed
@@ -90,8 +123,40 @@ elseif ($_GET['action']=='failing')
 	///////// Decrease request_pending_number
 	$strMysqlQuery = "UPDATE $strTableUserName SET request_pending_number = request_pending_number - 1  WHERE (username = '".$_SESSION['username']."')";
 
+	///////////  Inform requester about failure of request
+		///////  Get requester's email
+	$strMysqlQuery = "SELECT * FROM $strTableUserName WHERE (username = '".$arrRequestData['username']."')";
+	$result = mysql_query($strMysqlQuery) or die(mysql_error());
+	$arrRequester = mysql_fetch_array($result);
+	$emlTo = $arrRequester['email'];
+	$strSubject	= "khong tim duoc bai bao cua ban";
+	$Headers = "From: ".$strAdminEmail."\r\n";
+	$Headers .= "MIME-Version: 1.0\r\n"; 
+	$Headers .= "content-type: text/html; charset=utf-8\r\n";
+
+	$strDir=dirname($_SERVER['PHP_SELF']);
+	$message = "<html>
+	<head>
+	<title>Yêu cầu thất bại</title>
+	</head>
+	<body>
+	Đây là email tự động gửi từ ban quản trị của $strWebsiteName.<br/>
+	Chúng tôi không tìm được một trong những bài báo theo yêu cầu của bạn tại $strWebsiteName .<br />
+	Xin hãy đăng nhập vào trang web <a href=\"".'http://'.$_SERVER['SERVER_NAME'].$strDir."\">$strWebsiteName </a> để biết thêm chi tiết.
+	</body>
+	</html>";
+	if (mail($emlTo, $Subject, $message, $Headers))
+	{
+		echo" Send email to ".$arrSupplierData['username'].": DONE.<br>\n";
+	}
+	else
+	{
+		echo (" Send email to ".$arrSupplierData['username'].": FAILED.<br>\n");
+	}
+
 	///////////	 Return to User's page
-	echo '<script language="javascript"> window.location="account.php?type=request";</script>';}
+	/* echo '<script language="javascript"> window.location="account.php?type=request";</script>';*/
+}
 else
 {
 	echo 'Chả hiểu là phải làm gì! Đang quay lại trang chủ...';
