@@ -16,8 +16,9 @@
 <file name="config.php" server="C:/WebServer/htdocs/mySite/" local="128234733214377232" remote="128234733210000000" />
 <file name="help.php" server="C:/Program Files/Apache 2.2/htdocs/mySite" local="128241865731783744" remote="128241865730000000" />
 <file name="chk_login.inc" server="C:/Program Files/Apache 2.2/htdocs/mySite" local="128209228126718750" remote="128209228120000000" />
-<file name="config.php" server="C:/Program Files/Apache 2.2/htdocs/mySite" local="128256035989678096" remote="128256035980000000" />
+<file name="config.php" server="C:/Program Files/Apache 2.2/htdocs/mySite" local="128258168641831104" remote="128258168640000000" />
 <file name="dbconnect.php" server="C:/Program Files/Apache 2.2/htdocs/mySite" local="128209228196718750" remote="128209228190000000" />
 <file name="dbclose.php" server="C:/Program Files/Apache 2.2/htdocs/mySite" local="128209228206875000" remote="128209228200000000" />
 <file name="handle_request.php" server="C:/Program Files/Apache 2.2/htdocs/mySite" local="128258161494954400" remote="128258161490000000" />
+<file name="forgotpassword.php" server="C:/Program Files/Apache 2.2/htdocs/mySite" local="128260345942061968" remote="128260345940000000" />
 </dwsync>
