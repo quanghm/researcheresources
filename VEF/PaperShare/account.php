@@ -465,6 +465,7 @@ if ((logged_in())&& (!isset($strConn)))
 			if (isset($_SESSION['ErrMes'])&&($_SESSION['ErrMes']!==""))
 			{
 				echo "<center><span class=\"error\">".$_SESSION['ErrMes']."</span></center>";
+				$_SESSION['ErrMes']="";
 			}
 			echo '<table width="100%" cellspace="0">
 			  <tr>
