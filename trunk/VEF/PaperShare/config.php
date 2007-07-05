@@ -41,9 +41,9 @@ $strTableAdmin = 'tbl_update';
 	///// Array of Field List //////
 
 	$arrFieldList[]='Mathematics';
-
-	$arrFiedlList[]='Physics';
-
+	
+	$arrFieldList[]='Physics';
+		
 	$arrFieldList[]='Chemistry';
 
 	$arrFieldList[]='Biology';

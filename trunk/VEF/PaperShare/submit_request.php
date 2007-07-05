@@ -37,7 +37,7 @@ if (logged_in())
 		}
 		////////	Add request to database //////////
 		$today = date("Y-m-d");
-		$strMysqlQuery = "INSERT INTO $strTableRequestName (title, author, journal, download_link, issue, year, field, date_request, requester,supplier,previous_suppliers,stored_link) VALUES ('".$_POST['txtTitle']."', '".$_POST['txtAuthor']."', '".$_POST['txtJournal']."', '".$_POST['txtLink']."', '".$_POST['txtIssue']."', '".$_POST['txtYear']."', '".$_POST['optField']."', '".$today."', '".$_SESSION['username']."', '".$row['username']."','','')";
+		$strMysqlQuery = "INSERT INTO $strTableRequestName (title, author, journal, download_link, issue, year, pages, field, date_request, requester,supplier,previous_suppliers,stored_link) VALUES ('".$_POST['txtTitle']."', '".$_POST['txtAuthor']."', '".$_POST['txtJournal']."', '".$_POST['txtLink']."', '".$_POST['txtIssue']."', '".$_POST['txtYear']."', '".$_POST['txtPages']."', '".$_POST['optField']."', '".$today."', '".$_SESSION['username']."', '".$row['username']."','','')";
 
 		 $result = mysql_query($strMysqlQuery) or die(mysql_error());
 		
@@ -55,10 +55,7 @@ if (logged_in())
 		$strMysqlQuery = "UPDATE $strTableUserName SET request_number = ".$arrUserData['request_number']++." WHERE (username = '".$arrUserData['username']."')";
 		//echo $strMysqlQuery;
 		mysql_query($strMysqlQuery) or die(mysql_error());
-		
-		
-		
-		
+	
 		///////////////////////////////////////////////
 		echo "<center>Yêu cầu đã được gửi! Đang quay lại trang thông tin cá nhân...</center><br>";
 		/////////// Close connection ///////////

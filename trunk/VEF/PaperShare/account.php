@@ -319,6 +319,10 @@ if ((logged_in())&& (!isset($strConn)))
 			  </td>
 			</tr>
 			<tr>
+			  <td><div align="left">Số trang </div></td>
+			  <td><input name="txtPages" type="text" size="15" /></td>
+			</tr>
+			<tr>
 			  <td><div align="left">Chuyên ngành </div></td>
 			  <td><select name="optField">
 			  <option selected="selected" value="0">Choose a Field of Study...</option>'."\n";
