@@ -37,7 +37,7 @@ else
 	{
 		$today = date("Y-m-d");
 		$encoded_password = crypt($_POST['frmPassword']);
-		$strInsertQuery = "INSERT INTO $strTableUserName (username, password, email, field, supplier,join_date) VALUES ('".$_POST[frmUsername]."', '".$encoded_password."', '".$_POST['frmEmail']."', '".$_POST['frmField']."','".$_POST['frmSupplier']."	','$today')";
+		$strInsertQuery = "INSERT INTO $strTableUserName (username, password, email, field, supplier,join_date) VALUES ('".$_POST[frmUsername]."', '".$encoded_password."', '".$_POST['frmEmail']."', '".$_POST['frmField']."','".$_POST['frmSupplier']."','$today')";
 		mysql_query($strInsertQuery) or die(mysql_error());
 		echo "Chào mừng ";
 		echo $_SESSION["username"] = $_POST["frmUsername"];
