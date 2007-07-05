@@ -106,10 +106,10 @@ function DataVerify()
    		//echo htmlspecialchars($line) . "<br />\n";
 		$strTermOfUse .= htmlspecialchars($line);
 	}
-	if (isset($_SESSION["messError"]))
+	if (isset($_SESSION['ErrMes']))
 	{	
-		echo $_SESSION["messError"];
-		$_SESSION["messError"] ='';
+		echo $_SESSION['ErrMes'];
+		$_SESSION['ErrMes'] ='';
 	}
 	?>
     </div>

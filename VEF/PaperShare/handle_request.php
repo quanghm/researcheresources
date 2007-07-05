@@ -1,10 +1,16 @@
 <?php
 include "chk_login.inc";
+
 ?>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <?php
+if (!(logged_in()))
+{
+echo "<center>Bạn chưa đăng nhập! Đang quay trở lại trang chủ...</center>";
+die('<meta http-equiv="refresh" content="3;url=index.php">');
+}
 include "config.php";
 include "dbconnect.php";
 
@@ -12,17 +18,11 @@ include "dbconnect.php";
 	$strMysqlQuery = "SELECT * FROM $strTableRequestName WHERE id=".$_POST['frmHandlingRequestID'];
 	$result = mysql_query($strMysqlQuery) or die(mysql_error());
 	$arrRequestData=mysql_fetch_array($result);
-	echo $arrRequestData['id'];
+
 	/////	Get Requester's detail
 	$strMysqlQuery = "SELECT * FROM $strTableUserName WHERE (username = '".$arrRequestData['supplier']."')";
 	$result = mysql_query($strMysqlQuery) or die(mysql_error());
 	$arrRequesterData = mysql_fetch_array($result);
-
-if (!(logged_in()))
-{
-echo "<center>Bạn chưa đăng nhập! Đang quay trở lại trang chủ...</center>";
-die('<meta http-equiv="refresh" content="3;url=index.php">');
-}
 
 if (!isset($_GET['action']))
 {
@@ -45,9 +45,11 @@ elseif ($_GET['action']=='passing')
 {	
 	///////// Increase user's number of requests
 	//$strMysqlQuery = "UPDATE $strTableUserName SET request_number = request_number + 1  WHERE (username = '".$_SESSION['username']."')";
+
 	///////// Decrease request_pending_number
 	$strMysqlQuery = "UPDATE $strTableUserName SET request_pending_number = request_pending_number - 1  WHERE (username = '".$_SESSION['username']."')";
 	mysql_query($strMysqlQuery);
+
 	///////// Assign a new supplier ////////////
 		$strPassSupplier ='';
 		////////	Get the previous supplier and put to array $arrPreviousSuppliers
@@ -56,8 +58,8 @@ elseif ($_GET['action']=='passing')
 		///////		Get list of available suppliers in same field
 		if ((isset($_POST['frmSupplier']))&&($_POST['frmSupplier']!==""))	////	New supplier indicated
 		{
-			////	Test the availability oì the chosen supplier
-			if ($_POST['frmSupplier'] == $arrRequestData['requester'])
+			////	Test the availability of the chosen supplier
+			if ($_POST['frmSupplier'] == $arrRequestData['requester']) //	New supplier coincides with the requester
 			{
 				$_SESSION['ErrMes']="Người cung cấp bạn chọn là người đề nghị bài báo. Xin hãy chọn người cung cấp khác.";
 				echo '<form name="frm1" method="POST" action="account.php?type=handle_request">
@@ -65,9 +67,9 @@ elseif ($_GET['action']=='passing')
 									</form>';
 				die("<script language=\"javascript\"> document.frm1.submit();</script>");
 			}
-			for ($i=0; $i<$arrRequestData['status']; $i++)
+			for ($i=0; $i<=$arrRequestData['status']; $i++)	//	The indicated supplier is one of the previous suppliers for the request.
 			{
-				if ($_POST['frmSupplier']==$arrPreviousSuppliers)
+				if ($_POST['frmSupplier']==$arrPreviousSuppliers[$i])
 				{
 					$_SESSION['ErrMes'] = "Người cung cấp bạn chọn đã không tìm được bài báo này. Xin hãy chọn người cung cấp khác.";
 					echo('<form name="frm1" method="POST" action="account.php?type=handle_request">
@@ -76,8 +78,8 @@ elseif ($_GET['action']=='passing')
 					die("<script language=\"javascript\"> document.frm1.submit();</script>");
 				}
 			}
+
 			$strMysqlQuery = "SELECT * FROM $strTableUserName WHERE username='".$_POST['frmSupplier']."'";
-			//echo $strMysqlQuery;
 			$result = mysql_query($strMysqlQuery) or die(mysql_error());
 			$arrSupplierData = mysql_fetch_array($result);
 			
@@ -89,7 +91,7 @@ elseif ($_GET['action']=='passing')
 										</form>');
 				die("<script language=\"javascript\"> document.frm1.submit();</script>");
 			}
-			$strMysqlQuery = "SELECT * FROM $strTableUserName WHERE username='".$_POST['frmSupplier']."'";
+//			$strMysqlQuery = "SELECT * FROM $strTableUserName WHERE username='".$_POST['frmSupplier']."'";
 		}
 		else	//// No new supplier indicated
 		{
@@ -131,11 +133,11 @@ elseif ($_GET['action']=='passing')
 			</html>";
 			if (mail($emlTo, $Subject, $message, $Headers))
 			{
-				echo" Send email to ".$arrSupplierData['username'].": DONE.<br>\n";
+				echo "<center> Send email to ".$arrSupplierData['username'].": DONE.</center>\n";
 			}
 			else
 			{
-				echo (" Send email to ".$arrSupplierData['username'].": FAILED.<br>\n");
+				echo ("<center>Send email to ".$arrSupplierData['username'].": FAILED.</center>\n");
 			}
 
 			echo "<center>Đang quay lại trang thông tin cá nhân...</center>";
@@ -145,6 +147,7 @@ elseif ($_GET['action']=='passing')
 		$strPreviousSuppliers = $arrRequestData['previous_suppliers'].'arrPreviousSuppliers[]='.$_SESSION['username'].'&';
 		$strMysqlQuery = "UPDATE $strTableRequestName SET previous_suppliers = '".$strPreviousSuppliers."', status = status + 1, supplier = '".$arrSupplierData['username']."' WHERE id = ".$arrRequestData['id'];
 		mysql_query($strMysqlQuery) or die(mysql_error());
+	
 		/////// update new supplier's request pending number
 		$strMysqlQuery = "UPDATE $strTableUserName SET request_pending_number = request_pending_number +1 WHERE username = '".$arrSupplierData['username']."'";
 		mysql_query($strMysqlQuery) or die(mysql_error());
@@ -159,7 +162,7 @@ elseif ($_GET['action']=='passing')
 		$strDir=dirname($_SERVER['PHP_SELF']);
 		$message = "<html>
 		<head>
-		<title>Yêu cầu thất bại</title>
+		<title>Yêu cầu được chuyển</title>
 		</head>
 		<body>
 		Đây là email tự động gửi từ ban quản trị của $strWebsiteName.<br/>
@@ -188,11 +191,12 @@ elseif ($_GET['action']=='failing')
 	
 	///////// Decrease request_pending_number
 	$strMysqlQuery = "UPDATE $strTableUserName SET request_pending_number = request_pending_number - 1  WHERE (username = '".$_SESSION['username']."')";
-
+	mysql_query($strMysqlQuery) or die(mysql_error());
+	
 	///////////  Inform requester about failure of request
 		///////  Get requester's email
 	$emlTo = $arrRequesterData['email'];
-	$strSubject	= "khong tim duoc bai bao cua ban";
+	$strSubject	= "Khong tim duoc bai bao cua ban";
 	$Headers = "From: ".$strAdminEmail."\r\n";
 	$Headers .= "MIME-Version: 1.0\r\n"; 
 	$Headers .= "content-type: text/html; charset=utf-8\r\n";
@@ -218,7 +222,7 @@ elseif ($_GET['action']=='failing')
 	}
 
 	///////////	 Return to User's page
-	/* echo '<script language="javascript"> window.location="account.php?type=request";</script>';*/
+	echo '<script language="javascript"> window.location="account.php?type=request";</script>';
 }
 else
 {

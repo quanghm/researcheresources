@@ -20,7 +20,7 @@ else
 	include("dbconnect.php");
 	
 	$strMysqlQuery = "SELECT * FROM $strTableUserName WHERE (username = '".$_POST['frmUsername']."') OR (email ='".$_POST['frmEmail']."') ";
-	echo $strMysqlQuery."<br>";
+	//echo $strMysqlQuery."<br>";
 	$result = mysql_query($strMysqlQuery) or die(mysql_error());
 	
 	////////////////////////////////////////////////////
@@ -30,7 +30,7 @@ else
 	
 	if (!($row === false))
 	{
-		$_SESSION["messError"] = "<center> Bí danh hoặc email đã được sử dụng. Nếu bạn quên mật khẩu xin nhấn vào <a href=\"forgotpassword.php\"> đây</a>.</center>\n";
+		$_SESSION['ErrMes'] = "<center> Bí danh hoặc email đã được sử dụng. Nếu bạn quên mật khẩu xin nhấn vào <a href=\"forgotpassword.php\"> đây</a>.</center>\n";
 		echo('<script language="javascript"> window.location='."'register.php'".';</script>');
 	}
 	else
@@ -49,6 +49,5 @@ else
 }
 
 ?>
-
 </body>
 </html>
