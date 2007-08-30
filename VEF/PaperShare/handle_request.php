@@ -18,7 +18,11 @@ include "dbconnect.php";
 	$strMysqlQuery = "SELECT * FROM $strTableRequestName WHERE id=".$_POST['frmHandlingRequestID'];
 	$result = mysql_query($strMysqlQuery) or die(mysql_error());
 	$arrRequestData=mysql_fetch_array($result);
+<<<<<<< .mine
+	/////   echo $arrRequestData['id'];
+=======
 
+>>>>>>> .r45
 	/////	Get Requester's detail
 	$strMysqlQuery = "SELECT * FROM $strTableUserName WHERE (username = '".$arrRequestData['supplier']."')";
 	$result = mysql_query($strMysqlQuery) or die(mysql_error());
@@ -58,8 +62,13 @@ elseif ($_GET['action']=='passing')
 		///////		Get list of available suppliers in same field
 		if ((isset($_POST['frmSupplier']))&&($_POST['frmSupplier']!==""))	////	New supplier indicated
 		{
+<<<<<<< .mine
+			////	Test the availability oì the chosen supplier
+			if ($_POST['frmSupplier'] == $arrRequestData['requester']) //	New supplier coincides with the requester
+=======
 			////	Test the availability of the chosen supplier
 			if ($_POST['frmSupplier'] == $arrRequestData['requester']) //	New supplier coincides with the requester
+>>>>>>> .r45
 			{
 				$_SESSION['ErrMes']="Người cung cấp bạn chọn là người đề nghị bài báo. Xin hãy chọn người cung cấp khác.";
 				echo '<form name="frm1" method="POST" action="account.php?type=handle_request">
