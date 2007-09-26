@@ -18,27 +18,20 @@ $strTableRequestName = 'tbl_request';
 $strTableAdmin = 'tbl_update';
 
 ////// Config site's options////////
-
-	$store_article_on_server = false;
-
-	$archive_request = true;
 	
 	$strWebsiteName="Article Resource";
 
-	$strAdminEmail="admin@articleresource.vn";
-	////////////////////////////////
-
-	
-
+	$strAdminEmail="admin@localhost";
 	////////////////////////////////
 
 	define("constMinLength", 6);
-
 	define("constMaxLength", 15);
+		//////// Allowed Characters in usernames
+	$AllowedChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789âăáấắạậặãẫẵàầằảẩẳôơóốớọộợõỗỡòồờỏổởêéếèềẹệẽễẻểíìỉĩịưúửùừủửũữụựýỳỷỹỵÂĂÁẤẮẠẬẶÃẪẴÀẦẰẢẨẲÔƠÓỐỚỌỘỢÕỖỠÒỒỜỎỔỞÊÉẾÈỀẸỆẼỄẺỂÍÌỈĨỊƯÚỬÙỪỦỬŨỮỤỰÝỲỶỸỴ_ ";
 
 	
 
-	///// Array of Field List //////
+	///// Array of Fields //////
 
 	$arrFieldList[]='Mathematics';
 	
@@ -86,16 +79,14 @@ $strTableAdmin = 'tbl_update';
 
 	////////////////////////////////
 
-	
+	$store_article_on_server = false;
+
+	$archive_request = true;
 
 	$suppliers_per_request = 1;
 
-	
-
 	///////////////////////////
 
-	
-
-	$cross_field_request = 0;
+	$cross_field_request = false;
 
 ?>

@@ -17,12 +17,8 @@ include "dbconnect.php";
 	/////////	Get Request's detail
 	$strMysqlQuery = "SELECT * FROM $strTableRequestName WHERE id=".$_POST['frmHandlingRequestID'];
 	$result = mysql_query($strMysqlQuery) or die(mysql_error());
-	$arrRequestData=mysql_fetch_array($result);
-<<<<<<< .mine
-	/////   echo $arrRequestData['id'];
-=======
+	$arrRequestData=mysql_fetch_array($result) or die(mysql_error());
 
->>>>>>> .r45
 	/////	Get Requester's detail
 	$strMysqlQuery = "SELECT * FROM $strTableUserName WHERE (username = '".$arrRequestData['supplier']."')";
 	$result = mysql_query($strMysqlQuery) or die(mysql_error());
@@ -32,7 +28,7 @@ if (!isset($_GET['action']))
 {
 	$_GET['action']="";
 }
-if ($_GET['action']=='finishing')
+if ($_GET['action']=='finishing')	//	Successfully found paper and send
 {
 	/////////// increase number of requests handled AND decrease number of requests pending
 	$strMysqlQuery = "UPDATE $strTableUserName SET request_handle_number = request_handle_number + 1, request_pending_number = request_pending_number - 1  WHERE (username = '".$_SESSION['username']."')";
@@ -45,30 +41,21 @@ if ($_GET['action']=='finishing')
 	///////////	 Return to User's page
 	echo '<script language="javascript"> window.location="account.php?type=request";</script>';
 }
-elseif ($_GET['action']=='passing')
+elseif ($_GET['action']=='passing')	//	pass paper to another user
 {	
 	///////// Increase user's number of requests
 	//$strMysqlQuery = "UPDATE $strTableUserName SET request_number = request_number + 1  WHERE (username = '".$_SESSION['username']."')";
-
-	///////// Decrease request_pending_number
-	$strMysqlQuery = "UPDATE $strTableUserName SET request_pending_number = request_pending_number - 1  WHERE (username = '".$_SESSION['username']."')";
-	mysql_query($strMysqlQuery);
 
 	///////// Assign a new supplier ////////////
 		$strPassSupplier ='';
 		////////	Get the previous supplier and put to array $arrPreviousSuppliers
 		parse_str($arrRequestData['previous_suppliers']);
 		
-		///////		Get list of available suppliers in same field
+		///////		Get list of available suppliers
 		if ((isset($_POST['frmSupplier']))&&($_POST['frmSupplier']!==""))	////	New supplier indicated
 		{
-<<<<<<< .mine
-			////	Test the availability oì the chosen supplier
-			if ($_POST['frmSupplier'] == $arrRequestData['requester']) //	New supplier coincides with the requester
-=======
 			////	Test the availability of the chosen supplier
 			if ($_POST['frmSupplier'] == $arrRequestData['requester']) //	New supplier coincides with the requester
->>>>>>> .r45
 			{
 				$_SESSION['ErrMes']="Người cung cấp bạn chọn là người đề nghị bài báo. Xin hãy chọn người cung cấp khác.";
 				echo '<form name="frm1" method="POST" action="account.php?type=handle_request">
@@ -104,16 +91,25 @@ elseif ($_GET['action']=='passing')
 		}
 		else	//// No new supplier indicated
 		{
-			$strMysqlQuery = "SELECT * FROM $strTableUserName WHERE (field = '".$arrRequestData['field']."') AND (supplier = 1) AND (username != '".$arrRequestData['requester']."') AND (username != '".$_SESSION['username']."') ";
+			$strMysqlQuery = "SELECT * FROM $strTableUserName WHERE ";
+			if ($cross_field_request==false)
+			{
+				$strMysqlQuery.="(field = '".$arrRequestData['field']."') AND ";
+			}
+			$strMysqlQuery .= "(supplier = 1) AND (username != '".$arrRequestData['requester']."') AND (username != '".$_SESSION['username']."') ";
 			
 			for ($i=0; $i<$arrRequestData['status']; $i++)
 			{
 				$strMysqlQuery .= "AND (username !='".$arrPreviousSuppliers[$i]."') ";
 			}
 			$strMysqlQuery .= "ORDER BY request_pending_number ASC, request_handle_number ASC";
+			$result = mysql_query($strMysqlQuery) or die(mysql_error());
+			$arrSupplierData = mysql_fetch_array($result);					
 		}
-		$result = mysql_query($strMysqlQuery) or die(mysql_error());
-		$arrSupplierData = mysql_fetch_array($result);
+		
+		// Decrease the number of pending request for current supplier
+		$strMysqlQuery="UPDATE $strTableUserName SET (request_pending_number = request_pending_number -1) WHERE (username=".$_SESSION['username'].")";
+		mysql_query($strMysqlQuery) or die(mysql_error());
 		
 		if ($arrSupplierData === false)			//No supplier found
 		{
@@ -122,7 +118,7 @@ elseif ($_GET['action']=='passing')
 			$strMysqlQuery = "UPDATE $strTableRequestName SET status = -2 WHERE id=".$_POST['frmHandlingRequestID'];
 			mysql_query($strMysqlQuery) or die(mysql_error());	
 			
-			/////	email requesters
+			/////	inform requesters about failure
 			$emlTo = $arrRequesterData['email'];
 			$strSubject	= "Khong tim duoc bai bao cua ban";
 			$Headers = "From: ".$strAdminEmail."\r\n";
