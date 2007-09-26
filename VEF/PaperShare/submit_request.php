@@ -10,7 +10,7 @@ if (logged_in())
 		if (ChkData())
 		{
 			$_SESSION['ErrMess'] = "!!!Yêu cầu chưa được gửi!!!";
-			echo "<script language=\"javascript\"> history.back()</script>";
+			die("<script language=\"javascript\"> history.back()</script>");
 		}
 		else
 		{
@@ -18,23 +18,21 @@ if (logged_in())
 		include "config.php";
 		include 'dbconnect.php';
 		//////////////////////////////////////////
-		
 		///////// 	assign a supplier       //////
-		$strMysqlQuery = "SELECT * FROM $strTableUserName WHERE (field ='".$_POST['optField']."') AND (supplier = 1) AND (username != '".$_SESSION['username']."') ORDER BY request_pending_number ASC, request_handle_number ASC";
-//		echo $strMysqlQuery;
-		$result = mysql_query($strMysqlQuery) or die(mysql_error());
-		$row = mysql_fetch_array($result);
+		$strMysqlQuery = "SELECT * FROM $strTableUserName WHERE ";
+		if ($cross_field_request==false)
+		{
+			$strMysqlQuery.="(field ='".$_POST['optField']."') AND ";
+		}
+		$strMysqlQuery.="(supplier = 1) AND (username != '".$_SESSION['username']."') ORDER BY request_pending_number ASC, request_handle_number ASC";
+		$result = mysql_query($strMysqlQuery);
+		$row = mysql_fetch_array($result);		
 		if ($row===false)
 		{
-			$strMysqlQuery = "SELECT * FROM $strTableUserName WHERE (supplier = 1) AND (username != '".$_SESSION['username']."') ORDER BY request_pending_number ASC, request_handle_number ASC";
-			$result = mysql_query($strMysqlQuery);
-			$row = mysql_fetch_array($result);
-			if ($row===false)
-			{
-				$_SESSION['ErrMess'] = "Hiện chưa có suppliers nào! Yêu cầu của bạn chưa được gửi!";
-				die('<script language="javascript">history.back()</script>');
-			}
+			$_SESSION['ErrMess'] = "Hiện chưa có suppliers nào! Yêu cầu của bạn chưa được gửi!";
+			die('<script language="javascript">history.back()</script>');
 		}
+		
 		////////	Add request to database //////////
 		$today = date("Y-m-d");
 		$strMysqlQuery = "INSERT INTO $strTableRequestName (title, author, journal, download_link, issue, year, pages, field, date_request, requester,supplier,previous_suppliers,stored_link) VALUES ('".$_POST['txtTitle']."', '".$_POST['txtAuthor']."', '".$_POST['txtJournal']."', '".$_POST['txtLink']."', '".$_POST['txtIssue']."', '".$_POST['txtYear']."', '".$_POST['txtPages']."', '".$_POST['optField']."', '".$today."', '".$_SESSION['username']."', '".$row['username']."','','')";

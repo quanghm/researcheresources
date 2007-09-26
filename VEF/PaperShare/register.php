@@ -18,14 +18,19 @@ function DataVerify()
 	MinLength = <?php echo constMinLength;?>;
 	MaxLength = <?php echo constMaxLength;?>;
 	//////// check username ///////////////
-	if (frmRegistration.frmUsername.value == "")
+	if (frmRegistration.frmUsername.value.length < Minlength)
 	{
-		alert("Bạn phải nhập bí danh!");
+		alert("Bí danh quá ngắn!");
 		frmRegistration.frmUsername.focus();
 		return false;
 	}
-	
-	///////////////////////////////////////
+/*	if (frmRegistration.frmUsername.value.length > MaxLength)
+	{
+		alert("Bí danh quá dài!");
+		frmRegistration.frmUsername.focus();
+		return false;
+	}
+	*///////////////////////////////////////
 	
 	///////// check password /////////////
 	if (frmRegistration.frmPassword.value.length < MinLength)
