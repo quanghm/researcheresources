@@ -10,7 +10,7 @@ if (logged_in())
 		}	
 		if (ChkData())
 		{
-			$_SESSION['ErrMess'] = "Yêu cầu chưa được gửi.";
+			$_SESSION['ErrMes'] = "Yêu cầu chưa được gửi.";
 			echo "<script language=\"javascript\"> history.back()</script>";
 		}
 		else
@@ -49,13 +49,13 @@ if (logged_in())
 		echo "<center>Yêu cầu đã được gửi! Quay lại trang thông tin cá nhân</center><br>";
 		/////////// Close connection ///////////
 		include "dbclose.php";
-		$_SESSION['ErrMess'] = "";
+		$_SESSION['ErrMes'] = "";
 		echo '<script language="javascript">window.location="account.php?type=view";</script>';
 		}
 }
 else 						///// Not logged in ///////
 {
-	$_SESSION["ErrMess"] = "Bạn cần phải đăng nhập trước khi gửi yêu cầu!";
+	$_SESSION["ErrMes"] = "Bạn cần phải đăng nhập trước khi gửi yêu cầu!";
 	
 	echo '<script language="javascript"> window.location = "index.php";	</script>';
 }

@@ -58,7 +58,7 @@ else
 		//	Check Password's validity
 	for ($index=0; $index<$CurrentLength;$index++)
 	{
-		if (($_POST['frmPassword'][$index]=" ") or (!strstr($AllowedChars,$_POST['frmPassword'][$index])) )
+		if (($_POST['frmPassword'][$index]==" ") or (!strstr($AllowedChars,$_POST['frmPassword'][$index])) )
 		{
 			$_SESSION['ErrMes']="Mật khẩu chứa ký tự không cho phép";
 			die('<script language="javascript">history.back()</script>');						

@@ -38,7 +38,7 @@
 <?php
 if (!logged_in())
 {
-	$_SESSION['ErrMess']="Bạn chưa đăng nhập!";
+	$_SESSION['ErrMes']="Bạn chưa đăng nhập!";
 	echo '<script language="javascript" > setTimeout("window.location=\'index.php\'",3000);</script>';
 }
 else	//start admin 

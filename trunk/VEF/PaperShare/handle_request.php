@@ -5,6 +5,8 @@ include "chk_login.inc";
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+<body>
 <?php
 if (!(logged_in()))
 {
@@ -106,11 +108,7 @@ elseif ($_GET['action']=='passing')	//	pass paper to another user
 			$result = mysql_query($strMysqlQuery) or die(mysql_error());
 			$arrSupplierData = mysql_fetch_array($result);					
 		}
-		
-		// Decrease the number of pending request for current supplier
-		$strMysqlQuery="UPDATE $strTableUserName SET (request_pending_number = request_pending_number -1) WHERE (username=".$_SESSION['username'].")";
-		mysql_query($strMysqlQuery) or die(mysql_error());
-		
+				
 		if ($arrSupplierData === false)			//No supplier found
 		{
 			echo "<center>Chuyển yêu cầu không thành công. Không tìm được người cung cấp.</center>";
@@ -155,6 +153,12 @@ elseif ($_GET['action']=='passing')	//	pass paper to another user
 	
 		/////// update new supplier's request pending number
 		$strMysqlQuery = "UPDATE $strTableUserName SET request_pending_number = request_pending_number +1 WHERE username = '".$arrSupplierData['username']."'";
+		echo $strMysqlQuery;
+		mysql_query($strMysqlQuery) or die(mysql_error());
+		
+		// Decrease the number of pending request for current supplier
+		$strMysqlQuery="UPDATE $strTableUserName SET request_pending_number = request_pending_number -1 WHERE (username='".$_SESSION['username']."')";
+		echo $strMysqlQuery;
 		mysql_query($strMysqlQuery) or die(mysql_error());
 		
 		/////	Email Requester about delay
@@ -235,7 +239,6 @@ else
 	echo '<meta http-equiv="refresh" content="3;url=index.php">';
 }
 include "dbclose.php";
-?></head>
-<body>
+?>
 </body>
 </html>

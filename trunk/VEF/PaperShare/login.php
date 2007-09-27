@@ -49,7 +49,7 @@ elseif ($_GET["action"] == "login")
 	/////////// Determine if user exists  //////////////
 	if (mysql_num_rows($result)!==1)
 	{
-		$_SESSION["ErrMess"] = $strErrMessage;
+		$_SESSION["ErrMes"] = $strErrMessage;
 		echo "<script language=\"javascript\">";
 		echo "history.back();";
 		echo "</script>";
@@ -69,7 +69,7 @@ elseif ($_GET["action"] == "login")
 		}
 		else
 		{
-			$_SESSION["ErrMess"] = $strErrMessage;
+			$_SESSION["ErrMes"] = $strErrMessage;
 			echo "<script language=\"javascript\">";
 			echo "history.back();";
 			echo "</script>";
@@ -83,10 +83,10 @@ else
 {
 	include "login_form.inc";
 	/*
-	if ($_SESSION["ErrMess"]!=="")
+	if ($_SESSION["ErrMes"]!=="")
 	{
-		echo $_SESSION["ErrMess"];
-		$_SESSION["ErrMess"]="";
+		echo $_SESSION["ErrMes"];
+		$_SESSION["ErrMes"]="";
 	}
 	echo "<form method=\"POST\" action=\"login.php?action=login\">";
 	echo "<table width=\"300\">\n";

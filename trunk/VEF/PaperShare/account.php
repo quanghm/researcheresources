@@ -273,12 +273,12 @@ if ((logged_in())&& (!isset($strConn)))
 		</script>';				///// javascript function to deal with request data
 			echo "<center> Yêu cầu bài báo<br>\n";
 			echo "Bạn cần điền vào <strong>tất cả</strong> các thông tin "."<a onclick=\"javascript:window.open('help.php','wnd_help','height=600,width=500')\"><img height=\"20\" src=\"Theme/Default/Images/questionmark.jpg\"></a>\n";
-			if (isset($_SESSION['ErrMess']))
+			if (isset($_SESSION['ErrMes']))
 			{
-				if ($_SESSION['ErrMess']==!"")
+				if ($_SESSION['ErrMes']==!"")
 				{
-					echo "<br><strong><font color=\"#FF0000\">".$_SESSION['ErrMess']."</font></strong>";
-					$_SESSION['ErrMess']="";
+					echo "<br><strong><font color=\"#FF0000\">".$_SESSION['ErrMes']."</font></strong>";
+					$_SESSION['ErrMes']="";
 				}
 			}
 			echo "</center>\n";
@@ -387,7 +387,7 @@ if ((logged_in())&& (!isset($strConn)))
 	
 			echo "<center>Thông tin cá nhân";
 			echo"</center>";	
-			if ($_SESSION['ErrMess']!=='') { echo '<center> <font color="#FF0000">'.$_SESSION['ErrMess']."</font></center>";$_SESSION['ErrMess']='';}
+			if ($_SESSION['ErrMes']!=='') { echo '<center> <font color="#FF0000">'.$_SESSION['ErrMes']."</font></center>";$_SESSION['ErrMes']='';}
 			echo '<form id="frmChangeInfo" method="POST" onSubmit="return DataVerify()" action="change_info.php" name="frmChangeInfo">
 			<table align="center" width="100%" border="0">
 			  <tr>
