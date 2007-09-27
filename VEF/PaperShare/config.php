@@ -87,6 +87,6 @@ $strTableAdmin = 'tbl_update';
 
 	///////////////////////////
 
-	$cross_field_request = false;
+	$cross_field_request = true;
 
 ?>

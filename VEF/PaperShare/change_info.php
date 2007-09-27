@@ -15,7 +15,7 @@ if (logged_in())
 	$result = mysql_query($strMysqlQuery);
 	if (mysql_num_rows($result)!==0)
 	{
-		$_SESSION["ErrMess"]="Email đã được người khác chọn!";
+		$_SESSION["ErrMes"]="Email đã được người khác chọn!";
 	echo '<script language="javascript"> window.location=\'account.php?type=change\';</script>';
 	}
 	$strMysqlQuery = "UPDATE $strTableUserName SET supplier='".$_POST['frmNewSupplier']."', email='".$_POST['frmNewEmail']."', field='".$_POST['frmNewField']."'";

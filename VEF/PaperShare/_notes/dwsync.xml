@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <dwsync>
-<file name="index.php" server="c:/Program Files/Apache/htdocs/" local="128209228187500000" remote="128209228180000000" />
-<file name="chk_login.inc" server="c:/Program Files/Apache/htdocs/" local="128209228126718750" remote="128209228120000000" />
-<file name="config.php" server="c:/Program Files/Apache/htdocs/" local="128230090114055824" remote="128230090110000000" />
-<file name="dbconnect.php" server="c:/Program Files/Apache/htdocs/" local="128209228196718750" remote="128209228190000000" />
-<file name="dbclose.php" server="c:/Program Files/Apache/htdocs/" local="128209228206875000" remote="128209228200000000" />
-<file name="login_form.inc" server="c:/Program Files/Apache/htdocs/" local="128209228131093750" remote="128209228130000000" />
-<file name="admin.php" server="c:/Program Files/Apache/htdocs/" local="128227392709184032" remote="128227392700000000" />
-<file name="chk_login.inc" server="C:/WebServer/htdocs/mySite/" local="128209228126718750" remote="128209228120000000" />
-<file name="dbconnect.php" server="C:/WebServer/htdocs/mySite/" local="128209228196718750" remote="128209228190000000" />
-<file name="dbclose.php" server="C:/WebServer/htdocs/mySite/" local="128209228206875000" remote="128209228200000000" />
-<file name="login_form.inc" server="C:/WebServer/htdocs/mySite/" local="128209228131093750" remote="128209228130000000" />
-<file name="account.php" server="C:/WebServer/htdocs/mySite/" local="128234759410000000" remote="128234759410000000" />
-<file name="submit_request.php" server="C:/WebServer/htdocs/mySite/" local="128209228105468750" remote="128209228100000000" />
-<file name="config.php" server="C:/WebServer/htdocs/mySite/" local="128234733214377232" remote="128234733210000000" />
-<file name="help.php" server="C:/Program Files/Apache 2.2/htdocs/mySite" local="128241865731783744" remote="128241865730000000" />
-<file name="chk_login.inc" server="C:/Program Files/Apache 2.2/htdocs/mySite" local="128209228126718750" remote="128209228120000000" />
-<file name="config.php" server="C:/Program Files/Apache 2.2/htdocs/mySite" local="128258168641831104" remote="128258168640000000" />
-<file name="dbconnect.php" server="C:/Program Files/Apache 2.2/htdocs/mySite" local="128209228196718750" remote="128209228190000000" />
-<file name="dbclose.php" server="C:/Program Files/Apache 2.2/htdocs/mySite" local="128209228206875000" remote="128209228200000000" />
-<file name="handle_request.php" server="C:/Program Files/Apache 2.2/htdocs/mySite" local="128258161494954400" remote="128258161490000000" />
-<file name="forgotpassword.php" server="C:/Program Files/Apache 2.2/htdocs/mySite" local="128260345942061968" remote="128260345940000000" />
+<file name="index.php" local="128209228187500000" remote="128209228180000000" testing="0" />
+<file name="chk_login.inc" local="128209228126718750" remote="128209228120000000" testing="0" />
+<file name="config.php" local="128230090114055824" remote="128230090110000000" testing="0" />
+<file name="dbconnect.php" local="128209228196718750" remote="128209228190000000" testing="0" />
+<file name="dbclose.php" local="128209228206875000" remote="128209228200000000" testing="0" />
+<file name="login_form.inc" local="128209228131093750" remote="128209228130000000" testing="0" />
+<file name="admin.php" local="128227392709184032" remote="128227392700000000" testing="0" />
+<file name="chk_login.inc" local="128209228126718750" remote="128209228120000000" testing="0" />
+<file name="dbconnect.php" local="128209228196718750" remote="128209228190000000" testing="0" />
+<file name="dbclose.php" local="128209228206875000" remote="128209228200000000" testing="0" />
+<file name="login_form.inc" local="128209228131093750" remote="128209228130000000" testing="0" />
+<file name="account.php" local="128234759410000000" remote="128234759410000000" testing="0" />
+<file name="submit_request.php" local="128209228105468750" remote="128209228100000000" testing="0" />
+<file name="config.php" local="128234733214377232" remote="128234733210000000" testing="0" />
+<file name="help.php" local="128241865731783744" remote="128241865730000000" testing="0" />
+<file name="chk_login.inc" local="128209228126718750" remote="128209228120000000" testing="0" />
+<file name="config.php" local="128258168641831104" remote="128258168640000000" testing="0" />
+<file name="dbconnect.php" local="128209228196718750" remote="128209228190000000" testing="0" />
+<file name="dbclose.php" local="128209228206875000" remote="128209228200000000" testing="0" />
+<file name="handle_request.php" local="128258161494954400" remote="128258161490000000" testing="0" />
+<file name="forgotpassword.php" local="128260345942061968" remote="128260345940000000" testing="0" />
 </dwsync>

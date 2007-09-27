@@ -1,9 +1,9 @@
 <?php
-		if (!isset($_SESSION["ErrMess"]))	{$_SESSION["ErrMess"] = "";	}
-		if ($_SESSION["ErrMess"] !== "")
+		if (!isset($_SESSION["ErrMes"]))	{$_SESSION["ErrMes"] = "";	}
+		if ($_SESSION["ErrMes"] !== "")
 		{
-			echo "<center><span class=\"error\">".$_SESSION["ErrMess"]."</span>";
-			$_SESSION["ErrMess"] = "";
+			echo "<center><span class=\"error\">".$_SESSION["ErrMes"]."</span>";
+			$_SESSION["ErrMes"] = "";
 		}
 		echo "<form action=\"login.php?action=login\" method=\"POST\">";
 		echo "<table width=\"90%\" border=\"0\" align=\"center\">\n";
