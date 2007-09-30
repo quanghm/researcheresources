@@ -1,4 +1,4 @@
-
+﻿
 <?php
 
 /////// Config database   //////////
@@ -87,6 +87,6 @@ $strTableAdmin = 'tbl_update';
 
 	///////////////////////////
 
-	$cross_field_request = true;
+	$cross_field_request = false;
 
 ?>
