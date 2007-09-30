@@ -273,13 +273,10 @@ if ((logged_in())&& (!isset($strConn)))
 		</script>';				///// javascript function to deal with request data
 			echo "<center> Yêu cầu bài báo<br>\n";
 			echo "Bạn cần điền vào <strong>tất cả</strong> các thông tin "."<a onclick=\"javascript:window.open('help.php','wnd_help','height=600,width=500')\"><img height=\"20\" src=\"Theme/Default/Images/questionmark.jpg\"></a>\n";
-			if (isset($_SESSION['ErrMes']))
+			if (isset($_SESSION['ErrMes']) and($_SESSION['ErrMes']==!""))
 			{
-				if ($_SESSION['ErrMes']==!"")
-				{
-					echo "<br><strong><font color=\"#FF0000\">".$_SESSION['ErrMes']."</font></strong>";
-					$_SESSION['ErrMes']="";
-				}
+				echo "<br><strong><font color=\"#FF0000\">".$_SESSION['ErrMes']."</font></strong>";
+				$_SESSION['ErrMes']="";
 			}
 			echo "</center>\n";
 			echo '<form name="frmRequest" onSubmit="return ChkForm();" method="post" action="submit_request.php">
