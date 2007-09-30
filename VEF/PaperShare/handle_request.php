@@ -89,6 +89,15 @@ elseif ($_GET['action']=='passing')	//	pass paper to another user
 										</form>');
 				die("<script language=\"javascript\"> document.frm1.submit();</script>");
 			}
+			//	check new requester's field
+			if (($cross_field_request==false)and($arrSupplierData['field']!==$arrRequestDate['field']))
+			{
+				$_SESSION['ErrMes'] = "Người cung cấp bạn chọn không theo chuyên ngành của bài báo. Xin hãy chọn người cung cấp khác.";
+				echo('<form name="frm1" method="POST" action="account.php?type=handle_request">
+										<input type="hidden" name="frmRequestID" value="'.$arrRequestData['id'].'"/>
+										</form>');
+				die("<script language=\"javascript\"> document.frm1.submit();</script>");
+			}
 //			$strMysqlQuery = "SELECT * FROM $strTableUserName WHERE username='".$_POST['frmSupplier']."'";
 		}
 		else	//// No new supplier indicated

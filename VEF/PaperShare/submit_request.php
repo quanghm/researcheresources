@@ -1,27 +1,43 @@
 <?php
 include "chk_login.inc";
+?>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+<body>
+<?php
 if (logged_in())
 {
 	//function ChkData()
 	//	check link
-	$pattern = '@^(?:http://)?([^/]+)@i';
+	$pattern='/(http:\/\/)+([a-z0-9_.]).+([.a-z])+(\/)*([a-z])/';
 	if (preg_match($pattern,$_POST['txtLink'])==0)
 	{
-		$_SESSION['ErrMes']== "Đường dẫn không hợp lệ";
+		$_SESSION['ErrMes']="Đường dẫn không hợp lệ";
 		die("<script language='javascript'>history.back()</script>");
 	}
 	//	check year
 	$pattern = "/([0-9]+[0-9]/";
-	$Result &=(preg_match($pattern,$_POST['txtYear'])==0);
-	//$frmResult = (($_POST['txtTitle'] == "")||($_POST['txtAuthor']=="")||($_POST['txtJournal']=="")||($_POST['txtYear']=="")||($_POST['txtIssue'] =="")||($_POST['optField'] =="0"));
-
-	/*if (ChkData())
+	if (preg_match($pattern,$_POST['txtYear'])==0)
 	{
-		$_SESSION['ErrMes'] = "!!!Yêu cầu chưa được gửi!!!";
+		$_SESSION['ErrMes']="Năm xuất bản chỉ được chứa chữ số";
+		die("<script language='javascript'>history.back()</script>");
+	}
+	//	check page range
+	$pattern = "/([0-9]+[0-9\-])/";
+	if (preg_match($pattern,$_POST['txtYear'])==0)
+	{
+		$_SESSION['ErrMes']="Số trang chỉ được chứa chữ số và dấu gạch ngang \"-\"";
+		die("<script language='javascript'>history.back()</script>");
+	}
+
+	if (($_POST['txtTitle'] == "")||($_POST['txtAuthor']=="")||($_POST['txtJournal']=="")||($_POST['txtYear']=="")||($_POST['txtIssue'] =="")||($_POST['optField'] =="0"))
+	{
+		$_SESSION['ErrMes'] = "Yêu cầu chưa được gửi! Bạn phải điền TẤT CẢ các thông tin!";
 		die("<script language=\"javascript\"> history.back()</script>");
 	}
-	else
-	{*/
+
 	/////////   Connect to database   /////////
 	include "config.php";
 	include 'dbconnect.php';
@@ -38,7 +54,7 @@ if (logged_in())
 	if ($row===false)
 	{
 		$_SESSION['ErrMes'] = "Hiện chưa có suppliers nào! Yêu cầu của bạn chưa được gửi!";
-		die('<script language="javascript">history.back()</script>');
+		die('<script language="javascript">window.location="acount.php?type=submit_request"</script>');
 	}
 	
 	////////	Add request to database //////////
@@ -73,7 +89,8 @@ if (logged_in())
 else 						///// Not logged in ///////
 {
 	$_SESSION["ErrMes"] = "Bạn cần phải đăng nhập trước khi gửi yêu cầu!";
-	
 	echo '<script language="javascript"> window.location = "index.php";	</script>';
 }
 ?>
+</body>
+</html>
