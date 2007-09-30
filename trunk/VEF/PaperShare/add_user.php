@@ -15,4 +15,5 @@ for ($i = 1; $i<=5; $i++)
 	mysql_query($strMysqlQuery);
 }
 include "dbclose.php";
+echo "done";
 ?>

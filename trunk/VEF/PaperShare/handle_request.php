@@ -90,7 +90,7 @@ elseif ($_GET['action']=='passing')	//	pass paper to another user
 				die("<script language=\"javascript\"> document.frm1.submit();</script>");
 			}
 			//	check new requester's field
-			if (($cross_field_request==false)and($arrSupplierData['field']!==$arrRequestDate['field']))
+			if (($cross_field_request==false)and($arrSupplierData['field']!==$arrRequestData['field']))
 			{
 				$_SESSION['ErrMes'] = "Người cung cấp bạn chọn không theo chuyên ngành của bài báo. Xin hãy chọn người cung cấp khác.";
 				echo('<form name="frm1" method="POST" action="account.php?type=handle_request">
@@ -162,7 +162,6 @@ elseif ($_GET['action']=='passing')	//	pass paper to another user
 	
 		/////// update new supplier's request pending number
 		$strMysqlQuery = "UPDATE $strTableUserName SET request_pending_number = request_pending_number +1 WHERE username = '".$arrSupplierData['username']."'";
-		echo $strMysqlQuery;
 		mysql_query($strMysqlQuery) or die(mysql_error());
 		
 		// Decrease the number of pending request for current supplier
@@ -198,7 +197,7 @@ elseif ($_GET['action']=='passing')	//	pass paper to another user
 		}
 
 		////////////////////////////////////////////////////////////////
-		echo "<center> Chuyển yêu cầu thành công! Đang quay trở lại trang trước...</center>";
+		echo "<center> Chuyển yêu cầu thành công! Đang quay trở lại trang cá nhân...</center>";
 		echo ('<meta http-equiv="refresh" content="3;url=account.php?type=request">');
 }
 elseif ($_GET['action']=='failing')
