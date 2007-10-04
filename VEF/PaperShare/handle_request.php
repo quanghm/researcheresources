@@ -1,6 +1,5 @@
 <?php
 include "chk_login.inc";
-
 ?>
 <html>
 <head>
@@ -22,7 +21,7 @@ include "dbconnect.php";
 	$arrRequestData=mysql_fetch_array($result) or die(mysql_error());
 
 	/////	Get Requester's detail
-	$strMysqlQuery = "SELECT * FROM $strTableUserName WHERE (username = '".$arrRequestData['supplier']."')";
+	$strMysqlQuery = "SELECT * FROM $strTableUserName WHERE (username = '".$arrRequestData['requester']."')";
 	$result = mysql_query($strMysqlQuery) or die(mysql_error());
 	$arrRequesterData = mysql_fetch_array($result);
 
@@ -189,11 +188,11 @@ elseif ($_GET['action']=='passing')	//	pass paper to another user
 		</html>";
 		if (mail($emlTo, $Subject, $message, $Headers))
 		{
-			echo" Send email to ".$arrSupplierData['username'].": DONE.<br>\n";
+			echo" Send email to ".$arrRequesterData['username'].": DONE.<br>\n";
 		}
 		else
 		{
-			echo (" Send email to ".$arrSupplierData['username'].": FAILED.<br>\n");
+			echo (" Send email to ".$arrRequesterData['username'].": FAILED.<br>\n");
 		}
 
 		////////////////////////////////////////////////////////////////

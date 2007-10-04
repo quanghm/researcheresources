@@ -13,9 +13,9 @@ if ((logged_in())&& (!isset($strConn)))
 <!-- InstanceBeginEditable name="doctitle" -->
 <title>Hồ sơ cá nhân</title>
 <!-- InstanceEndEditable -->
+<?php echo'<link href="Theme/Default/style.css" rel="stylesheet" type="text/css" />'; ?>
 <!-- InstanceBeginEditable name="head" -->
 <!-- InstanceEndEditable -->
-<?php echo'<link href="Theme/Default/style.css" rel="stylesheet" type="text/css" />'; ?>
 </head>
 
 <body>
@@ -33,11 +33,11 @@ if ((logged_in())&& (!isset($strConn)))
 		echo "<a href=\"register.php\" class=\"menu\">Đăng ký thành viên</a>";
 	}
 	?>	</td>
-    <td height="40" colspan="2" > <?php echo "<a href=\"about.php\" class=\"menu\">Về chúng tôi</a>"; ?></td>
+    <td height="40"> <?php echo "<a href=\"about.php\" class=\"menu\">Về chúng tôi</a>"; ?></td>
   </tr>
   <tr >
-    <td width="70%" height="700"colspan="3" valign="top">
-<!-- InstanceBeginEditable name="body" -->
+    <td width="66%" height="700"valign="top" colspan="2">
+	<!-- InstanceBeginEditable name="body" -->
 	  <?php 
 	if (logged_in())
 	{
@@ -562,9 +562,8 @@ if ((logged_in())&& (!isset($strConn)))
 	}
 	?>
   </p>
-<!-- InstanceEndEditable -->	
-	</td>
-    <td width="30%" align="center" valign="top" bgcolor="#CCCC66"><?php
+<!-- InstanceEndEditable -->	</td>
+    <td width="33%" align="center" valign="top" bgcolor="#CCCC66"><?php
 		if (logged_in())
 		{
 			//////////// Select user from database /////////////
@@ -602,6 +601,9 @@ if ((logged_in())&& (!isset($strConn)))
 
 		}
 	?></td>
+  </tr>
+  <tr >
+    <td colspan="4" valign="top" align="center">Copyright by </td>
   </tr>
 </table>
 </body>
