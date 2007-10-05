@@ -188,11 +188,11 @@ elseif ($_GET['action']=='passing')	//	pass paper to another user
 		</html>";
 		if (mail($emlTo, $Subject, $message, $Headers))
 		{
-			echo" Send email to ".$arrRequesterData['username'].": DONE.<br>\n";
+			echo" Send email to ".$arrRequesterData['username']." at".$arrRequesterData['email']." : DONE.<br>\n";
 		}
 		else
 		{
-			echo (" Send email to ".$arrRequesterData['username'].": FAILED.<br>\n");
+			die (" Send email to ".$arrRequesterData['username'].": FAILED.<br>\n");
 		}
 
 		////////////////////////////////////////////////////////////////

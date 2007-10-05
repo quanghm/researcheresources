@@ -18,14 +18,14 @@ if (logged_in())
 		die("<script language='javascript'>history.back()</script>");
 	}
 	//	check year
-	$pattern = "/([0-9]+[0-9])/";
+	$pattern = "/([0-9]*[0-9])/";
 	if (preg_match($pattern,$_POST['txtYear'])==0)
 	{
 		$_SESSION['ErrMes']="Năm xuất bản chỉ được chứa chữ số";
 		die("<script language='javascript'>history.back()</script>");
 	}
 	//	check page range
-	$pattern = "/([0-9]+[0-9\-])/";
+	$pattern = "/([0-9]*[0-9,\-])/";
 	if (preg_match($pattern,$_POST['txtYear'])==0)
 	{
 		$_SESSION['ErrMes']="Số trang chỉ được chứa chữ số và dấu gạch ngang \"-\"";

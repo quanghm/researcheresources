@@ -7,15 +7,16 @@ if ((logged_in())&& (!isset($strConn)))
 }
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml"><!-- InstanceBegin template="/Templates/paper_share.dwt.php" codeOutsideHTMLIsLocked="false" -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-
-<title>Chúng tôi nói về chúng tôi</title>
-
-
-
+<!-- InstanceBeginEditable name="doctitle" -->
+<title>Untitled Document</title>
+<!-- InstanceEndEditable -->
 <?php echo'<link href="Theme/Default/style.css" rel="stylesheet" type="text/css" />'; ?>
+<!-- InstanceBeginEditable name="head" -->
+<?php echo'<link href="Theme/Default/style.css" rel="stylesheet" type="text/css" />'; ?>
+<!-- InstanceEndEditable -->
 </head>
 
 <body>
@@ -35,8 +36,9 @@ if ((logged_in())&& (!isset($strConn)))
 	?>	</td>
     <td height="40"> <?php echo "<a href=\"about.php\" class=\"menu\">Về chúng tôi</a>"; ?></td>
   </tr>
-  <tr>
-    <td height="500"colspan="3" valign="top">
+  <tr >
+    <td width="66%" height="700"valign="top" colspan="2">
+	<!-- InstanceBeginEditable name="body" -->
 <p align="justify">Website “article exchange” do một nhóm nghiên cứu sinh Việt  Nam tại Mỹ ở nhiều lĩnh vực khác nhau lập nên. Mục đích của website là đáp ứng  nhu cầu ngày càng lớn của cộng đồng khoa học trong nước đối với các bài báo  khoa học, đồng thời thông qua đó tạo điều kiện quen biết, học hỏi và hợp tác  lâu dài giữa cộng đồng khoa học trong nước và nước ngoài. Website hoạt động như  một cầu nối giữa một bên là những người có nhu cầu và một bên là những người có  khả năng cung cấp các bài báo khoa học.   Những lĩnh vực  mà website có thể  cung cấp bao gồm: Toán học, Vật Lý, Hóa học, Sinh học, Công nghệ thông  tin,....</p>
 <p align="justify"><strong>Quyền lợi và trách nhiệm của người  dùng:</strong></p>
 <div align="justify">
@@ -71,8 +73,57 @@ if ((logged_in())&& (!isset($strConn)))
         <li>Website tự động phân bổ các yêu cầu một cách  công bằng cho tất cả những người cung cấp. Người cung cấp có trách nhiệm tuân  thủ sự phân công của website.</li>
       </ul>
     </ol>
-</div><p align="justify"><em>Để website  hoạt động có hiệu quả, chúng tôi tha thiết kêu gọi những ai có khả năng làm  người cung cấp đối với một trong các lĩnh vực nêu trên, bất kể đang ở Anh,  Pháp, Mỹ, Đức...tình nguyện <a href="register.php">đăng ký</a> tham gia website. Thời gian và công sức mà  các bạn bỏ ra sẽ là vô cùng quý báu. Cảm ơn các bạn.</em></p>	</td>
+</div><p align="justify"><em>Để website  hoạt động có hiệu quả, chúng tôi tha thiết kêu gọi những ai có khả năng làm  người cung cấp đối với một trong các lĩnh vực nêu trên, bất kể đang ở Anh,  Pháp, Mỹ, Đức...tình nguyện <a href="register.php">đăng ký</a> tham gia website. Thời gian và công sức mà  các bạn bỏ ra sẽ là vô cùng quý báu. Cảm ơn các bạn.</em></p>	
+<!-- InstanceEndEditable -->	</td>
+    <td width="33%" align="center" valign="top" bgcolor="#CCCC66"><?php
+		if (logged_in())
+		{
+			//////////// Select user from database /////////////
+	$strMyQuery = "SELECT * FROM $strTableUserName WHERE username = '".$_SESSION['username']."'";
+	$result = mysql_query($strMyQuery) or die(mysql_error());
+	$arrUserData = mysql_fetch_array($result);
+	////////////////////////////////////////////////////
+
+			echo "Chào mừng ".$_SESSION["username"]."!<button onClick=\"javascript:window.location = 'login.php?action=logout'\">Khắc xuất</button><br>\n";
+
+		echo "Bạn đã gửi ".$arrUserData['request_number']." yêu cầu! <a href=\"account.php?type=submit_request\">Yêu cầu bài báo</a><br>\n";
+		if ($arrUserData['supplier']) 
+		{
+			////////	Get list of requests pending	/////////////
+			$strMysqlQuery = "SELECT * FROM $strTableRequestName WHERE (supplier = '".$_SESSION['username']."') AND (status >=0)";
+			$result = mysql_query($strMysqlQuery) or die(mysql_error());
+			$request_pending = mysql_num_rows($result);
+			if ($request_pending>0)
+			{	echo "Hiện tại bạn có ".$request_pending." yêu cầu đang chờ <a href=\"account.php?type=request\">xử lý!</a><br>\n";
+			}
+			else
+			{
+				echo "Hiện tại bạn không có yêu cầu nào đang chờ!<br>\n";
+			}
+		}
+		echo "<a href=\"account.php?type=change\"> Thay đổi thông tin cá nhân </a><br>";			
+		if ($arrUserData['admin']){echo "<a href=\"admin.php?action=mail\"> Gửi email nhắc việc tới suppliers </a>";}
+			//////// Close connection to database /////////
+			include "dbclose.php";
+		}
+		else
+		{	
+			echo "Bạn chưa đăng nhập";
+			require "login_form.inc";
+
+		}
+	?></td>
+  </tr>
+  <tr >
+    <td colspan="4" valign="top" align="center"><!-- Google CSE Search Box Begins  -->
+<form action="http://www.google.com/cse" id="searchbox_004865859078258633675:18sqvplglto">
+  <input type="hidden" name="cx" value="004865859078258633675:18sqvplglto" />
+  <input type="text" name="q" size="25" />
+  <input type="submit" name="sa" value="Search" />
+</form>
+<!-- Google CSE Search Box Ends -->
+© Copyright 2007 </td>
   </tr>
 </table>
 </body>
-</html>
+<!-- InstanceEnd --></html>

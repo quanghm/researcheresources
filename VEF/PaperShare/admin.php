@@ -160,7 +160,14 @@ else	//start admin
 	?></td>
   </tr>
   <tr >
-    <td colspan="4" valign="top" align="center">Copyright by </td>
+    <td colspan="4" valign="top" align="center"><!-- Google CSE Search Box Begins  -->
+<form action="http://www.google.com/cse" id="searchbox_004865859078258633675:18sqvplglto">
+  <input type="hidden" name="cx" value="004865859078258633675:18sqvplglto" />
+  <input type="text" name="q" size="25" />
+  <input type="submit" name="sa" value="Search" />
+</form>
+<!-- Google CSE Search Box Ends -->
+© Copyright 2007 </td>
   </tr>
 </table>
 </body>
