@@ -12,6 +12,27 @@ if ((logged_in())&& (!isset($strConn)))
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <!-- InstanceBeginEditable name="doctitle" -->
 <title>Hồ sơ cá nhân</title>
+<?php
+if ($_GET['type']=='handle_request')
+{
+	echo "<script language=\"javascript\">
+				function get_supplier(form)
+				{
+					var supplier=prompt(\"Nhập tên người cung cấp bạn muốn chuyển yêu cầu\");
+					if (supplier==\"\")
+					{
+						return false;
+					}
+					else
+					{
+						form.frmSupplier.value = supplier;
+						return true;
+					}
+				}
+				</script>";
+}
+?>
+
 <!-- InstanceEndEditable -->
 <?php echo'<link href="Theme/Default/style.css" rel="stylesheet" type="text/css" />'; ?>
 <!-- InstanceBeginEditable name="head" -->
@@ -511,17 +532,10 @@ if ((logged_in())&& (!isset($strConn)))
 				<td>';
 			if ($arrRequestData['status']<$max_pass)
 			{
-				echo "<script language=\"javascript\">
-				function get_supplier(form)
-				{
-					var supplier=prompt(\"Nhập tên người cung cấp bạn muốn chuyển yêu cầu\");
-					form.frmSupplier.value = supplier;
-				}
-				</script>";
-				echo '<form method="POST" name="frmPassRequest" action="handle_request.php?action=passing" onsubmit="get_supplier(this)">
+				echo '<form method="POST" name="frmPassRequest" action="handle_request.php?action=passing" onsubmit="return get_supplier(this)">
 					<input name="frmHandlingRequestID" type="hidden" value="'.$arrRequestData['id'].'"/>
 					<input type="hidden" name="frmSupplier"/>
-					<input type="submit" value="Chuyển yêu cầu" />
+					<input type="submit" value="Chuyển yêu cầu"/>
 				</form></td>';
 			}
 			else

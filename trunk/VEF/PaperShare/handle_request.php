@@ -192,7 +192,7 @@ elseif ($_GET['action']=='passing')	//	pass paper to another user
 		}
 		else
 		{
-			die (" Send email to ".$arrRequesterData['username'].": FAILED.<br>\n");
+			echo(" Send email to ".$arrRequesterData['username'].": FAILED.<br>\n");
 		}
 
 		////////////////////////////////////////////////////////////////

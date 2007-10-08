@@ -7,6 +7,13 @@ include "chk_login.inc";
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Untitled Document</title>
 <?php
+//	verify data
+$strCryptedPassword = crypt($_POST['frmNewPassword']);
+if (($_POST['frmNewPassword']!=='')and ($strCryptedPassword !== $_SESSION['password']))
+{
+	$_SESSION['ErrMes']="Mật khẩu cũ không chính xác";
+	echo '<script language="javascript"> window.location=\'account.php?type=change\';</script>';
+}
 if (logged_in())
 {
 	include "config.php";
