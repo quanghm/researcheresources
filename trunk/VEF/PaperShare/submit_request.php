@@ -83,7 +83,7 @@ if (logged_in())
 	/////////// Close connection ///////////
 	include "dbclose.php";
 	$_SESSION['ErrMes'] = "";
-	echo '<script language="javascript">window.location="account.php?type=view";</script>';
+	echo '<meta http-equiv="refresh" content="3; url=account.php"/>';
 	//}
 }
 else 						///// Not logged in ///////
@@ -92,5 +92,6 @@ else 						///// Not logged in ///////
 	echo '<script language="javascript"> window.location = "index.php";	</script>';
 }
 ?>
+
 </body>
 </html>

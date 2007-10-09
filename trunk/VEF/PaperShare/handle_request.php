@@ -165,7 +165,6 @@ elseif ($_GET['action']=='passing')	//	pass paper to another user
 		
 		// Decrease the number of pending request for current supplier
 		$strMysqlQuery="UPDATE $strTableUserName SET request_pending_number = request_pending_number -1 WHERE (username='".$_SESSION['username']."')";
-		echo $strMysqlQuery;
 		mysql_query($strMysqlQuery) or die(mysql_error());
 		
 		/////	Email Requester about delay
