@@ -12,27 +12,6 @@ if ((logged_in())&& (!isset($strConn)))
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <!-- InstanceBeginEditable name="doctitle" -->
 <title>Hồ sơ cá nhân</title>
-<?php
-if ($_GET['type']=='handle_request')
-{
-	echo "<script language=\"javascript\">
-				function get_supplier(form)
-				{
-					var supplier=prompt(\"Nhập tên người cung cấp bạn muốn chuyển yêu cầu\");
-					if (supplier==\"\")
-					{
-						return false;
-					}
-					else
-					{
-						form.frmSupplier.value = supplier;
-						return true;
-					}
-				}
-				</script>";
-}
-?>
-
 <!-- InstanceEndEditable -->
 <?php echo'<link href="Theme/Default/style.css" rel="stylesheet" type="text/css" />'; ?>
 <!-- InstanceBeginEditable name="head" -->
@@ -523,31 +502,25 @@ if ($_GET['type']=='handle_request')
 				<td><a href="'.$arrRequestData['download_link'].'">'.$arrRequestData['download_link'].'</td>
 			  </tr>
 			</table>
-			
-			<table width="100%" cellpadding="0">
-			  <tr>
-				<td><form method="POST" name="frmFinishRequest" action="handle_request.php?action=finishing"> 
+			<form method="POST" name="frmFinishRequest" action="handle_request.php?action=finishing"> 
 				<input name="frmHandlingRequestID" type="hidden" value="'.$arrRequestData['id'].'"/>
-				<input type="submit" value="Báo cáo hoàn tất"/></form></td>
-				<td>';
+				<a href="javascript: frmFinisRequest.submit()">Báo cáo hoàn tất </a></form>';
 			if ($arrRequestData['status']<$max_pass)
 			{
-				echo '<form method="POST" name="frmPassRequest" action="handle_request.php?action=passing" onsubmit="return get_supplier(this)">
+				echo '<form method="POST" name="frmPassRequest" action="handle_request.php?action=passing">
 					<input name="frmHandlingRequestID" type="hidden" value="'.$arrRequestData['id'].'"/>
-					<input type="hidden" name="frmSupplier"/>
-					<input type="submit" value="Chuyển yêu cầu"/>
-				</form></td>';
+		<a href="javascript: frmPassRequest">Chuyển yêu cầu cho:</a>
+<input type="text" name="frmSupplier"/><br/>
+<span style="font-style: italic; font-size:small; color:#CC0033">(Để trống nếu bạn không muốn chỉ định người cung cấp mới)</font></span>				</form>';
 			}
 			else
 			{
 				echo '<form method="POST" name="frmPassRequest" action="handle_request.php?action=failing">
 					<input name="frmHandlingRequestID" type="hidden" value="'.$arrRequestData['id'].'"/>
-					<input type="submit" value="Báo cáo thất bại" />
-				</form></td>';
+					<a href="javascript: frmPassRequest.submit()">Báo cáo thất bại </a>
+				</form>';
 			}
-				echo '<td><button onClick="javascript: history.back();">Quay lại </button></td>
-			  </tr>
-			</table>';		
+				echo '<a href="javascript: history.back();">Quay lại </a>';		
 		}
 		else					/////////// Default: Display general information
 		{
