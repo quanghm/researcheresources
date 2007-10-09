@@ -504,23 +504,24 @@ if ((logged_in())&& (!isset($strConn)))
 			</table>
 			<form method="POST" name="frmFinishRequest" action="handle_request.php?action=finishing"> 
 				<input name="frmHandlingRequestID" type="hidden" value="'.$arrRequestData['id'].'"/>
-				<a href="javascript: frmFinisRequest.submit()">Báo cáo hoàn tất </a></form>';
+				<a href="javascript: document.frmFinishRequest.submit()">Báo cáo hoàn tất </a></form>';
 			if ($arrRequestData['status']<$max_pass)
 			{
 				echo '<form method="POST" name="frmPassRequest" action="handle_request.php?action=passing">
 					<input name="frmHandlingRequestID" type="hidden" value="'.$arrRequestData['id'].'"/>
-		<a href="javascript: frmPassRequest">Chuyển yêu cầu cho:</a>
-<input type="text" name="frmSupplier"/><br/>
+		<a href="javascript: document.frmPassRequest.submit()">Chuyển yêu cầu cho:</a>
+<input type="text" name="frmSupplier"/>
+<input type="submit" value="Chuyển"/><br/>
 <span style="font-style: italic; font-size:small; color:#CC0033">(Để trống nếu bạn không muốn chỉ định người cung cấp mới)</font></span>				</form>';
 			}
 			else
 			{
 				echo '<form method="POST" name="frmPassRequest" action="handle_request.php?action=failing">
 					<input name="frmHandlingRequestID" type="hidden" value="'.$arrRequestData['id'].'"/>
-					<a href="javascript: frmPassRequest.submit()">Báo cáo thất bại </a>
+					<a href="javascript: document.frmPassRequest.submit()">Báo cáo thất bại </a>
 				</form>';
 			}
-				echo '<a href="javascript: history.back();">Quay lại </a>';		
+				echo '<a href="account.php?type=request">Quay lại </a>';		
 		}
 		else					/////////// Default: Display general information
 		{
