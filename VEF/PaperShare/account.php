@@ -38,7 +38,7 @@ if ((logged_in())&& (!isset($strConn)))
   <tr >
     <td width="66%" height="700"valign="top" colspan="2">
 	<!-- InstanceBeginEditable name="body" -->
-	  <?php 
+	    <?php 
 	if (logged_in())
 	{
 		//////////// Select user from database /////////////
@@ -284,7 +284,12 @@ if ((logged_in())&& (!isset($strConn)))
 			<tr>
 			  <td width="31%"><div align="left">Tên bài báo </div></td>
 			  <td>
-				<input name="txtTitle" type="text" size="50" />
+				<input name="txtTitle" type="text"';
+			if (isset($_POST["txtLink"]))
+			{
+				echo'value="'.$_POST["txtTitle"].'"';
+			}
+			echo' size="50" />
 			  </td>
 			</tr>
 			<tr>
@@ -322,10 +327,10 @@ if ((logged_in())&& (!isset($strConn)))
 			<tr>
 			  <td><div align="left">Chuyên ngành </div></td>
 			  <td><select name="optField">
-			  <option selected="selected" value="0">Choose a Field of Study...</option>'."\n";
-		  	for ($index=0;$index<$NumberOfField;$index++)
+			  <option value="0">Choose a Field of Study...</option>'."\n";
+		  	for ($index=1;$index<$NumberOfField;$index++)
 				{
-				echo "	  <option value=\"$arrFieldList[$index]\">$arrFieldList[$index]</option>\n";
+				echo "	  <option value=\"$index\">$arrFieldList[$index]</option>\n";
 				}
 	  
 			echo '		</select></td>
@@ -333,13 +338,34 @@ if ((logged_in())&& (!isset($strConn)))
 			<tr>
 			  <td colspan="2">        
 				<div align="center">
-				  <input name="frmSubmit" type="submit" value="Gửi yêu cầu" />
+				  <button name="btnSubmit" type="submit"> Gửi yêu cầu </button>
 				  <input name="frmReset" type="reset" value="Làm lại từ đầu" />
 				</div>
 			  </td>
 			</tr>
 		  </table>
-		</form>';				/////	User's Interface
+		</form>'."\r\n";				/////	User's Interface
+		echo '<script language="javascript">'."\r\n";
+			if (isset($_POST))
+			{
+				foreach ($_POST as $key =>$value)
+				{
+					if ($key=="onFocus")
+					{
+						echo 'document.frmRequest.'.$value.".focus();\r\n";
+					}
+					elseif ($key!=="optField")
+					{
+						echo 'document.frmRequest.'.$key.'.value="'.$value.'";'."\n";
+					}
+					elseif ($key=="optField")
+					{
+						echo 'document.frmRequest.optField['.$value.'].selected="1";'."\r\n";
+					}
+				}
+			}
+			echo '</script>';
+
 		}
 		elseif ($_GET['type'] == 'change')			////// Change personal information
 		{
@@ -471,15 +497,15 @@ if ((logged_in())&& (!isset($strConn)))
 			echo '<table width="100%" cellspace="0">
 			  <tr>
 				<td width="30%">Người đề nghị </td>
-				<td><a href="mailto: '.$arrRequesterData['email'].'">';
+				<td><a href="mailto: '.$arrRequesterData['email'].'" >';
 			echo $arrRequestData['requester'];
 			echo '</a></td>
 			  </tr>
 			  <tr>
 				<td>Tiêu đề </td>
-				<td>';
+				<td><a href="'.$arrRequestData['download_link'].'" target="_blank">';
 			echo $arrRequestData['title'];
-			echo '</td>
+			echo '</a></td>
 			  </tr>
 			  <tr>
 				<td>Tác giả </td>
@@ -496,10 +522,6 @@ if ((logged_in())&& (!isset($strConn)))
 			  <tr>
 				<td>Năm xuất bản </td>
 				<td>'.$arrRequestData['year'].'</td>
-			  </tr>
-			  <tr>
-				<td>Đường dẫn </td>
-				<td><a href="'.$arrRequestData['download_link'].'">'.$arrRequestData['download_link'].'</td>
 			  </tr>
 			</table>
 			<form method="POST" name="frmFinishRequest" action="handle_request.php?action=finishing"> 
@@ -549,8 +571,7 @@ if ((logged_in())&& (!isset($strConn)))
 	echo '<center><span class="error">Bạn chưa đăng nhập!</span></center>';
 	}
 	?>
-  </p>
-<!-- InstanceEndEditable -->	</td>
+	<!-- InstanceEndEditable -->	</td>
     <td width="33%" align="center" valign="top" bgcolor="#CCCC66"><?php
 		if (logged_in())
 		{

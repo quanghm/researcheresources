@@ -33,6 +33,7 @@ $strTableAdmin = 'tbl_update';
 
 	///// Array of Fields //////
 
+	$arrFieldList[]='Choose a Field of Study...';
 	$arrFieldList[]='Mathematics';
 	
 	$arrFieldList[]='Physics';

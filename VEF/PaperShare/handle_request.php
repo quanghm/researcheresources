@@ -48,13 +48,20 @@ elseif ($_GET['action']=='passing')	//	pass paper to another user
 	//$strMysqlQuery = "UPDATE $strTableUserName SET request_number = request_number + 1  WHERE (username = '".$_SESSION['username']."')";
 
 	///////// Assign a new supplier ////////////
-		$strPassSupplier ='';
 		////////	Get the previous supplier and put to array $arrPreviousSuppliers
 		parse_str($arrRequestData['previous_suppliers']);
 		
 		///////		Get list of available suppliers
 		if ((isset($_POST['frmSupplier']))&&($_POST['frmSupplier']!==""))	////	New supplier indicated
 		{
+			if ($_POST['frmSupplier']==$_SESSION['username'])
+			{
+				$_SESSION['ErrMes']="Bạn không thể chuyển bài báo cho chính bạn.";
+				echo '<form name="frm1" method="POST" action="account.php?type=handle_request">
+									<input type="hidden" name="frmRequestID" value="'.$arrRequestData['id'].'"/>
+									</form>';
+				die("<script language=\"javascript\"> document.frm1.submit();</script>");
+			}
 			////	Test the availability of the chosen supplier
 			if ($_POST['frmSupplier'] == $arrRequestData['requester']) //	New supplier coincides with the requester
 			{
@@ -68,7 +75,7 @@ elseif ($_GET['action']=='passing')	//	pass paper to another user
 			{
 				if ($_POST['frmSupplier']==$arrPreviousSuppliers[$i])
 				{
-					$_SESSION['ErrMes'] = "Người cung cấp bạn chọn đã không tìm được bài báo này. Xin hãy chọn người cung cấp khác.";
+					$_SESSION['ErrMes'] = $arrPreviousSuppliers[$i]."đã không tìm được bài báo này. Xin hãy chọn người cung cấp khác.";
 					echo('<form name="frm1" method="POST" action="account.php?type=handle_request">
 										<input type="hidden" name="frmRequestID" value="'.$arrRequestData['id'].'"/>
 										</form>');
