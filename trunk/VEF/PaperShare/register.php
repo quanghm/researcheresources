@@ -13,78 +13,79 @@ if (logged_in())
 }
 ?>
 <script language="javascript">
-function DataVerify()
+function DataVerify(form)
 {
 	MinLength = <?php echo constMinLength;?>;
 	MaxLength = <?php echo constMaxLength;?>;
 	//////// check username ///////////////
-	if (frmRegistration.frmUsername.value.length < Minlength)
+	if (form.frmUsername.value.length < Minlength)
 	{
 		alert("Bí danh quá ngắn!");
-		frmRegistration.frmUsername.focus();
+		form.frmUsername.focus();
 		return false;
 	}
-/*	if (frmRegistration.frmUsername.value.length > MaxLength)
+	if (form.frmUsername.value.length > MaxLength)
 	{
 		alert("Bí danh quá dài!");
-		frmRegistration.frmUsername.focus();
+		form.frmUsername.focus();
 		return false;
 	}
-	*///////////////////////////////////////
+	///////////////////////////////////////
 	
 	///////// check password /////////////
-	if (frmRegistration.frmPassword.value.length < MinLength)
+	if (form.frmPassword.value.length < MinLength)
 	{
 		alert("Mật khẩu quá ngắn!");
-		frmRegistration.frmPassword.focus();
+		form.frmPassword.focus();
 		return false;
 	}
-		if (frmRegistration.frmPassword.value.length > MaxLength)
+		if (form.frmPassword.value.length > MaxLength)
 	{
 		alert("Mật khẩu quá dài");
-		frmRegistration.frmPassword.focus();
+		form.frmPassword.focus();
 		return false;
 	}
 
-	if (frmRegistration.frmPassword.value != frmRegistration.frmPasswordConfirm.value)
+	if (form.frmPassword.value != form.frmPasswordConfirm.value)
 	{
 		alert("Xác nhận mật khẩu không khớp!");
-		frmRegistration.frmPassword.focus();
+		form.frmPassword.focus();
 		return false;
 	}
 	//////////////////////////////////////*/
 	
 	////////// Check email ////////////////
-	var strEmail = frmRegistration.frmEmail.value;
+	var strEmail = form.frmEmail.value;
 	if ((strEmail.indexOf('@')<0)||(strEmail.indexOf('.',strEmail.indexOf('@'))<0))
 	{
 		alert("Email không hợp lệ!");
-		frmRegistration.frmEmail.focus();
+		form.frmEmail.focus();
 		return false;
 	}
-	if (frmRegistration.frmEmail.value != frmRegistration.frmEmailConfirm.value)
+	if (form.frmEmail.value != form.frmEmailConfirm.value)
 	{
 		alert(" Xác nhận email không khớp!")
-		frmRegistration.frmEmail.focus();
+		form.frmEmail.focus();
 		return false;
 	}
 	//////////////////////////////////////
 	
 	////////	Check Field		/////////
-	if (frmRegistration.frmField.value=="0")
+	if (form.frmField.value=="0")
 	{
 		alert("Bạn phải chọn một chuyên ngành!");
-		frmRegistration.frmField.focus();
+		form.frmField.focus();
 		return false;
 	}
 	///////////////////////////////////////
-	if (frmRegistration.frmAgreeToTerm.checked == false)
+	if (form.frmAgreeToTerm.checked == false)
 	{
 		alert("Bạn phải đồng ý với điều kiện sử dụng website!");
 		return false;
 	}
 	return true;}
 </script>
+
 <link href="Theme/Default/style.css" rel="stylesheet" type="text/css">
 </head>
 
@@ -118,7 +119,7 @@ function DataVerify()
 	}
 	?>
     </div>
-<form method="POST" onSubmit="return DataVerify();" action="register_process.php" onReset="return confirm('Thế nhất định là làm lại à?')" name="frmRegistration">
+<form method="POST" onSubmit="return DataVerify(this);" action="register_process.php" onReset="return confirm('Thế nhất định là làm lại à?')" name="frmRegistration">
 <table align="center" width="800" border="0">
   <tr>
     <td width="25%">&nbsp;</td>
@@ -154,11 +155,10 @@ function DataVerify()
     <td width="25%">&nbsp;</td>
     <td width="25%">Chuyên ngành</td>
     <td colspan="2"><select name="frmField">
-      <option selected="selected" value="0">Choose a Field of Study...</option>
 	  <?php
 	  	for ($index=0;$index<$NumberOfField;$index++)
 		{
-		echo "	  <option value=\"$arrFieldList[$index]\">$arrFieldList[$index]</option>\n";
+		echo "	  <option value=\"$index\">$arrFieldList[$index]</option>\n";
 		}
 
 	  ?>
@@ -169,10 +169,10 @@ function DataVerify()
     <td width="25%">&nbsp;</td>
     <td width="25%">Bạn có muốn làm người cung cấp</td>
     <td width="12%"><label>
-      <input name="frmSupplier" type="radio" value="1">
+      <input name="frmSupplier" type="radio" value="1" <?php if ($_POST['frmSupplier']==1) {echo "checked=\"checked\"";}?>>
     Có</label></td>
     <td width="13%"><label>
-      <input name="frmSupplier" type="radio" value="0" checked="checked">
+      <input name="frmSupplier" type="radio" value="0" <?php if ($_POST['frmSupplier']==0) {echo "checked=\"checked\"";}?>>
     Không</label></td>
     <td width="25">&nbsp;</td>
   </tr>
@@ -197,9 +197,24 @@ function DataVerify()
     <td width="25" >&nbsp;</td>
   </tr>
 </table>
-</form></td>
+</form>
+	</td>
   </tr>
 </table>
-	
+<?php
+if (isset($_POST))
+{
+	echo "<script language=\"javascript\">\r\n";
+	foreach ($_POST as $key=>$value)
+	{
+		if ($key!=='onFocus')
+		{
+			echo "document.frmRegistration.$key.value=\"$value\";\r\n";
+		}
+	}
+	echo "document.frmRegistration.".$_POST['onFocus'].".focus();\r\n";
+	echo "</script>\r\n";
+}
+?>
 </body>
 </html>
