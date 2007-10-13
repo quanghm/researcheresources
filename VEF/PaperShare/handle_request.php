@@ -7,6 +7,11 @@ include "chk_login.inc";
 </head>
 <body>
 <?php
+$needle='http://'.$_SERVER['SERVER_NAME'].dirname($_SERVER['PHP_SELF'])."/account.php";
+$haystack=$_SERVER['HTTP_REFERER'];
+if (strstr($haystack,$needle)==FALSE)
+{die("invalid referer");}
+
 if (!(logged_in()))
 {
 echo "<center>Bạn chưa đăng nhập! Đang quay trở lại trang chủ...</center>";

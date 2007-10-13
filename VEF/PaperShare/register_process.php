@@ -8,7 +8,7 @@ include "chk_login.inc";
 </head>
 <body>
 <?php
-if ($_SERVER['HTTP_REFERER'].$strDir!=='http://'.$_SERVER['SERVER_NAME'].dirname($_SERVER['PHP_SELF'])."/register.php")
+if ($_SERVER['HTTP_REFERER']!=='http://'.$_SERVER['SERVER_NAME'].dirname($_SERVER['PHP_SELF'])."/register.php")
 {die("invalid referer");}
 if ($_SESSION["username"] != "")
 {

@@ -8,6 +8,8 @@ include "chk_login.inc";
 <body>
 <form name="frmRequestData" action="account.php?type=submit_request" method="post">
 <?php
+if ($_SERVER['HTTP_REFERER']!=='http://'.$_SERVER['SERVER_NAME'].dirname($_SERVER['PHP_SELF'])."/account.php?type=submit_request")
+{die("invalid referer");}
 foreach ($_POST as $key => $value)
 {
 	if ($key!=="btnSubmit")
