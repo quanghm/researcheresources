@@ -138,7 +138,7 @@ elseif ($_GET['action']=='passing')	//	pass paper to another user
 			
 			/////	inform requesters about failure
 			$emlTo = $arrRequesterData['email'];
-			$strSubject	= "Khong tim duoc bai bao cua ban";
+			$Subject	= "Khong tim duoc bai bao cua ban";
 			$Headers = "From: ".$strAdminEmail."\r\n";
 			$Headers .= "MIME-Version: 1.0\r\n"; 
 			$Headers .= "content-type: text/html; charset=utf-8\r\n";
@@ -181,7 +181,7 @@ elseif ($_GET['action']=='passing')	//	pass paper to another user
 		
 		/////	Email Requester about delay
 		$emlTo = $arrRequesterData['email'];
-		$strSubject	= "Yeu cau duoc chuyen";
+		$Subject	= "Yeu cau duoc chuyen";
 		$Headers = "From: ".$strAdminEmail."\r\n";
 		$Headers .= "MIME-Version: 1.0\r\n"; 
 		$Headers .= "content-type: text/html; charset=utf-8\r\n";
@@ -223,7 +223,7 @@ elseif ($_GET['action']=='failing')
 	///////////  Inform requester about failure of request
 		///////  Get requester's email
 	$emlTo = $arrRequesterData['email'];
-	$strSubject	= "Khong tim duoc bai bao cua ban";
+	$Subject	= "Khong tim duoc bai bao cua ban";
 	$Headers = "From: ".$strAdminEmail."\r\n";
 	$Headers .= "MIME-Version: 1.0\r\n"; 
 	$Headers .= "content-type: text/html; charset=utf-8\r\n";

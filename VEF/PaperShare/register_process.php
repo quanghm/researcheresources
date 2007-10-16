@@ -152,10 +152,40 @@ else
 		$encoded_password = crypt($_POST['frmPassword']);
 		$strInsertQuery = "INSERT INTO $strTableUserName (username, password, email, field, supplier,join_date) VALUES ('".$_POST[frmUsername]."', '".$encoded_password."', '".$_POST['frmEmail']."', '".$arrFieldList[$_POST['frmField']]."','".$_POST['frmSupplier']."','$today')";
 		mysql_query($strInsertQuery) or die(mysql_error());
+		/// email user
+		$strEmailTo=$_POST['frmEmail'];
+		$strSubject="Chào mừng ".$_POST["frmUsername"];
+		$Headers="From: ".$strAdminEmail."\r\n";
+		$Headers .= "MIME-Version: 1.0\r\n"; 
+		$Headers .= "content-type: text/html; charset=utf-8\r\n";
+		$strDir=dirname($_SERVER['PHP_SELF']);
+		$message = "<html>
+		<head>
+		<title>Chào mừng ".$_POST["frmUsername"]."</title>
+		</head>
+		<body>
+		Đây là email tự động gửi từ ban quản trị của $strWebsiteName.<br/>
+		Chào mừng bạn đã tham gia trang web <a href=\"".'http://'.$_SERVER['SERVER_NAME'].$strDir."\">$strWebsiteName </a>.<br/>" .
+				"Thông tin đăng ký của bạn như sau:<br/>" .
+				"Bí danh: ".$_POST['frmUsername']."<br/>" .
+				"Mật khẩu: ".$_POST["frmPassword"]."<br/>" .
+		"Chúng tôi rất mong nhận được sự đóng góp thường xuyên của bạn cho trang web.
+		</body>
+		</html>";
+		if (mail($strEmailTo, $strSubject, $message, $Headers))
+		{
+			echo "<center> Send email to ".$_POST['frmUsername'].": DONE.</center>\n";
+		}
+		else
+		{
+			echo ("<center>Send email to ".$_POST['frmUsername'].": FAILED.</center>\n");
+		}
+	
+		//
 		echo "Chào mừng ";
 		echo $_SESSION["username"] = $_POST["frmUsername"];
 		$_SESSION["password"] = $encoded_password;
-		echo "!<br>\n";
+				echo "!<br>\n";
 		echo "<script language=\"javascript\">	window.location = \"index.php\"; </script>"; 
 	}
 	include "dbclose.php";
