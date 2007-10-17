@@ -38,7 +38,7 @@ if ((logged_in())&& (!isset($strConn)))
   <tr >
     <td width="66%" height="700"valign="top" colspan="2">
 	<!-- InstanceBeginEditable name="body" -->
-
+<?php include"feedback.inc.php";?>
 <!-- InstanceEndEditable -->	</td>
     <td width="33%" align="center" valign="top" bgcolor="#CCCC66"><?php
 		if (logged_in())
