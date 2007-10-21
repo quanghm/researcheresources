@@ -20,5 +20,5 @@
 		echo "  </tr>";
 		echo "</table>";
 		echo "</form>";
-		echo "Chưa có tài khoản? <a href=\"register.php\">Đăng ký thành viên...</a>";
+		echo "<a href=\"register.php\">Đăng ký thành viên...</a>";
 ?>		
