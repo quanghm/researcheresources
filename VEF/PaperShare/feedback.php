@@ -38,7 +38,7 @@ if ((logged_in())&& (!isset($strConn)))
     <td height="40"> <?php echo "<a href=\"about.php\" class=\"menu\">Về chúng tôi</a>"; ?></td>
   </tr>
   <tr >
-    <td width="66%" height="700"valign="top" colspan="3">
+    <td width="66%" height="700" valign="top" colspan="3">
 	<!-- InstanceBeginEditable name="body" -->
 <?php
 if (!isset($_GET['action']))
@@ -51,6 +51,19 @@ if ($_GET['action']!=='send')
 }
 else 
 {
+	$needle='http://'.$_SERVER['SERVER_NAME'].dirname($_SERVER['PHP_SELF'])."/feedback.php";
+	$haystack=$_SERVER['HTTP_REFERER'];
+	if (strstr($haystack,$needle)==FALSE)
+	{
+		$_SESSION['ErrMesFeedback']="invalid referer";
+		die("<script languague='javascript'>window.location='feedback.php'</script>");
+	}
+	
+	if (strlen($_POST['txtContent'])<5)
+	{
+		$_SESSION['ErrMesFeedback']="Để tránh spam, chúng tôi yêu cầu góp ý phải chứa ít nhất 5 ký tự.";
+		die("<script languague='javascript'>window.location='feedback.php'</script>");
+	}
 	$emailto = 'nguyennamhus@yahoo.com';
 	$Headers = "From: ".$strAdminEmail."\r\n";
 	if (mail($emailto,'feedback',$_POST['txtContent'],$Headers))
