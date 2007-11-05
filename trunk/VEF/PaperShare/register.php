@@ -15,10 +15,10 @@ if (logged_in())
 <script language="javascript">
 function DataVerify(form)
 {
-	MinLength = <?php echo constMinLength;?>;
-	MaxLength = <?php echo constMaxLength;?>;
+	var MinLength = <?php echo constMinLength;?>;
+	var MaxLength = <?php echo constMaxLength;?>;
 	//////// check username ///////////////
-	if (form.frmUsername.value.length < Minlength)
+	if (form.frmUsername.value.length < MinLength)
 	{
 		alert("Bí danh quá ngắn!");
 		form.frmUsername.focus();
@@ -83,7 +83,8 @@ function DataVerify(form)
 		alert("Bạn phải đồng ý với điều kiện sử dụng website!");
 		return false;
 	}
-	return true;}
+return true;
+}
 </script>
 
 <link href="Theme/Default/style.css" rel="stylesheet" type="text/css">
