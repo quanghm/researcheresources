@@ -108,12 +108,44 @@ else	//start admin
 		}
 	echo "\n".'<br /><button onClick="javascript:window.location=\'admin.php\'">Quay lại trang điều khiển</button>';
 	}
+	elseif ($_GET['action']=='announce')
+	{
+		echo "<form method='POST' name='frmSendMail' action='admin.php?action=post_announce'>\r\n";
+		echo "<center>Soạn thảo thông báo<br />\r\n";
+		echo "<textarea name='txtAnnouncement' rows='10' cols='50'></textarea><br />\r\n" .
+				"<input type='radio' name='sendtype' id='rdsendtype' value='0'/>Thông báo trên trang chủ\r\n" .
+				"<input type='radio' name='sendtype' id='rdsendtype' value='1'/>Tất cả người dùng\r\n" .
+				"<input type='radio' name='sendtype' id='rdsendtype' value='2'/>Tất cả Suppliers\r\n" .
+				"<input type='radio' name='sendtype' id='rdsendtype' value='3'/>Tất cả admins<br />\r\n" .
+				"<input type='submit' id='btnSubmit' value='Gửi thư'/>\r\n" .
+				"<input type='reset' id='btnReset' value='Làm lại'/>\r\n" .
+				"</center>\r\n";
+		echo "</form>";
+	}
+	elseif ($_GET['action']=='post_announce') 
+	{
+		if ($_SERVER['HTTP_REFERER']!=='http://'.$_SERVER['SERVER_NAME'].dirname($_SERVER['PHP_SELF'])."/admin.php?action=announce")
+		{
+			die("Invalid referer");
+		}
+		if ($_POST['sendtype']=='0')
+		{
+			// Get date
+			$today = date("Y-m-d");
+			// connect to database
+			$strMysqlQuery = "INSERT INTO $strTableAnnouncement (id,content,date)
+							  VALUES (NULL ,'".$_POST['txtAnnouncement']."','".$today."')";
+			mysql_query($strMysqlQuery) or die(mysql_error());
+		}
+		echo'<script language="javascript">window.location="admin.php"</script>';
+		
+	}
 	else
 	{
 		echo '<a href="admin.php?action=mail">Gửi email nhắc việc cho các suppliers</a><br />'."\n";
-		echo '<a href="admin.php?action=admins"> Sửa danh sách admins </a><br />'."\n";
-		echo '<a href="admin.php?action=users"> Danh sách thành viên </a><br />'."\n";
-		echo '<a href="admin.php?action=requests"> Danh sách bài báo </a><br />'."\n";
+		echo '<a href="admin.php?action=announce">Gửi thông báo </a><br />'."\n";
+		echo '<a href="admin.php?action=users">Danh sách thành viên </a><br />'."\n";
+		echo '<a href="admin.php?action=requests">Danh sách bài báo </a><br />'."\n";
 	}
 }
 	// Make a MySQL Connection

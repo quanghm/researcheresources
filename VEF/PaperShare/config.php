@@ -17,6 +17,8 @@ $strTableRequestName = 'tbl_request';
 
 $strTableAdmin = 'tbl_update';
 
+$strTableAnnouncement='tbl_announcement';
+
 ////// Config site's options////////
 	
 	$strWebsiteName="Article Resource";

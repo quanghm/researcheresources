@@ -284,6 +284,12 @@ if ((logged_in())&& (!isset($strConn)))
 			echo '<form name="frmRequest" onSubmit="return ChkForm();" method="post" action="submit_request.php">
 		  <table width="100%" cellpadding="0">
 			<tr>
+			  <td><div align="left">Link</div></td>
+			  <td>
+				<input name="txtLink" type="text" size="50" /> 
+			  </td>
+			</tr>
+			<tr>
 			  <td width="31%"><div align="left">Tên bài báo </div></td>
 			  <td>
 				<input name="txtTitle" type="text"';
@@ -303,12 +309,6 @@ if ((logged_in())&& (!isset($strConn)))
 			<tr>
 			  <td><div align="left">Tạp chí </div></td>
 			  <td><input name="txtJournal" type="text" size="50" /></td>
-			</tr>
-			<tr>
-			  <td><div align="left">Link</div></td>
-			  <td>
-				<input name="txtLink" type="text" size="50" /> 
-			  </td>
 			</tr>
 			<tr>
 			  <td><div align="left">Số</div></td>
