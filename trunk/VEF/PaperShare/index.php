@@ -92,5 +92,12 @@ if ((logged_in())&& (!isset($strConn)))
 © Copyright 2007 by <?php echo $strWebsiteName?></td>
   </tr>
 </table>
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-2793588-2";
+urchinTracker();
+</script>
+
 </body>
 <!-- InstanceEnd --></html>
