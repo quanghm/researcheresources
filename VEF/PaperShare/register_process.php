@@ -8,8 +8,9 @@ include "chk_login.inc";
 </head>
 <body>
 <?php
-if ($_SERVER['HTTP_REFERER']!=='http://'.$_SERVER['SERVER_NAME'].dirname($_SERVER['PHP_SELF'])."/register.php")
+/*if ($_SERVER['HTTP_REFERER']!=='http://'.$_SERVER['SERVER_NAME'].dirname($_SERVER['PHP_SELF'])."/register.php")
 {die("invalid referer");}
+*/
 if ($_SESSION["username"] != "")
 {
 	echo "<center> $_SESSION[username]: bạn đã là thành viên! Đang quay trở lại trang cá nhân...</center";
@@ -18,6 +19,7 @@ if ($_SESSION["username"] != "")
 else
 {
 	include("config.php");
+	include($strIncDir."sendmail/mail.php");
 	include("dbconnect.php");
 	//	Store Submitted Data
 	echo "<form name=\"frmSubmittedData\" action=\"register.php\" method=\"post\">\r\n";
@@ -153,7 +155,6 @@ else
 		$strInsertQuery = "INSERT INTO $strTableUserName (username, password, email, field, supplier,join_date) VALUES ('".$_POST[frmUsername]."', '".$encoded_password."', '".$_POST['frmEmail']."', '".$arrFieldList[$_POST['frmField']]."','".$_POST['frmSupplier']."','$today')";
 		mysql_query($strInsertQuery) or die(mysql_error());
 		/// email user
-		$strEmailTo=$_POST['frmEmail'];
 		$strSubject="Chào mừng ".$_POST["frmUsername"];
 		$Headers="From: ".$strAdminEmail."\r\n";
 		$Headers .= "MIME-Version: 1.0\r\n"; 
@@ -172,16 +173,18 @@ else
 		"Chúng tôi rất mong nhận được sự đóng góp thường xuyên của bạn cho trang web.
 		</body>
 		</html>";
-		if (mail($strEmailTo, $strSubject, $message, $Headers))
+		/*
+		 if (mail($strEmailTo, $strSubject, $message, $Headers))
 		{
 			echo "<center> Send email to ".$_POST['frmUsername'].": DONE.</center>\n";
 		}
 		else
 		{
 			echo ("<center>Send email to ".$_POST['frmUsername'].": FAILED.</center>\n");
-		}
-	
-		//
+		}	
+		*/
+		
+		do_send($_POST['frmEmail'],$_POST['frmUsername'],$strSubject,$message);
 		echo "Chào mừng ";
 		echo $_SESSION["username"] = $_POST["frmUsername"];
 		$_SESSION["password"] = $encoded_password;

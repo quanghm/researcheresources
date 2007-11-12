@@ -7,11 +7,11 @@ include "chk_login.inc";
 </head>
 <body>
 <?php
-$needle='http://'.$_SERVER['SERVER_NAME'].dirname($_SERVER['PHP_SELF'])."/account.php";
+/*$needle='http://'.$_SERVER['SERVER_NAME'].dirname($_SERVER['PHP_SELF'])."/account.php";
 $haystack=$_SERVER['HTTP_REFERER'];
 if (strstr($haystack,$needle)==FALSE)
 {die("invalid referer");}
-
+*/
 if (!(logged_in()))
 {
 echo "<center>Bạn chưa đăng nhập! Đang quay trở lại trang chủ...</center>";
@@ -19,6 +19,7 @@ die('<meta http-equiv="refresh" content="3;url=index.php">');
 }
 include "config.php";
 include "dbconnect.php";
+include $strIncDir."sendmail/mail.php";
 
 	/////////	Get Request's detail
 	$strMysqlQuery = "SELECT * FROM $strTableRequestName WHERE id=".$_POST['frmHandlingRequestID'];
@@ -136,14 +137,7 @@ elseif ($_GET['action']=='passing')	//	pass paper to another user
 			$strMysqlQuery = "UPDATE $strTableRequestName SET status = -2 WHERE id=".$_POST['frmHandlingRequestID'];
 			mysql_query($strMysqlQuery) or die(mysql_error());	
 			
-			/////	inform requesters about failure
-			$emlTo = $arrRequesterData['email'];
-			$Subject	= "Khong tim duoc bai bao cua ban";
-			$Headers = "From: ".$strAdminEmail."\r\n";
-			$Headers .= "MIME-Version: 1.0\r\n"; 
-			$Headers .= "content-type: text/html; charset=utf-8\r\n";
-		
-			$strDir=dirname($_SERVER['PHP_SELF']);
+			$Subject = "Khong tim duoc bai bao cua ban";
 			$message = "<html>
 			<head>
 			<title>Yêu cầu thất bại</title>
@@ -154,6 +148,7 @@ elseif ($_GET['action']=='passing')	//	pass paper to another user
 			Xin hãy đăng nhập vào trang web <a href=\"".'http://'.$_SERVER['SERVER_NAME'].$strDir."\">$strWebsiteName </a> để biết thêm chi tiết.
 			</body>
 			</html>";
+			/*////	inform requesters about failure
 			if (mail($emlTo, $Subject, $message, $Headers))
 			{
 				echo "<center> Send email to ".$arrSupplierData['username'].": DONE.</center>\n";
@@ -162,7 +157,8 @@ elseif ($_GET['action']=='passing')	//	pass paper to another user
 			{
 				echo ("<center>Send email to ".$arrSupplierData['username'].": FAILED.</center>\n");
 			}
-
+			*/
+			do_send($arrRequesterData['email'],$arrRequestData['username'],$Subject,$message);
 			echo "<center>Đang quay lại trang thông tin cá nhân...</center>";
 			die('<meta http-equiv="refresh" content="3;url=account.php?type=request">');
 		}
@@ -180,7 +176,6 @@ elseif ($_GET['action']=='passing')	//	pass paper to another user
 		mysql_query($strMysqlQuery) or die(mysql_error());
 		
 		/////	Email Requester about delay
-		$emlTo = $arrRequesterData['email'];
 		$Subject	= "Yeu cau duoc chuyen";
 		$Headers = "From: ".$strAdminEmail."\r\n";
 		$Headers .= "MIME-Version: 1.0\r\n"; 
@@ -197,14 +192,16 @@ elseif ($_GET['action']=='passing')	//	pass paper to another user
 		Xin hãy đăng nhập vào trang web <a href=\"".'http://'.$_SERVER['SERVER_NAME'].$strDir."\">$strWebsiteName </a> để biết thêm chi tiết.
 		</body>
 		</html>";
-		if (mail($emlTo, $Subject, $message, $Headers))
+		/*if (mail($emlTo, $Subject, $message, $Headers))
 		{
 			echo" Send email to ".$arrRequesterData['username']." at".$arrRequesterData['email']." : DONE.<br>\n";
 		}
 		else
 		{
 			echo(" Send email to ".$arrRequesterData['username'].": FAILED.<br>\n");
-		}
+		}*/
+		
+		do_send($arrRequesterData['email'],$arrRequestData['username'],$Subject,$message);
 
 		////////////////////////////////////////////////////////////////
 		echo "<center> Chuyển yêu cầu thành công! Đang quay trở lại trang cá nhân...</center>";
@@ -239,14 +236,15 @@ elseif ($_GET['action']=='failing')
 	Xin hãy đăng nhập vào trang web <a href=\"".'http://'.$_SERVER['SERVER_NAME'].$strDir."\">$strWebsiteName </a> để biết thêm chi tiết.
 	</body>
 	</html>";
-	if (mail($emlTo, $Subject, $message, $Headers))
+	/*if (mail($emlTo, $Subject, $message, $Headers))
 	{
 		echo" Send email to ".$arrSupplierData['username'].": DONE.<br>\n";
 	}
 	else
 	{
 		echo (" Send email to ".$arrSupplierData['username'].": FAILED.<br>\n");
-	}
+	}*/
+	do_send($arrRequesterData['email'],$arrRequestData['username'],$Subject,$message);
 
 	///////////	 Return to User's page
 	echo '<script language="javascript"> window.location="account.php?type=request";</script>';

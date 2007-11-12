@@ -10,12 +10,13 @@ if ((logged_in())&& (!isset($strConn)))
 <html xmlns="http://www.w3.org/1999/xhtml"><!-- InstanceBegin template="/Templates/paper_share.dwt.php" codeOutsideHTMLIsLocked="false" -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
 <!-- InstanceBeginEditable name="doctitle" -->
 <title>Trang chủ</title>
 <!-- InstanceEndEditable -->
-<?php echo'<link href="Theme/Default/style.css" rel="stylesheet" type="text/css" />'; ?>
 <!-- InstanceBeginEditable name="head" -->
 <!-- InstanceEndEditable -->
+<?php echo'<link href="Theme/Default/style.css" rel="stylesheet" type="text/css" />'; ?>
 </head>
 
 <body>
@@ -33,16 +34,16 @@ if ((logged_in())&& (!isset($strConn)))
 		echo "<a href=\"register.php\" class=\"menu\">Đăng ký thành viên</a>";
 	}
 	?>	</td>
-    <td width="25%" ><?php echo "<a href=\"feedback.php\" class=\"menu\">Góp ý</a>"; ?>
-	</td>
+    <td width="25%" ><?php echo "<a href=\"feedback.php\" class=\"menu\">Góp ý</a>"; ?>	</td>
     <td height="40"> <?php echo "<a href=\"about.php\" class=\"menu\">Về chúng tôi</a>"; ?></td>
   </tr>
   <tr >
     <td width="66%" height="700"valign="top" colspan="3">
-	<!-- InstanceBeginEditable name="body" -->
+<!-- InstanceBeginEditable name="body" -->
 <?php include"announce.php";?>
-<!-- InstanceEndEditable -->	</td>
-    <td width="33%" align="center" valign="top" bgcolor="#CCCC66"><?php
+<!-- InstanceEndEditable -->
+</td>
+    <td width="33%" align="left" valign="top" bgcolor="#CCCC66"><?php
 		if (logged_in())
 		{
 			//////////// Select user from database /////////////
@@ -51,7 +52,7 @@ if ((logged_in())&& (!isset($strConn)))
 	$arrUserData = mysql_fetch_array($result);
 	////////////////////////////////////////////////////
 
-			echo "Chào mừng ".$_SESSION["username"]."!<button onClick=\"javascript:window.location = 'login.php?action=logout'\">Khắc xuất</button><br>\n";
+			echo "Chào mừng ".$_SESSION["username"]."! <button onClick=\"javascript:window.location = 'login.php?action=logout'\">Khắc xuất</button><br><br/>\n";
 
 		echo "Bạn đã gửi ".$arrUserData['request_number']." yêu cầu! <a href=\"account.php?type=submit_request\">Yêu cầu bài báo</a><br>\n";
 		if ($arrUserData['supplier']) 
@@ -61,22 +62,22 @@ if ((logged_in())&& (!isset($strConn)))
 			$result = mysql_query($strMysqlQuery) or die(mysql_error());
 			$request_pending = mysql_num_rows($result);
 			if ($request_pending>0)
-			{	echo "Hiện tại bạn có ".$request_pending." yêu cầu đang chờ <a href=\"account.php?type=request\">xử lý!</a><br>\n";
+			{	echo "Bạn có ".$request_pending." yêu cầu đang chờ <a href=\"account.php?type=request\">xử lý!</a><br>\n";
 			}
 			else
 			{
-				echo "Hiện tại bạn không có yêu cầu nào đang chờ!<br>\n";
+				echo "Bạn không có yêu cầu nào đang chờ!<br>\n";
 			}
 		}
-		echo "<a href=\"account.php?type=change\"> Thay đổi thông tin cá nhân </a><br>";			
-		if ($arrUserData['admin']){echo "<a href=\"admin.php?action=mail\"> Gửi email nhắc việc tới suppliers </a>";}
+		echo "<br />\r\n <a href=\"account.php?type=change\"> Thay đổi thông tin cá nhân </a><br>";			
+		if ($arrUserData['admin']){echo "<a href=\"admin.php\">Đăng nhập trang quản trị</a>";}
 			//////// Close connection to database /////////
 			include "dbclose.php";
 		}
 		else
 		{	
-			echo "Bạn chưa đăng nhập";
-			require "login_form.inc";
+			echo "<center>Bạn chưa đăng nhập</center>";
+			require "login_form.inc.php";
 
 		}
 	?></td>
@@ -98,6 +99,5 @@ if ((logged_in())&& (!isset($strConn)))
 _uacct = "UA-2793588-2";
 urchinTracker();
 </script>
-
 </body>
 <!-- InstanceEnd --></html>

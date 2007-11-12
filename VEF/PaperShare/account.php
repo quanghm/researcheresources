@@ -5,17 +5,70 @@ if ((logged_in())&& (!isset($strConn)))
 	include "config.php";
 	include "dbconnect.php";
 }
+	//////	Default is view general information 	//////
+	if (!(isset($_GET['type'])))
+	{
+		$_GET['type'] = '';
+	}
+	
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"><!-- InstanceBegin template="/Templates/paper_share.dwt.php" codeOutsideHTMLIsLocked="false" -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
 <!-- InstanceBeginEditable name="doctitle" -->
 <title>Hồ sơ cá nhân</title>
+<?php	
+	if ($_GET['type']=='submit_request')
+	{
+		echo '<script language="javascript">
+		function ChkForm()
+		{
+			if (document.frmRequest.txtLink.value == "")
+			{
+				alert("Bạn chưa điền link");
+				return false;
+			}
+			if (document.frmRequest.txtTitle.value == "")
+			{
+				alert("Bạn chưa điền tên bài báo");
+				return false;
+			}
+			if (document.frmRequest.txtAuthor.value == "")
+			{
+				alert("Bạn chưa điền tên tác giả");
+				return false;
+			}
+			if (document.frmRequest.txtJournal.value =="")
+			{
+				alert("Bạn chưa điền tên tạp chí");
+				return false;
+			}
+			if (document.frmRequest.txtIssue.value == "")
+			{
+				alert("Bạn chưa điền số tạp chí");
+				return false;
+			}
+			if (document.frmRequest.txtYear.value == "")
+			{
+				alert("Bạn chưa điền năm xuất bản");
+				return false;
+			}
+			if (document.frmRequest.optField.value == "0")
+			{
+				alert("Bạn phải chọn chuyên ngành");
+				return false;
+			}
+			return true;
+		}
+		</script>';				///// javascript function to deal with request data
+	}
+?>
 <!-- InstanceEndEditable -->
-<?php echo'<link href="Theme/Default/style.css" rel="stylesheet" type="text/css" />'; ?>
 <!-- InstanceBeginEditable name="head" -->
 <!-- InstanceEndEditable -->
+<?php echo'<link href="Theme/Default/style.css" rel="stylesheet" type="text/css" />'; ?>
 </head>
 
 <body>
@@ -33,13 +86,12 @@ if ((logged_in())&& (!isset($strConn)))
 		echo "<a href=\"register.php\" class=\"menu\">Đăng ký thành viên</a>";
 	}
 	?>	</td>
-    <td width="25%" ><?php echo "<a href=\"feedback.php\" class=\"menu\">Góp ý</a>"; ?>
-	</td>
+    <td width="25%" ><?php echo "<a href=\"feedback.php\" class=\"menu\">Góp ý</a>"; ?>	</td>
     <td height="40"> <?php echo "<a href=\"about.php\" class=\"menu\">Về chúng tôi</a>"; ?></td>
   </tr>
   <tr >
     <td width="66%" height="700"valign="top" colspan="3">
-	<!-- InstanceBeginEditable name="body" -->
+<!-- InstanceBeginEditable name="body" -->
 	    <?php 
 	if (logged_in())
 	{
@@ -66,12 +118,6 @@ if ((logged_in())&& (!isset($strConn)))
 		}
 		echo "  </tr>\n</table>\n";
 		/////////////////////////////////////////////////////
-		
-		//////	Default is view general information 	//////
-		if (!(isset($_GET['type'])))
-		{
-			$_GET['type'] = '';
-		}
 		
 		//////  Print out requested user's information 	//////
 		if ($_GET['type'] == 'articles')    //// If view the articles user requested
@@ -213,18 +259,6 @@ if ((logged_in())&& (!isset($strConn)))
 									<input type=\"hidden\" name=\"frmRequestID\" value=\"".$arrArticleList['id']."\"/>
 									<input type=\"submit\" name=\"frmSubmiHandle\" value=\" Chi tiết \"/>
 									</form></td>\n";
-
-				/*	if ($arrArticleList['status'] == 'pending')
-					{
-						echo "      <td ><form method=\"POST\" action=\"account.php?type=handle_request\">
-										<input type=\"hidden\" name=\"frmRequestID\" value=\"".$arrArticleList['ID']."\"/>
-										<input type=\"submit\" name=\"frmSubmiHandle\" value=\" Giết \"/></form></td>\n";
-	
-					}
-					else
-					{
-						echo "      <td >".$arrArticleList['status']."</td>\n";				
-					}*/
 					echo "  </tr>\n";
 				}
 				echo "</table>";
@@ -232,47 +266,6 @@ if ((logged_in())&& (!isset($strConn)))
 		}
 		elseif ($_GET['type'] == 'submit_request')   ///// If submit a request
 		{	
-			echo '<script language="javascript">
-		function ChkForm()
-		{
-			if (document.frmRequest.txtTitle.value == "")
-			{
-				alert("Bạn chưa điền tên bài báo");
-				return false;
-			}
-			if (document.frmRequest.txtAuthor.value == "")
-			{
-				alert("Bạn chưa điền tên tác giả");
-				return false;
-			}
-			if (document.frmRequest.txtJournal.value =="")
-			{
-				alert("Bạn chưa điền tên tạp chí");
-				return false;
-			}
-			if (document.frmRequest.txtIssue.value == "")
-			{
-				alert("Bạn chưa điền số tạp chí");
-				return false;
-			}
-			if (document.frmRequest.txtYear.value == "")
-			{
-				alert("Bạn chưa điền năm xuất bản");
-				return false;
-			}
-			if (document.frmRequest.txtLink.value == "")
-			{
-				alert("Bạn chưa điền link");
-				return false;
-			}
-			if (document.frmRequest.optField.value == "0")
-			{
-				alert("Bạn phải chọn chuyên ngành");
-				return false;
-			}
-			return true;
-		}
-		</script>';				///// javascript function to deal with request data
 			echo "<center> Yêu cầu bài báo<br>\n";
 			echo "Bạn cần điền vào <strong>tất cả</strong> các thông tin "."<a onclick=\"javascript:window.open('help.php','wnd_help','height=600,width=500')\"><img height=\"20\" src=\"Theme/Default/Images/questionmark.jpg\"></a>\n";
 			if (isset($_SESSION['ErrMes']) and($_SESSION['ErrMes']==!""))
@@ -573,8 +566,9 @@ if ((logged_in())&& (!isset($strConn)))
 	echo '<center><span class="error">Bạn chưa đăng nhập!</span></center>';
 	}
 	?>
-	<!-- InstanceEndEditable -->	</td>
-    <td width="33%" align="center" valign="top" bgcolor="#CCCC66"><?php
+	<!-- InstanceEndEditable -->
+</td>
+    <td width="33%" align="left" valign="top" bgcolor="#CCCC66"><?php
 		if (logged_in())
 		{
 			//////////// Select user from database /////////////
@@ -583,7 +577,7 @@ if ((logged_in())&& (!isset($strConn)))
 	$arrUserData = mysql_fetch_array($result);
 	////////////////////////////////////////////////////
 
-			echo "Chào mừng ".$_SESSION["username"]."!<button onClick=\"javascript:window.location = 'login.php?action=logout'\">Khắc xuất</button><br>\n";
+			echo "Chào mừng ".$_SESSION["username"]."! <button onClick=\"javascript:window.location = 'login.php?action=logout'\">Khắc xuất</button><br><br/>\n";
 
 		echo "Bạn đã gửi ".$arrUserData['request_number']." yêu cầu! <a href=\"account.php?type=submit_request\">Yêu cầu bài báo</a><br>\n";
 		if ($arrUserData['supplier']) 
@@ -593,22 +587,22 @@ if ((logged_in())&& (!isset($strConn)))
 			$result = mysql_query($strMysqlQuery) or die(mysql_error());
 			$request_pending = mysql_num_rows($result);
 			if ($request_pending>0)
-			{	echo "Hiện tại bạn có ".$request_pending." yêu cầu đang chờ <a href=\"account.php?type=request\">xử lý!</a><br>\n";
+			{	echo "Bạn có ".$request_pending." yêu cầu đang chờ <a href=\"account.php?type=request\">xử lý!</a><br>\n";
 			}
 			else
 			{
-				echo "Hiện tại bạn không có yêu cầu nào đang chờ!<br>\n";
+				echo "Bạn không có yêu cầu nào đang chờ!<br>\n";
 			}
 		}
-		echo "<a href=\"account.php?type=change\"> Thay đổi thông tin cá nhân </a><br>";			
-		if ($arrUserData['admin']){echo "<a href=\"admin.php?action=mail\"> Gửi email nhắc việc tới suppliers </a>";}
+		echo "<br />\r\n <a href=\"account.php?type=change\"> Thay đổi thông tin cá nhân </a><br>";			
+		if ($arrUserData['admin']){echo "<a href=\"admin.php\">Đăng nhập trang quản trị</a>";}
 			//////// Close connection to database /////////
 			include "dbclose.php";
 		}
 		else
 		{	
-			echo "Bạn chưa đăng nhập";
-			require "login_form.inc";
+			echo "<center>Bạn chưa đăng nhập</center>";
+			require "login_form.inc.php";
 
 		}
 	?></td>
@@ -624,5 +618,11 @@ if ((logged_in())&& (!isset($strConn)))
 © Copyright 2007 by <?php echo $strWebsiteName?></td>
   </tr>
 </table>
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-2793588-2";
+urchinTracker();
+</script>
 </body>
 <!-- InstanceEnd --></html>
