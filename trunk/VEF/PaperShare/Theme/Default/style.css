@@ -79,3 +79,8 @@ th{
 th:hover{
 	background-image: url(Images/tbl_th_hover.png);
 }
+
+body{
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:13px;
+}

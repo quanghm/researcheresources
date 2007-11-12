@@ -21,11 +21,14 @@ $strTableAnnouncement='tbl_announcement';
 
 ////// Config site's options////////
 	
-	$strWebsiteName="Article Resource";
+	$strWebsiteName="localhost";
 
-	$strAdminEmail="admin@localhost";
-	////////////////////////////////
-
+	$strAdminEmail="admin@nghiencuusinh.org";
+	
+	////// Include directory///////
+	$strIncDir = 'incs/';
+	
+	//////// Max and Min Lengths for Username and Password////////
 	define("constMinLength", 6);
 	define("constMaxLength", 15);
 		//////// Allowed Characters in usernames
@@ -35,7 +38,7 @@ $strTableAnnouncement='tbl_announcement';
 
 	///// Array of Fields //////
 
-	$arrFieldList[]='Choose a Field of Study...';
+	$arrFieldList[]='Chọn một chuyên ngành...';
 	$arrFieldList[]='Mathematics';
 	
 	$arrFieldList[]='Physics';

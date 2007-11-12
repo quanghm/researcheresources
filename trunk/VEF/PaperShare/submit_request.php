@@ -8,8 +8,10 @@ include "chk_login.inc";
 <body>
 <form name="frmRequestData" action="account.php?type=submit_request" method="post">
 <?php
+/*
 if ($_SERVER['HTTP_REFERER']!=='http://'.$_SERVER['SERVER_NAME'].dirname($_SERVER['PHP_SELF'])."/account.php?type=submit_request")
 {die("invalid referer");}
+ */
 foreach ($_POST as $key => $value)
 {
 	if ($key!=="btnSubmit")
@@ -36,7 +38,7 @@ if (logged_in())
 		</script>");
 	}
 	//	check year
-	$pattern = "/([0-9]*[0-9])/";
+	$pattern = "/([0-9]+[0-9])/";
 	if (preg_match($pattern,$_POST['txtYear'])==0)
 	{
 		$_SESSION['ErrMes']="Năm xuất bản chỉ được chứa chữ số";
@@ -45,7 +47,7 @@ if (logged_in())
 		frmRequestData.submit()</script>");
 	}
 	//	check page range
-	$pattern = "/([0-9]*[0-9,\-])/";
+	$pattern = "/([0-9]+[0-9,\-])/";
 	if (preg_match($pattern,$_POST['txtPages'])==0)
 	{
 		$_SESSION['ErrMes']="Số trang chỉ được chứa chữ số và dấu gạch ngang \"-\"";

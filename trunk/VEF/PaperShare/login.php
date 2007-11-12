@@ -81,7 +81,7 @@ else
 ///////     Display loggin form     ////////
 ////////////////////////////////////////////
 {
-	include "login_form.inc";
+	include "login_form.inc.php";
 	/*
 	if ($_SESSION["ErrMes"]!=="")
 	{
