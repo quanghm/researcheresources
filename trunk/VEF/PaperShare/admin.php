@@ -249,6 +249,92 @@ else	//start admin
 			echo "</table>\r\n";
 		}
 	}
+	elseif ($_GET['action']=='requests')
+	{
+		if (!isset($_POST['offset']))
+		{
+			$_POST['offset']=0;
+		}
+		if (!isset($_GET['orderBy']))
+		{
+			$_GET['orderBy']='id';
+		}
+		if (!isset($_GET['order']))
+		{
+			$_GET['order']='DESC';
+		}
+
+		$strMysqlQuery="SELECT * FROM $strTableRequestName";
+		if ((isset($_POST['field']))and ($_POST['field']>0))
+		{
+			$strMysqlQuery=$strMysqlQuery." WHERE (field='".$arrFieldList[$_POST['field']]."')";
+		}
+		$strMysqlQuery.= (" ORDER BY ".$_GET['orderBy']." ".$_GET['order']);
+		
+		$result = mysql_query($strMysqlQuery) or die(mysql_error());
+		
+		echo "<center>Danh sách yêu cầu</center><br />\r\n" .
+			"<form method='POST' name='frmFilter' id='frmFilter' action='admin.php?action=requests'>\r\n" .
+			"\t<center>" .
+			"\t Bắt đầu từ:<input name='offset' type='text' size='5' value='0'/>" .
+			"\t Chuyên ngành:<select name='field' onchange='document.getElementById(\"frmFilter\").submit()'>\r\n";
+		foreach ($arrFieldList as $key => $value)
+		{
+			echo "\t\t<option value='$key' ";
+			if ($key==$_POST['field'])
+			{
+				echo "selected='selected' ";
+			}
+			echo ">$value</option>\r\n";
+		}
+		echo "\t</select>\r\n" .
+			"\t<input type='submit' value='Lọc'>" .
+			"\t</center>" .
+			"</form>\r\n";
+		if (mysql_num_rows($result)==0)
+		{
+			echo "Chưa có yêu cầu nào!";
+		}
+		else
+		{
+			echo "<table align='center'>\r\n" .
+					"<tr>\r\n" .
+					"<th width=\"25%\">Tên bài báo</th>\r\n" .
+					"<th>Ngày yêu cầu</th>\r\n" .
+					"<th>Chuyên ngành</th>\r\n" .
+					"<th>Người yêu cầu</th>\r\n" .
+					"<th>Người cung cấp</th>\r\n" .
+					"<th>Trạng thái</th>\r\n" .
+					"</tr>";
+			$strTrClass="odd";
+			while ($arrRequestData=mysql_fetch_array($result))
+			{
+				echo "<tr class=\"$strTrClass\">\r\n" .
+					"\t<td>" .$arrRequestData['title']."</td>\r\n".
+					"\t<td>" .$arrRequestData['date_request']."</td>\r\n".
+					"\t<td>" .$arrRequestData['field']."</td>\r\n".
+					"\t<td>" .$arrRequestData['requester']."</td>\r\n".
+					"\t<td>" .$arrRequestData['supplier']."</td>\r\n".
+					"\t<td>" ;
+				if ( $arrRequestData['status'] == -1)
+				{
+					echo "Hoàn tất";
+				}
+				elseif ($arrRequestData['status']==-2)
+				{
+					echo "Thất bại";
+				}
+				else
+				{
+					echo "Đang chờ";
+				}
+				echo "</td>\r\n".
+					"</tr>\r\n";
+				$strTrClass=str_replace($strTrClass,"",'oddeven');
+			}
+			echo "</table>\r\n";
+		}
+	}
 	else
 	{
 		echo '<a href="admin.php?action=mail">Gửi email nhắc việc cho các suppliers</a><br />'."\n";
