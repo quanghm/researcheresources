@@ -1,7 +1,6 @@
 <?php
 include "chk_login.inc";
 ?>
-<html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Đăng ký thành viên</title>
@@ -90,6 +89,7 @@ return true;
 
 <link href="Theme/Default/style.css" rel="stylesheet" type="text/css">
 </head>
+
 <body>
 <table width="999" border="0" align="center" bgcolor="#FFFFFF" >
   <tr bgcolor="#CCCC66">

@@ -10,13 +10,12 @@ if ((logged_in())&& (!isset($strConn)))
 <html xmlns="http://www.w3.org/1999/xhtml"><!-- InstanceBegin template="/Templates/paper_share.dwt.php" codeOutsideHTMLIsLocked="false" -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-
 <!-- InstanceBeginEditable name="doctitle" -->
 <title>Trang chủ</title>
 <!-- InstanceEndEditable -->
+<?php echo'<link href="Theme/Default/style.css" rel="stylesheet" type="text/css" />'; ?>
 <!-- InstanceBeginEditable name="head" -->
 <!-- InstanceEndEditable -->
-<?php echo'<link href="Theme/Default/style.css" rel="stylesheet" type="text/css" />'; ?>
 </head>
 
 <body>
@@ -34,16 +33,16 @@ if ((logged_in())&& (!isset($strConn)))
 		echo "<a href=\"register.php\" class=\"menu\">Đăng ký thành viên</a>";
 	}
 	?>	</td>
-    <td width="25%" ><?php echo "<a href=\"feedback.php\" class=\"menu\">Góp ý</a>"; ?>	</td>
+    <td width="25%" ><?php echo "<a href=\"feedback.php\" class=\"menu\">Góp ý</a>"; ?>
+	</td>
     <td height="40"> <?php echo "<a href=\"about.php\" class=\"menu\">Về chúng tôi</a>"; ?></td>
   </tr>
   <tr >
     <td width="66%" height="700"valign="top" colspan="3">
-<!-- InstanceBeginEditable name="body" -->
+	<!-- InstanceBeginEditable name="body" -->
 <?php include"announce.php";?>
-<!-- InstanceEndEditable -->
-</td>
-    <td width="33%" align="left" valign="top" bgcolor="#CCCC66"><?php
+<!-- InstanceEndEditable -->	</td>
+<td width="33%" align="left" valign="top" bgcolor="#CCCC66"><?php
 		if (logged_in())
 		{
 			//////////// Select user from database /////////////

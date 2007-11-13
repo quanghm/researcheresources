@@ -10,14 +10,13 @@ if ((logged_in())&& (!isset($strConn)))
 <html xmlns="http://www.w3.org/1999/xhtml"><!-- InstanceBegin template="/Templates/paper_share.dwt.php" codeOutsideHTMLIsLocked="false" -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-
 <!-- InstanceBeginEditable name="doctitle" -->
 <title>Untitled Document</title>
 <!-- InstanceEndEditable -->
+<?php echo'<link href="Theme/Default/style.css" rel="stylesheet" type="text/css" />'; ?>
 <!-- InstanceBeginEditable name="head" -->
 <?php echo'<link href="Theme/Default/style.css" rel="stylesheet" type="text/css" />'; ?>
 <!-- InstanceEndEditable -->
-<?php echo'<link href="Theme/Default/style.css" rel="stylesheet" type="text/css" />'; ?>
 </head>
 
 <body>
@@ -35,12 +34,13 @@ if ((logged_in())&& (!isset($strConn)))
 		echo "<a href=\"register.php\" class=\"menu\">Đăng ký thành viên</a>";
 	}
 	?>	</td>
-    <td width="25%" ><?php echo "<a href=\"feedback.php\" class=\"menu\">Góp ý</a>"; ?>	</td>
+    <td width="25%" ><?php echo "<a href=\"feedback.php\" class=\"menu\">Góp ý</a>"; ?>
+	</td>
     <td height="40"> <?php echo "<a href=\"about.php\" class=\"menu\">Về chúng tôi</a>"; ?></td>
   </tr>
   <tr >
     <td width="66%" height="700"valign="top" colspan="3">
-<!-- InstanceBeginEditable name="body" -->
+	<!-- InstanceBeginEditable name="body" -->
 <p align="justify">Website “article exchange” do một nhóm nghiên cứu sinh Việt  Nam tại Mỹ ở nhiều lĩnh vực khác nhau lập nên. Mục đích của website là đáp ứng  nhu cầu ngày càng lớn của cộng đồng khoa học trong nước đối với các bài báo  khoa học, đồng thời thông qua đó tạo điều kiện quen biết, học hỏi và hợp tác  lâu dài giữa cộng đồng khoa học trong nước và nước ngoài. Website hoạt động như  một cầu nối giữa một bên là những người có nhu cầu và một bên là những người có  khả năng cung cấp các bài báo khoa học.   Những lĩnh vực  mà website có thể  cung cấp bao gồm: Toán học, Vật Lý, Hóa học, Sinh học, Công nghệ thông  tin,....</p>
 <p align="justify"><strong>Quyền lợi và trách nhiệm của người  dùng:</strong></p>
 <div align="justify">
@@ -76,9 +76,8 @@ if ((logged_in())&& (!isset($strConn)))
       </ul>
     </ol>
 </div><p align="justify"><em>Để website  hoạt động có hiệu quả, chúng tôi tha thiết kêu gọi những ai có khả năng làm  người cung cấp đối với một trong các lĩnh vực nêu trên, bất kể đang ở Anh,  Pháp, Mỹ, Đức...tình nguyện <a href="register.php">đăng ký</a> tham gia website. Thời gian và công sức mà  các bạn bỏ ra sẽ là vô cùng quý báu. Cảm ơn các bạn.</em></p>	
-<!-- InstanceEndEditable -->
-</td>
-    <td width="33%" align="left" valign="top" bgcolor="#CCCC66"><?php
+<!-- InstanceEndEditable -->	</td>
+<td width="33%" align="left" valign="top" bgcolor="#CCCC66"><?php
 		if (logged_in())
 		{
 			//////////// Select user from database /////////////
