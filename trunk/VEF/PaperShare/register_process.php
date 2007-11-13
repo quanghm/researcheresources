@@ -155,6 +155,7 @@ else
 		$strInsertQuery = "INSERT INTO $strTableUserName (username, password, email, field, supplier,join_date) VALUES ('".$_POST[frmUsername]."', '".$encoded_password."', '".$_POST['frmEmail']."', '".$arrFieldList[$_POST['frmField']]."','".$_POST['frmSupplier']."','$today')";
 		mysql_query($strInsertQuery) or die(mysql_error());
 		/// email user
+		$strEmailTo=$_POST['frmEmail'];
 		$strSubject="Chào mừng ".$_POST["frmUsername"];
 		$Headers="From: ".$strAdminEmail."\r\n";
 		$Headers .= "MIME-Version: 1.0\r\n"; 
@@ -181,9 +182,9 @@ else
 		else
 		{
 			echo ("<center>Send email to ".$_POST['frmUsername'].": FAILED.</center>\n");
-		}	
+		}
+	
 		*/
-		
 		do_send($_POST['frmEmail'],$_POST['frmUsername'],$strSubject,$message);
 		echo "Chào mừng ";
 		echo $_SESSION["username"] = $_POST["frmUsername"];
