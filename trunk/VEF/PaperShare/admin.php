@@ -265,6 +265,7 @@ else	//start admin
 					"<th>Chuyên ngành</th>\r\n" .
 					"<th>Số yêu cầu đã hoàn tất</th>\r\n" .
 					"<th>Số yêu cầu đang chờ</th>\r\n" .
+					"<th>Email</th>\r\n" .
 					"<th>Supplier</th>\r\n" .
 					"</tr>";
 			$strTrClass="odd";
@@ -276,6 +277,7 @@ else	//start admin
 					"\t<td>" .$arrUserData['field']."</td>\r\n".
 					"\t<td>" .$arrUserData['request_handle_number']."</td>\r\n".
 					"\t<td>" .$arrUserData['request_pending_number']."</td>\r\n".
+					"\t<td>" .$arrUserData['email']."</td>\r\n".
 					"\t<td>" .$arrUserData['supplier']."</td>\r\n".
 					"</tr>\r\n";
 				$strTrClass=str_replace($strTrClass,"",'oddeven');
