@@ -170,7 +170,7 @@ return true;
     <td width="25%">&nbsp;</td>
     <td width="25%">Bạn có muốn làm người cung cấp</td>
     <td width="12%"><label>
-      <input name="frmSupplier" type="radio" value="1" <?php if ($_POST['frmSupplier']==1) {echo "checked=\"checked\"";}?>>
+      <input name="frmSupplier" type="radio" value="1" onChange="alert('Người cung cấp sẽ giúp các user khác lấy tài liệu khi được yêu cầu.\r\nNếu bạn chỉ đơn thuần cần tài liệu, bạn nên chọn KHÔNG.')" <?php if ($_POST['frmSupplier']==1) {echo "checked=\"checked\"";}?>>
     Có</label></td>
     <td width="13%"><label>
       <input name="frmSupplier" type="radio" value="0" <?php if ($_POST['frmSupplier']==0) {echo "checked=\"checked\"";}?>>
