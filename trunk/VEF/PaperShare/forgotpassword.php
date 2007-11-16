@@ -56,7 +56,7 @@ if ($_GET['action']=='get')
 		$strMysqlQuery = "UPDATE $strTableUserName SET password='".$strEncodedPassword."' WHERE username='".$_POST['frmUsername']."'";
 		mysql_query($strMysqlQuery) or die(mysql_error());
 		////	email new password to user
-			$strDir=dirname($_SERVER['PHP_SELF']);
+
 			$message = "<html>
 	<head>
 	<title>Mật khẩu mới tại $strWebsiteName</title>
@@ -64,20 +64,27 @@ if ($_GET['action']=='get')
 	
 	<body>
 	Đây là email tự động gửi từ ban quản trị của $strWebsiteName.<br/>
-	Mật khẩu mới của bạn là $strNewPassword. Bạn có thể đăng nhập vào trang cá nhân của bạn tại<a href=\"".'http://'.$_SERVER['SERVER_NAME'].$strDir."\">$strWebsiteName </a> để thay đổi mật khẩu.
+	Mật khẩu mới của bạn là <strong>$strNewPassword</strong>. <br/>" .
+	"Bạn có thể đăng nhập vào trang cá nhân của bạn tại <a href=\"".'http://'.$_SERVER['SERVER_NAME'].$strDir."\">$strWebsiteName </a> để thay đổi mật khẩu.
 	</body>
 	</html>";
 				$To = $_POST['frmEmail'];
 				$Subject = "Mat khau moi tu $strWebsiteName";
-				$Headers = "From: ".$strAdminEmail."\r\n";
-    			$Headers .= "MIME-Version: 1.0\r\n"; 
-				$Headers .= "content-type: text/html; charset=utf-8\r\n";
-				mail($To, $Subject, $message, $Headers);
+				
+	include $strIncDir."sendmail/mail.php";		
+	
+				//mail($To, $Subject, $message, $Headers);
+				if (do_send($_POST['frmEmail'],$_POST['frmUsername'],$Subject,$message))
+				{
+					echo "<center> Password mới đã được gửi đến email bạn dùng để đăng ký! <br/>\r\n" .
+						"Đang quay lại trang chủ, bấm vào <a href='index.php'>đây</a> nếu bạn thấy đợi lâu.</center>\r\n";
+					echo "<script language='javascript'>setTimeout('window.location=\"index.php\"',3000)</script>";
+				}
 	}
 	else
 	{
 		$_SESSION['ErrMes']="Bạn đã nhập sai bí danh hoặc email";
-		echo "<script language=\"javascript\">window.location='forgotpassword.php'</script>";
+		echo("<script language=\"javascript\">window.location='forgotpassword.php'</script>");
 	}
 	include "dbclose.php";
 }

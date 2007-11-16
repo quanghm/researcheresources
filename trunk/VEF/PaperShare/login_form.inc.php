@@ -20,5 +20,6 @@
 		echo "  </tr>";
 		echo "</table>";
 		echo "</form>";
+		echo "Quên mật khẩu? <a href=\"forgotpassword.php\">Tạo mật khẩu mới</a>.<br/>\r\n";
 		echo "Chưa có tài khoản? <a href=\"register.php\">Đăng ký thành viên...</a>";
 ?>		
