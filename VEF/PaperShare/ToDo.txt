@@ -1,3 +1,4 @@
+
 User page:
 	Cancel request
 
@@ -12,3 +13,5 @@ Add option:$archive_request
 	If yes:	save paper on server
 	If No:	delete paper on server
 	
+more detail list is here 
+http://code.google.com/p/researcheresources/issues/list
