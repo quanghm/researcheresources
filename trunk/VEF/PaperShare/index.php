@@ -11,7 +11,8 @@ if ((logged_in())&& (!isset($strConn)))
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <!-- InstanceBeginEditable name="doctitle" -->
-<title>Trang chủ</title>
+
+<title>Nghi�n c?u sinh dot org</title>
 <!-- InstanceEndEditable -->
 <?php echo'<link href="Theme/Default/style.css" rel="stylesheet" type="text/css" />'; ?>
 <!-- InstanceBeginEditable name="head" -->
@@ -21,8 +22,8 @@ if ((logged_in())&& (!isset($strConn)))
 <body>
 <table width="999" border="0" align="center">
   <tr bgcolor="#CCCC66" align="center">
-    <td width="25%" height="40" nowrap="nowrap" ><?php echo "<a href=\"index.php\" class=\"menu\">"?><span class="menu">Trang chủ</span><?php echo"</a>"; ?></td>
-    <td width="25%" height="40" >
+    <td width="20%" height="40" nowrap="nowrap" ><?php echo "<a href=\"index.php\" class=\"menu\">"?><span class="menu">Trang chủ</span><?php echo"</a>"; ?></td>
+    <td width="20%" height="40" >
 	<?php 
 	if (logged_in())
 	{
@@ -33,15 +34,17 @@ if ((logged_in())&& (!isset($strConn)))
 		echo "<a href=\"register.php\" class=\"menu\">Đăng ký thành viên</a>";
 	}
 	?>	</td>
-    <td width="25%" ><?php echo "<a href=\"feedback.php\" class=\"menu\">Góp ý</a>"; ?>
+    <td width="10%" ><a href="/blogger/blog.html" class="menu">Blog</a> </td>
+    <td width="20%" ><?php echo "<a href=\"feedback.php\" class=\"menu\">Góp ý</a>"; ?>
 	</td>
-    <td height="40"> <?php echo "<a href=\"about.php\" class=\"menu\">Về chúng tôi</a>"; ?></td>
+    <td width="25%" height="40"> <?php echo "<a href=\"about.php\" class=\"menu\">Về chúng tôi</a>"; ?></td>
   </tr>
   <tr >
     <td width="66%" height="700"valign="top" colspan="3">
 	<!-- InstanceBeginEditable name="body" -->
 <?php include"announce.php";?>
 <!-- InstanceEndEditable -->	</td>
+<td></td>
 <td width="33%" align="left" valign="top" bgcolor="#CCCC66"><?php
 		if (logged_in())
 		{
