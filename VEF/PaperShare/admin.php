@@ -306,13 +306,14 @@ else	//start admin
 			$strMysqlQuery=$strMysqlQuery." WHERE (field='".$arrFieldList[$_POST['field']]."')";
 		}
 		$strMysqlQuery.= (" ORDER BY ".$_GET['orderBy']." ".$_GET['order']);
+		$strMysqlQuery.= (" LIMIT ".$_POST['offset'].", 30");
 		
 		$result = mysql_query($strMysqlQuery) or die(mysql_error());
 		
 		echo "<center>Danh sách yêu cầu</center><br />\r\n" .
 			"<form method='POST' name='frmFilter' id='frmFilter' action='admin.php?action=requests'>\r\n" .
 			"\t<center>" .
-			"\t Bắt đầu từ:<input name='offset' type='text' size='5' value='0'/>" .
+			"\t Bắt đầu từ:<input name='offset' type='text' size='5' value='".$_POST['offset']."'/>" .
 			"\t Chuyên ngành:<select name='field' onchange='document.getElementById(\"frmFilter\").submit()'>\r\n";
 		foreach ($arrFieldList as $key => $value)
 		{

@@ -13,7 +13,7 @@ if ((logged_in())&& (!isset($strConn)))
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
 <!-- InstanceBeginEditable name="doctitle" -->
-<title>Untitled Document</title>
+<title>Gửi góp ý cho trang web</title>
 <!-- InstanceEndEditable -->
 <!-- InstanceBeginEditable name="head" -->
 <!-- InstanceEndEditable -->
