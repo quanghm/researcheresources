@@ -21,27 +21,9 @@ if ((logged_in())&& (!isset($strConn)))
 
 <body>
 <table width="999" border="0" align="center">
-  <tr bgcolor="#CCCC66" align="center">
+  <tr align="center">
     <td colspan="2">
-	<table border="1" bordercolor="#ffffff" width="100%" align="center">
-	  <tr>
-    		<td width="20%"nowrap="nowrap" ><?php echo "<a href=\"index.php\" class=\"menu\">"?><span class="menu">Trang chủ</span><?php echo"</a>"; ?></td>
-		<td width="20%">
-			<?php 
-			if (logged_in())
-			{
-				echo "<a href=\"account.php\" class=\"menu\">Hồ sơ cá nhân</a>";
-			}
-			else
-			{
-				echo "<a href=\"register.php\" class=\"menu\">Đăng ký thành viên</a>";
-			}
-			?>	</td>
-    		<td width="20%" ><a href="/blogger/blog.html" class="menu">Blog</a> </td>
-    		<td width="20%" ><?php echo "<a href=\"feedback.php\" class=\"menu\">Góp ý</a>"; ?></td>	  
-    		<td width="20%" height="40"> <?php echo "<a href=\"about.php\" class=\"menu\">Về chúng tôi</a>"; ?></td>
-    	  </tr>
-	</table>
+	<?php include "menu.php"; ?>
     </td>
   </tr>
   <tr >
