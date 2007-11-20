@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 include "chk_login.inc";
 if ((logged_in())&& (!isset($strConn)))
 {
@@ -12,7 +12,7 @@ if ((logged_in())&& (!isset($strConn)))
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <!-- InstanceBeginEditable name="doctitle" -->
 
-<title>Nghi�n c?u sinh dot org</title>
+<title>Nghiên c?u sinh dot org</title>
 <!-- InstanceEndEditable -->
 <?php echo'<link href="Theme/Default/style.css" rel="stylesheet" type="text/css" />'; ?>
 <!-- InstanceBeginEditable name="head" -->
@@ -22,29 +22,33 @@ if ((logged_in())&& (!isset($strConn)))
 <body>
 <table width="999" border="0" align="center">
   <tr bgcolor="#CCCC66" align="center">
-    <td width="20%" height="40" nowrap="nowrap" ><?php echo "<a href=\"index.php\" class=\"menu\">"?><span class="menu">Trang chủ</span><?php echo"</a>"; ?></td>
-    <td width="20%" height="40" >
-	<?php 
-	if (logged_in())
-	{
-		echo "<a href=\"account.php\" class=\"menu\">Hồ sơ cá nhân</a>";
-	}
-	else
-	{
-		echo "<a href=\"register.php\" class=\"menu\">Đăng ký thành viên</a>";
-	}
-	?>	</td>
-    <td width="10%" ><a href="/blogger/blog.html" class="menu">Blog</a> </td>
-    <td width="20%" ><?php echo "<a href=\"feedback.php\" class=\"menu\">Góp ý</a>"; ?>
-	</td>
-    <td width="25%" height="40"> <?php echo "<a href=\"about.php\" class=\"menu\">Về chúng tôi</a>"; ?></td>
+    <td colspan="2">
+	<table border="1" bordercolor="#ffffff" width="100%" align="center">
+	  <tr>
+    		<td width="20%"nowrap="nowrap" ><?php echo "<a href=\"index.php\" class=\"menu\">"?><span class="menu">Trang chủ</span><?php echo"</a>"; ?></td>
+		<td width="20%">
+			<?php 
+			if (logged_in())
+			{
+				echo "<a href=\"account.php\" class=\"menu\">Hồ sơ cá nhân</a>";
+			}
+			else
+			{
+				echo "<a href=\"register.php\" class=\"menu\">Đăng ký thành viên</a>";
+			}
+			?>	</td>
+    		<td width="20%" ><a href="/blogger/blog.html" class="menu">Blog</a> </td>
+    		<td width="20%" ><?php echo "<a href=\"feedback.php\" class=\"menu\">Góp ý</a>"; ?></td>	  
+    		<td width="20%" height="40"> <?php echo "<a href=\"about.php\" class=\"menu\">Về chúng tôi</a>"; ?></td>
+    	  </tr>
+	</table>
+    </td>
   </tr>
   <tr >
-    <td width="66%" height="700"valign="top" colspan="3">
+    <td width="66%" height="700"valign="top">
 	<!-- InstanceBeginEditable name="body" -->
 <?php include"announce.php";?>
 <!-- InstanceEndEditable -->	</td>
-<td></td>
 <td width="33%" align="left" valign="top" bgcolor="#CCCC66"><?php
 		if (logged_in())
 		{
@@ -54,9 +58,9 @@ if ((logged_in())&& (!isset($strConn)))
 	$arrUserData = mysql_fetch_array($result);
 	////////////////////////////////////////////////////
 
-			echo "Chào mừng ".$_SESSION["username"]."! <button onClick=\"javascript:window.location = 'login.php?action=logout'\">Khắc xuất</button><br><br/>\n";
+			echo "ChÃ o má»«ng ".$_SESSION["username"]."! <button onClick=\"javascript:window.location = 'login.php?action=logout'\">Kháº¯c xuáº¥t</button><br><br/>\n";
 
-		echo "Bạn đã gửi ".$arrUserData['request_number']." yêu cầu! <a href=\"account.php?type=submit_request\">Yêu cầu bài báo</a><br>\n";
+		echo "Báº¡n Ä‘Ã£ gá»­i ".$arrUserData['request_number']." yÃªu cáº§u! <a href=\"account.php?type=submit_request\">YÃªu cáº§u bÃ i bÃ¡o</a><br>\n";
 		if ($arrUserData['supplier']) 
 		{
 			////////	Get list of requests pending	/////////////
@@ -64,35 +68,35 @@ if ((logged_in())&& (!isset($strConn)))
 			$result = mysql_query($strMysqlQuery) or die(mysql_error());
 			$request_pending = mysql_num_rows($result);
 			if ($request_pending>0)
-			{	echo "Bạn có ".$request_pending." yêu cầu đang chờ <a href=\"account.php?type=request\">xử lý!</a><br>\n";
+			{	echo "Báº¡n cÃ³ ".$request_pending." yÃªu cáº§u Ä‘ang chá» <a href=\"account.php?type=request\">xá»­ lÃ½!</a><br>\n";
 			}
 			else
 			{
-				echo "Bạn không có yêu cầu nào đang chờ!<br>\n";
+				echo "Báº¡n khÃ´ng cÃ³ yÃªu cáº§u nÃ o Ä‘ang chá»!<br>\n";
 			}
 		}
-		echo "<br />\r\n <a href=\"account.php?type=change\"> Thay đổi thông tin cá nhân </a><br>";			
-		if ($arrUserData['admin']){echo "<a href=\"admin.php\">Đăng nhập trang quản trị</a>";}
+		echo "<br />\r\n <a href=\"account.php?type=change\"> Thay Ä‘á»•i thÃ´ng tin cÃ¡ nhÃ¢n </a><br>";			
+		if ($arrUserData['admin']){echo "<a href=\"admin.php\">ÄÄƒng nháº­p trang quáº£n trá»‹</a>";}
 			//////// Close connection to database /////////
 			include "dbclose.php";
 		}
 		else
 		{	
-			echo "<center>Bạn chưa đăng nhập</center>";
+			echo "<center>Báº¡n chÆ°a Ä‘Äƒng nháº­p</center>";
 			require "login_form.inc.php";
 
 		}
 	?></td>
   </tr>
   <tr >
-    <td colspan="5" valign="top" align="center"><!-- Google CSE Search Box Begins  -->
+    <td colspan="2" valign="top" align="center"><!-- Google CSE Search Box Begins  -->
 <form action="http://www.google.com/cse" id="searchbox_004865859078258633675:18sqvplglto">
   <input type="hidden" name="cx" value="004865859078258633675:18sqvplglto" />
   <input type="text" name="q" size="25" />
   <input type="submit" name="sa" value="Search" />
 </form>
 <!-- Google CSE Search Box Ends -->
-© Copyright 2007 by <?php echo $strWebsiteName?></td>
+Â© Copyright 2007 by <?php echo $strWebsiteName?></td>
   </tr>
 </table>
 <script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
