@@ -24,18 +24,25 @@ if (isset($_SESSION['ErrMesFeedback'])and ($_SESSION['ErrMesFeedback']!==''))
 	$_SESSION['ErrMesFeedback']="";
 }
 ?>
-<form onsubmit='return confirm("Gửi góp ý?");' method="post" action="post.php">
-<input type="hidden" name="action" value="send"/>
-<!-- Include the Free Rich Text Editor Runtime -->
-<script src="<? echo "incs/rte" ?>/js/richtext.js" type="text/javascript" language="javascript"></script>
-<!-- Include the Free Rich Text Editor Variables Page -->
-<script src="<? echo "incs/rte" ?>/js/config.js.php" type="text/javascript" language="javascript"></script>
-<!-- Initialise the editor -->
-<script>
-initRTE('<?= $content ?>', 'example.css');
-</script>
-<input type="submit" value="Gui gop y">
-</form>
+<table width="60%">
+	<tr>
+		<td align="center">
+			<form onsubmit='return confirm("Gửi góp ý?");' method="post" action="post.php">
+			Email của bạn (không bắt buộc): <input type="text" name="email" >
+			<input type="hidden" name="action" value="send"/>
+			<!-- Include the Free Rich Text Editor Runtime -->
+			<script src="<? echo "incs/rte" ?>/js/richtext.js" type="text/javascript" language="javascript"></script>
+			<!-- Include the Free Rich Text Editor Variables Page -->
+			<script src="<? echo "incs/rte" ?>/js/config.js.php" type="text/javascript" language="javascript"></script>
+			<!-- Initialise the editor -->
+			<script>
+			initRTE('<?= $content ?>', 'example.css');
+			</script>
+			<input type="submit" value="Gui gop y">
+			</form>
+		</td>
+	</tr>
+</table>
 </center>
 <?php
 /*
