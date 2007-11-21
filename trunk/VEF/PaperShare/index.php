@@ -12,7 +12,7 @@ if ((logged_in())&& (!isset($strConn)))
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <!-- InstanceBeginEditable name="doctitle" -->
 
-<title>Nghiên c?u sinh dot org</title>
+<title>Nghi&ecirc;n c&#7913;u sinh dot org</title>
 <!-- InstanceEndEditable -->
 <?php echo'<link href="Theme/Default/style.css" rel="stylesheet" type="text/css" />'; ?>
 <!-- InstanceBeginEditable name="head" -->
@@ -40,9 +40,9 @@ if ((logged_in())&& (!isset($strConn)))
 	$arrUserData = mysql_fetch_array($result);
 	////////////////////////////////////////////////////
 
-			echo "ChÃ o má»«ng ".$_SESSION["username"]."! <button onClick=\"javascript:window.location = 'login.php?action=logout'\">Kháº¯c xuáº¥t</button><br><br/>\n";
+			echo "Ch&agrave;o m&#7915;ng ".$_SESSION["username"]."! <button onClick=\"javascript:window.location = 'login.php?action=logout'\">Kh&#7855;c xu&#7845;t</button><br><br/>\n";
 
-		echo "Báº¡n Ä‘Ã£ gá»­i ".$arrUserData['request_number']." yÃªu cáº§u! <a href=\"account.php?type=submit_request\">YÃªu cáº§u bÃ i bÃ¡o</a><br>\n";
+		echo "B&#7841;n &#273;&atilde; g&#7917;i ".$arrUserData['request_number']." Y&ecirc; c&#7847;u! <a href=\"account.php?type=submit_request\">Y&ecirc; c&#7847;u b&agrave;i b&aacute;o</a><br>\n";
 		if ($arrUserData['supplier']) 
 		{
 			////////	Get list of requests pending	/////////////
@@ -50,21 +50,21 @@ if ((logged_in())&& (!isset($strConn)))
 			$result = mysql_query($strMysqlQuery) or die(mysql_error());
 			$request_pending = mysql_num_rows($result);
 			if ($request_pending>0)
-			{	echo "Báº¡n cÃ³ ".$request_pending." yÃªu cáº§u Ä‘ang chá» <a href=\"account.php?type=request\">xá»­ lÃ½!</a><br>\n";
+			{	echo "B&#7841;n c&oacute; ".$request_pending." y&ecirc;u c&#7847;u &#273;ang ch&#7901; <a href=\"account.php?type=request\">x&#7917; l&yacute;!</a><br>\n";
 			}
 			else
 			{
-				echo "Báº¡n khÃ´ng cÃ³ yÃªu cáº§u nÃ o Ä‘ang chá»!<br>\n";
+				echo "B&#7841;n kh&ocirc;ng c&oacute; y&ecirc;u c&#7847;u n&agrave;o &#273;ang ch&#7901;!<br>\n";
 			}
 		}
-		echo "<br />\r\n <a href=\"account.php?type=change\"> Thay Ä‘á»•i thÃ´ng tin cÃ¡ nhÃ¢n </a><br>";			
-		if ($arrUserData['admin']){echo "<a href=\"admin.php\">ÄÄƒng nháº­p trang quáº£n trá»‹</a>";}
+		echo "<br />\r\n <a href=\"account.php?type=change\"> Thay &#273;&#7893;i th&ocirc;ng tin c&aacute; nh&acirc;n </a><br>";			
+		if ($arrUserData['admin']){echo "<a href=\"admin.php\"> &#272;&#259;ng nh&#7853;p trang qu&#7843;n tr&#7883;</a>";}
 			//////// Close connection to database /////////
 			include "dbclose.php";
 		}
 		else
 		{	
-			echo "<center>Báº¡n chÆ°a Ä‘Äƒng nháº­p</center>";
+			echo "<center>B&#7841;n ch&#432;a &#273;&#259;ng nh&#7853;p</center>";
 			require "login_form.inc.php";
 
 		}
