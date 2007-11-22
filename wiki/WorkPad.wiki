@@ -1,13 +1,4 @@
-#summary One-sentence summary of this page.
+This page is to document our progress in system development.
 
-= Introduction =
-
-Add your content here.
-
-
-= Details =
-
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+|| Date || Issue ID || Completed by || Comments || Hours worked || 
+|| 11/22/07 || 11 || Cuong || hoan tat || 1h ||
