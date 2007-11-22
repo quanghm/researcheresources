@@ -1,4 +1,4 @@
 This page is to document our progress in system development.
 
-|| Date || Issue ID || Completed by || Comments || Hours worked || 
+|| *Date* || *Issue ID* || *Completed by* || *Comments* || *Hours worked* || 
 || 11/22/07 || [http://code.google.com/p/researcheresources/issues/detail?id=11 11] || Cuong || hoan tat || 1h ||
