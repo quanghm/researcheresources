@@ -153,6 +153,8 @@ if ((logged_in())&& (!isset($strConn)))
 				echo "';\">Ngày yêu cầu</th>\n";
 				echo "      <th scope=\"col\" onclick=\"window.location='account.php?type=articles&sortby=status&order=".str_replace($_GET['order'],"",'ASCDESC');
 				echo "';\">Tình trạng</th>\n";
+				echo "      <th scope=\"col\" onclick=\"window.location='account.php?type=articles&sortby=download_link&order=".str_replace($_GET['order'],"",'ASCDESC');
+				echo "';\">Link</th>\n";
 				echo "  </tr>";
 				$ArticleIndex = 1;
 				$row = 0;
@@ -192,6 +194,7 @@ if ((logged_in())&& (!isset($strConn)))
 					{
 						echo "      <td ><a href=\"".$arrArticleList['download_link']."\">Ready</a></td>\n";				
 					}
+					echo "      <td ><a href=\"".$arrArticleList['download_link']."\">Link</a></td>\n";				
 					echo "  </tr>\n";
 					$row++;
 				}
@@ -209,6 +212,72 @@ if ((logged_in())&& (!isset($strConn)))
 				$_GET['order']="DESC";
 			}
 			$strMysqlQuery = "SELECT * FROM $strTableRequestName WHERE (supplier = '".$_SESSION['username']."') AND (status>=0) ORDER BY ".$_GET['sortby']." ".$_GET['order'];
+			$result = mysql_query($strMysqlQuery) or die(mysql_error());
+
+			if (mysql_num_rows($result) == 0)
+			{	
+				echo "Hiện không có yêu cầu nào được gửi tới bạn!";
+			}
+			else
+			{
+				echo "<table width=\"100%\" cellpadding=\"1\" cellspacing=\"1\">";
+				echo "	<tr>\n";
+				echo "		<th scope=\"col\">STT</th>\n";
+				echo "      <th scope=\"col\" onclick=\"window.location='account.php?type=request&sortby=title&order=".str_replace($_GET['order'],"",'ASCDESC');
+				echo "';\">Tiêu đề</th>\n";
+				echo "      <th scope=\"col\" onclick=\"window.location='account.php?type=request&sortby=author&order=".str_replace($_GET['order'],"",'ASCDESC');
+				echo "';\">Tác giả</th>\n";
+				echo "      <th scope=\"col\" onclick=\"window.location='account.php?type=request&sortby=journal&order=".str_replace($_GET['order'],"",'ASCDESC');
+				echo "';\">Tạp chí</th>\n";
+				echo "      <th scope=\"col\" onclick=\"window.location='account.php?type=request&sortby=year&order=".str_replace($_GET['order'],"",'ASCDESC');
+				echo "';\">Năm</th>\n";
+				echo "      <th scope=\"col\" onclick=\"window.location='account.php?type=request&sortby=date_request&order=".str_replace($_GET['order'],"",'ASCDESC');
+				echo "';\">Ngày yêu cầu</th>\n";
+				echo "      <th scope=\"col\" onclick=\"window.location='account.php?type=request&sortby=status&order=".str_replace($_GET['order'],"",'ASCDESC');
+				echo "';\">Trạng thái</th>\n";
+				echo "  </tr>";
+				$ArticleIndex = 1;
+				$row=1;
+				while ($arrArticleList = mysql_fetch_array($result))
+				{
+					//$row++;
+					echo "	<tr ";
+					if ($row++%2)
+					{
+						echo 'class="even"';
+					}
+					else
+					{
+						echo 'class="odd"';
+					}
+					echo " onclick=\"document.frm$ArticleIndex.submit();\"";
+					echo ">
+								<td >".$ArticleIndex."</td>\n";
+					echo "      <td >".$arrArticleList['title']."</td>\n";
+					echo "      <td >".$arrArticleList['author']."</td>\n";
+					echo "      <td >".$arrArticleList['journal']."</td>\n";
+					echo "      <td >".$arrArticleList['year']."</td>\n";
+					echo "      <td >".$arrArticleList['date_request']."</td>\n";
+					echo "      <td align=\"center\"><form name=\"frm".$ArticleIndex++."\" method=\"POST\" action=\"account.php?type=handle_request\">
+									<input type=\"hidden\" name=\"frmRequestID\" value=\"".$arrArticleList['id']."\"/>
+									<input type=\"submit\" name=\"frmSubmiHandle\" value=\" Chi tiết \"/>
+									</form></td>\n";
+					echo "  </tr>\n";
+				}
+				echo "</table>";
+			}
+		}
+		elseif ($_GET['type'] == 'completed')   /////// If View the requests pending
+		{			
+			if (!isset($_GET['sortby']))
+			{
+				$_GET['sortby']= "date_request";
+			}
+			if (!isset($_GET['order']))
+			{
+				$_GET['order']="DESC";
+			}
+			$strMysqlQuery = "SELECT * FROM $strTableRequestName WHERE (supplier = '".$_SESSION['username']."') AND (status=-1) ORDER BY ".$_GET['sortby']." ".$_GET['order'];
 			$result = mysql_query($strMysqlQuery) or die(mysql_error());
 
 			if (mysql_num_rows($result) == 0)
@@ -557,6 +626,18 @@ if ((logged_in())&& (!isset($strConn)))
 				{
 					echo "Hiện tại bạn không có yêu cầu nào cần xử lý!<br>\n";
 				}
+				//// Get list of completed requests
+				$strMysqlQuery = "SELECT * FROM $strTableRequestName WHERE (supplier = '".$_SESSION['username']."') AND (status = -1)";
+				$result = mysql_query($strMysqlQuery) or die(mysql_error());
+				$request_completed = mysql_num_rows($result);
+
+				if ($request_completed>0)
+				{	echo "Bạn da hoan thanh ".$request_completed." yêu cầu <a href=\"account.php?type=completed\">An vao day</a><br>\n";
+				}
+				else
+				{
+					echo "Bạn chua co yeu cau nao hoan tat!<br>\n";
+				}
 			}
 			echo "<a href=\"account.php?type=change\"> Thay đổi thông tin cá nhân </a>";			
 		}
@@ -592,6 +673,7 @@ if ((logged_in())&& (!isset($strConn)))
 			{
 				echo "Bạn không có yêu cầu nào đang chờ!<br>\n";
 			}
+
 		}
 		echo "<br />\r\n <a href=\"account.php?type=change\"> Thay đổi thông tin cá nhân </a><br>";			
 		if ($arrUserData['admin']){echo "<a href=\"admin.php\">Đăng nhập trang quản trị</a>";}
