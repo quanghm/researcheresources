@@ -1,6 +1,0 @@
-1. correct Change_info.php
-2. Correct Passing request Problem. (Still not support inter-discipline passing)
-///////////////////////////////////
-Apr 08
-1. Add style for table of requests
-2. Sort table of requests by fields
