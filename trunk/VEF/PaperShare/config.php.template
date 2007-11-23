@@ -5,9 +5,9 @@
 
 $strDatabaseHost = 'localhost';			
 
-$strAdmin = 'root';
+$strAdmin = 'vef';
 
-$strAdminPass = '';
+$strAdminPass = 'test123';
 
 $strDatabaseName = 'papershare';
 
