@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 include "chk_login.inc";
 if ((logged_in())&& (!isset($strConn)))
 {
@@ -11,8 +11,7 @@ if ((logged_in())&& (!isset($strConn)))
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <!-- InstanceBeginEditable name="doctitle" -->
-
-<title>Nghi&ecirc;n c&#7913;u sinh dot org</title>
+<title>Trang chủ</title>
 <!-- InstanceEndEditable -->
 <?php echo'<link href="Theme/Default/style.css" rel="stylesheet" type="text/css" />'; ?>
 <!-- InstanceBeginEditable name="head" -->
@@ -27,10 +26,10 @@ if ((logged_in())&& (!isset($strConn)))
     </td>
   </tr>
   <tr >
-    <td width="66%" height="700"valign="top">
+    <td width="66%" height="700" valign="top">
 	<!-- InstanceBeginEditable name="body" -->
 <?php include"announce.php";?>
-<!-- InstanceEndEditable -->	</td>
+<!-- InstanceEndEditable --></td>
 <td width="33%" align="left" valign="top" bgcolor="#CCCC66"><?php
 		if (logged_in())
 		{
@@ -40,9 +39,9 @@ if ((logged_in())&& (!isset($strConn)))
 	$arrUserData = mysql_fetch_array($result);
 	////////////////////////////////////////////////////
 
-			echo "Ch&agrave;o m&#7915;ng ".$_SESSION["username"]."! <button onClick=\"javascript:window.location = 'login.php?action=logout'\">Kh&#7855;c xu&#7845;t</button><br><br/>\n";
+			echo "Chào mừng ".$_SESSION["username"]."! <button onClick=\"javascript:window.location = 'login.php?action=logout'\">Khắc xuất</button><br><br/>\n";
 
-		echo "B&#7841;n &#273;&atilde; g&#7917;i ".$arrUserData['request_number']." Y&ecirc; c&#7847;u! <a href=\"account.php?type=submit_request\">Y&ecirc; c&#7847;u b&agrave;i b&aacute;o</a><br>\n";
+		echo "Bạn đã gửi ".$arrUserData['request_number']." yêu cầu! <a href=\"account.php?type=submit_request\">Yêu cầu bài báo</a><br>\n";
 		if ($arrUserData['supplier']) 
 		{
 			////////	Get list of requests pending	/////////////
@@ -50,23 +49,22 @@ if ((logged_in())&& (!isset($strConn)))
 			$result = mysql_query($strMysqlQuery) or die(mysql_error());
 			$request_pending = mysql_num_rows($result);
 			if ($request_pending>0)
-			{	echo "B&#7841;n c&oacute; ".$request_pending." y&ecirc;u c&#7847;u &#273;ang ch&#7901; <a href=\"account.php?type=request\">x&#7917; l&yacute;!</a><br>\n";
+			{	echo "Bạn có ".$request_pending." yêu cầu đang chờ <a href=\"account.php?type=request\">xử lý!</a><br>\n";
 			}
 			else
 			{
-				echo "B&#7841;n kh&ocirc;ng c&oacute; y&ecirc;u c&#7847;u n&agrave;o &#273;ang ch&#7901;!<br>\n";
+				echo "Bạn không có yêu cầu nào đang chờ!<br>\n";
 			}
 		}
-		echo "<br />\r\n <a href=\"account.php?type=change\"> Thay &#273;&#7893;i th&ocirc;ng tin c&aacute; nh&acirc;n </a><br>";			
-		if ($arrUserData['admin']){echo "<a href=\"admin.php\"> &#272;&#259;ng nh&#7853;p trang qu&#7843;n tr&#7883;</a>";}
+		echo "<br />\r\n <a href=\"account.php?type=change\"> Thay đổi thông tin cá nhân </a><br>";			
+		if ($arrUserData['admin']){echo "<a href=\"admin.php\">Đăng nhập trang quản trị</a>";}
 			//////// Close connection to database /////////
 			include "dbclose.php";
 		}
 		else
 		{	
-			echo "<center>B&#7841;n ch&#432;a &#273;&#259;ng nh&#7853;p</center>";
+			echo "<center>Bạn chưa đăng nhập</center>";
 			require "login_form.inc.php";
-
 		}
 	?></td>
   </tr>
@@ -78,7 +76,7 @@ if ((logged_in())&& (!isset($strConn)))
   <input type="submit" name="sa" value="Search" />
 </form>
 <!-- Google CSE Search Box Ends -->
-Â© Copyright 2007 by <?php echo $strWebsiteName?></td>
+© Copyright 2007 by <?php echo $strWebsiteName?></td>
   </tr>
 </table>
 <script src="http://www.google-analytics.com/urchin.js" type="text/javascript">

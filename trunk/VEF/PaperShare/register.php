@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 include "chk_login.inc";
 ?>
 <head>
@@ -92,13 +92,8 @@ return true;
 
 <body>
 <table width="999" border="0" align="center" bgcolor="#FFFFFF" >
-  <tr bgcolor="#CCCC66">
-    <td width="33%" height="40" align="center"><?php echo "<a href=\"index.php\" class=\"menu\">"?><span class="menu">Trang chủ</span><?php echo"</a>"; ?></td>
-    <td width="33%" height="40" align="center">      <?php 
-	echo "<a href=\"register.php\" class=\"menu\">Đăng ký thành viên</a>";
-	?>	
-    </td>
-    <td height="40" align="center"> <?php echo "<a href=\"about.php\" class=\"menu\">Về chúng tôi</a>"; ?></td>
+  <tr>
+    <td height="40" align="center" colspan="3"><?php include "menu.php" ?></td>
   </tr>
   <!---------- End of Menu ----------------->
   <tr bgcolor="#CCCC66">
