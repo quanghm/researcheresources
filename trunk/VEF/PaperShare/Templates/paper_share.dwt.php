@@ -12,27 +12,15 @@
 
 <body>
 <table width="999" border="0" align="center">
-  <tr bgcolor="#CCCC66" align="center">
-    <td width="25%" height="40" nowrap="nowrap" ><?php echo "<a href=\"index.php\" class=\"menu\">"?><span class="menu">Trang chủ</span><?php echo"</a>"; ?></td>
-    <td width="25%" height="40" >
-	<?php 
-	if (logged_in())
-	{
-		echo "<a href=\"account.php\" class=\"menu\">Hồ sơ cá nhân</a>";
-	}
-	else
-	{
-		echo "<a href=\"register.php\" class=\"menu\">Đăng ký thành viên</a>";
-	}
-	?>	</td>
-    <td width="25%" ><?php echo "<a href=\"feedback.php\" class=\"menu\">Góp ý</a>"; ?>
-	</td>
-    <td height="40"> <?php echo "<a href=\"about.php\" class=\"menu\">Về chúng tôi</a>"; ?></td>
+  <tr align="center">
+    <td colspan="2">
+	<?php include "menu.php"; ?>
+    </td>
   </tr>
   <tr >
-    <td width="66%" height="700"valign="top" colspan="3">
+    <td width="66%" height="700" valign="top">
 	<!-- TemplateBeginEditable name="body" -->	
-	<!-- TemplateEndEditable -->	</td>
+	<!-- TemplateEndEditable --></td>
 <td width="33%" align="left" valign="top" bgcolor="#CCCC66"><?php
 		if (logged_in())
 		{
@@ -68,12 +56,11 @@
 		{	
 			echo "<center>Bạn chưa đăng nhập</center>";
 			require "login_form.inc.php";
-
 		}
 	?></td>
   </tr>
   <tr >
-    <td colspan="5" valign="top" align="center"><!-- Google CSE Search Box Begins  -->
+    <td colspan="2" valign="top" align="center"><!-- Google CSE Search Box Begins  -->
 <form action="http://www.google.com/cse" id="searchbox_004865859078258633675:18sqvplglto">
   <input type="hidden" name="cx" value="004865859078258633675:18sqvplglto" />
   <input type="text" name="q" size="25" />
