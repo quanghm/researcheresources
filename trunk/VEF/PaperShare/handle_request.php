@@ -124,7 +124,7 @@ elseif ($_GET['action']=='passing')	//	pass paper to another user
 			{
 				$strMysqlQuery .= "AND (username !='".$arrPreviousSuppliers[$i]."') ";
 			}
-			$strMysqlQuery .= "ORDER BY request_pending_number ASC, request_handle_number ASC";
+			$strMysqlQuery .= "ORDER BY request_handle_number ASC, request_pending_number ASC";
 			$result = mysql_query($strMysqlQuery) or die(mysql_error());
 			$arrSupplierData = mysql_fetch_array($result);					
 		}
@@ -207,7 +207,7 @@ elseif ($_GET['action']=='passing')	//	pass paper to another user
 		$strDir=dirname($_SERVER['PHP_SELF']);
 		$message = "<html>
 		<head>
-		<title>Yêu cầu được chuyển</title>
+		<title>Yêu cầu được chuyển</title>
 		</head>
 		<body>
 		Đây là email tự động gửi từ ban quản trị của $strWebsiteName.<br/>
