@@ -270,7 +270,7 @@ if ((logged_in())&& (!isset($strConn)))
 
 			if (mysql_num_rows($result) == 0)
 			{	
-				echo "B&#7841;n ch&#432;a x&#7917; l&yacute; y&ecirc;u c&#7847;u n&agrave;o!";
+				echo "B&#7841;n ch&#432;a cung c&#7845;p b&agrave;i b&aacute;o n&agrave;o!";
 			}
 			else
 			{
@@ -537,7 +537,7 @@ if ((logged_in())&& (!isset($strConn)))
 			$arrRequesterData=mysql_fetch_array($result);
 			//////////////////////////////////////////////
 			
-			echo "<center> Xử lý yêu cầu </center>\n";
+			echo "<center> Xử lý yêu cầu <a href=\"huongdanXLYC.htm\" target=_blank>h&#432;&#7899;ng d&#7851;n</a></center>\n";
 			if (isset($_SESSION['ErrMes'])&&($_SESSION['ErrMes']!==""))
 			{
 				echo "<center><span class=\"error\">".$_SESSION['ErrMes']."</span></center>";
