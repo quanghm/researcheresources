@@ -17,7 +17,6 @@ if ((logged_in())&& (!isset($strConn)))
 <!-- InstanceBeginEditable name="head" -->
 <!-- InstanceEndEditable -->
 </head>
-
 <body>
 <table width="999" border="0" align="center">
   <tr align="center">
@@ -26,11 +25,11 @@ if ((logged_in())&& (!isset($strConn)))
     </td>
   </tr>
   <tr >
-    <td width="66%" height="700" valign="top">
+    <td width="70%" height="700" valign="top">
 	<!-- InstanceBeginEditable name="body" -->
 <?php include"announce.php";?>
 <!-- InstanceEndEditable --></td>
-<td width="33%" align="left" valign="top" bgcolor="#CCCC66"><?php
+<td width="30%" align="left" valign="top" bgcolor="#CCCC66"><?php
 		if (logged_in())
 		{
 			//////////// Select user from database /////////////
