@@ -14,7 +14,6 @@
 <?php echo'<link href="Theme/Default/style.css" rel="stylesheet" type="text/css" />'; ?>
 <!-- InstanceBeginEditable name="head" --><!-- InstanceEndEditable -->
 </head>
-
 <body>
 <table width="999" border="0" align="center">
   <tr align="center">
@@ -23,7 +22,7 @@
     </td>
   </tr>
   <tr >
-    <td width="66%" height="700" valign="top">
+    <td width="70%" height="700" valign="top">
 	<!-- InstanceBeginEditable name="body" -->
 <?php
 if (!logged_in())
@@ -373,7 +372,7 @@ else	//start admin
 ?>
 
 <!-- InstanceEndEditable --></td>
-<td width="33%" align="left" valign="top" bgcolor="#CCCC66"><?php
+<td width="30%" align="left" valign="top" bgcolor="#CCCC66"><?php
 		if (logged_in())
 		{
 			//////////// Select user from database /////////////
