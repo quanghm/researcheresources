@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 include "chk_login.inc";
 if ((logged_in())&& (!isset($strConn)))
 {
@@ -265,7 +265,7 @@ if ((logged_in())&& (!isset($strConn)))
 			{
 				$_GET['order']="DESC";
 			}
-			$strMysqlQuery = "SELECT * FROM $strTableRequestName WHERE (supplier = '".$_SESSION['username']."') AND (status<=0) ORDER BY ".$_GET['sortby']." ".$_GET['order'];
+			$strMysqlQuery = "SELECT * FROM $strTableRequestName WHERE (supplier = '".$_SESSION['username']."') AND (status<0) ORDER BY ".$_GET['sortby']." ".$_GET['order'];
 			$result = mysql_query($strMysqlQuery) or die(mysql_error());
 
 			if (mysql_num_rows($result) == 0)
@@ -522,6 +522,40 @@ if ((logged_in())&& (!isset($strConn)))
 			  </tr>
 			</table>
 			</form>';				
+		}
+		elseif ($_GET['type']=='topsuppliers')
+		{
+			echo "<center><b>Danh sách những supplier nhiệt tình nhất</b></center><br />\r\n";
+			$strMysqlQuery="
+				select supplier, count(*) as completed from tbl_request 
+				where status = -1
+				group by supplier 
+				order by completed DESC";
+			$result = mysql_query($strMysqlQuery) or die(mysql_error());
+	
+			if (mysql_num_rows($result)==0)
+			{
+				echo "Chưa có người cung cap nào!";
+			}
+			else
+			{
+				echo "<table align='center'>\r\n" .
+						"<tr>\r\n" .
+						"<th height=30 width=250>Tên người cung cấp</th>\r\n" .
+						"<th height=30 width=250>Số bài báo đã cung cấp</th>\r\n" .
+						"</tr>";
+				$strTrClass="odd";
+				while ($arrUserData=mysql_fetch_array($result))
+				{
+					echo "<tr class=\"$strTrClass\">\r\n" .
+						"\t<td>" .$arrUserData['supplier']."</td>\r\n".
+						"\t<td>" .$arrUserData['completed']."</td>\r\n".
+						"</tr>\r\n";
+					$strTrClass=str_replace($strTrClass,"",'oddeven');
+				}
+				echo "</table>\r\n";
+			}
+			
 		}
 		elseif ($_GET['type']=='handle_request')	//////	Handle request
 		{
