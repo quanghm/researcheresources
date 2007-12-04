@@ -4,3 +4,5 @@ This page is to document our progress in system development.
 || 11/22/07 || [http://code.google.com/p/researcheresources/issues/detail?id=11 11] || Cuong || hoan tat || 1h ||
 || 11/23/07 || [http://code.google.com/p/researcheresources/issues/detail?id=14 14] || Trong || hoan tat || 2h ||
 || 11/26/07 || [http://code.google.com/p/researcheresources/issues/detail?id=20 20] || Trong || hoan tat || 15m ||
+|| 11/27/07 || [http://code.google.com/p/researcheresources/issues/detail?id=9 9] || Trong || hoan tat || 30m ||
+|| 11/29/07 || [http://code.google.com/p/researcheresources/issues/detail?id=10 10] || Trong || hoan tat || 30m ||
