@@ -16,7 +16,6 @@
             <li>Theo cách riêng của        bạn.<br />
               <br />  
               <em>Ví dụ:</em> Những đường link sau đây đều là link trực tiếp
-              </p>
               <blockquote>
                 <p align="justify"><a href="http://www.sciencedirect.com/science?_ob=ArticleURL&amp;_udi=B6TVN-46YPJ29-138&amp;_user=10&amp;_coverDate=10%2F20%2F1980&amp;_rdoc=1&amp;_fmt=&amp;_orig=search&amp;_sort=d&amp;view=c&amp;_acct=C000050221&amp;_version=1&amp;_urlVersion=0&amp;_userid=10&amp;md5=082fd0ec4ab07d509616e69d86d38654" target="_blank">Physics - Science Direct</a><br />
                   <a href="http://prola.aps.org/abstract/PRD/v21/i2/p446_1" target="_blank">Physics - PROLA<br />          
