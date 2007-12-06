@@ -10,6 +10,6 @@ This page is to document our progress in system development.
 || 11/29/07 || [http://code.google.com/p/researcheresources/issues/detail?id=18 18] || 
 Trong || hoan tat || 30m ||
 || 12/01/07 || [http://code.google.com/p/researcheresources/issues/detail?id=18 18] || 
-Trong || working || 30m ||
+Trong || dang lam || 30m ||
 || 12/04/07 || [http://code.google.com/p/researcheresources/issues/detail?id=18 18] || 
-Trong || working || 1h ||
+Trong || dang lam || 1h ||
