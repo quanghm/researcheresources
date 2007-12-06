@@ -12,4 +12,4 @@ Trong || hoan tat || 30m ||
 || 12/01/07 || [http://code.google.com/p/researcheresources/issues/detail?id=18 18] || 
 Trong || verify email || 30m ||
 || 12/04/07 || [http://code.google.com/p/researcheresources/issues/detail?id=18 18] || 
-Trong || verify email commleted(in test folder server) || 1h ||
+Trong || verify email || 1h ||
