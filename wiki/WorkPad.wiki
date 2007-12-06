@@ -11,5 +11,5 @@ This page is to document our progress in system development.
 || 11/02/07 || [http://code.google.com/p/researcheresources/issues/detail?id=19 19] || Trong || verfy mail || 1h ||
 || 12/04/07 || [http://code.google.com/p/researcheresources/issues/detail?id=10 10] || Trong || hoan tat || 30m ||
 || 12/05/07 || [http://code.google.com/p/researcheresources/issues/detail?id=18 18] || Trong || Cancel Request || 30m ||
-|| 12/05/07 || [http://code.google.com/p/researcheresources/issues/detail?id=18 18] || Trong || Update Request || 30m ||
+|| 12/05/07 || [http://code.google.com/p/researcheresources/issues/detail?id=18 18] || Trong || Update DB || 30m ||
 || 12/06/07 || [http://code.google.com/p/researcheresources/issues/detail?id=21 21] || Trong || hoan tat || 5m ||
