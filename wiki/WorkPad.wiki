@@ -7,9 +7,3 @@ This page is to document our progress in system development.
 || 11/25/07 || [http://code.google.com/p/researcheresources/issues/detail?id=17 17] || Trong || hoan tat || 30h ||
 || 11/26/07 || [http://code.google.com/p/researcheresources/issues/detail?id=20 20] || Trong || hoan tat || 15m ||
 || 11/27/07 || [http://code.google.com/p/researcheresources/issues/detail?id=09 09] || Trong || hoan tat || 30m ||
-|| 11/29/07 || [http://code.google.com/p/researcheresources/issues/detail?id=18 18] || 
-Trong || hoan tat || 30m ||
-|| 12/01/07 || [http://code.google.com/p/researcheresources/issues/detail?id=18 18] || 
-Trong || dang lam || 30m ||
-|| 12/04/07 || [http://code.google.com/p/researcheresources/issues/detail?id=18 18] || 
-Trong || dang lam || 1h ||
