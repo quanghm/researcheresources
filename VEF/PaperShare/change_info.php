@@ -7,17 +7,24 @@ include "chk_login.inc";
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Untitled Document</title>
 <?php
-//	verify data
-$strCryptedPassword = crypt($_POST['frmNewPassword']);
-if (($_POST['frmNewPassword']!=='')and ($strCryptedPassword !== $_SESSION['password']))
-{
-	$_SESSION['ErrMes']="Mật khẩu cũ không chính xác";
-	echo '<script language="javascript"> window.location=\'account.php?type=change\';</script>';
-}
+
 if (logged_in())
 {
+	//	verify data
+	$strCryptedPassword = crypt($_POST['frmOldPassword'],$_SESSION['password']);
+	//die($strCryptedPassword.'<br/>'.$_SESSION['password']);
+	
+	if (($_POST['frmNewPassword']!=='')and ($strCryptedPassword !== $_SESSION['password']))
+	{
+		$_SESSION['ErrMes']="Mật khẩu cũ không chính xác";
+		die('<script language="javascript"> window.location=\'account.php?type=change\';</script>');
+	}
+	
+	// set up
 	include "config.php";
 	include "dbconnect.php";
+	
+	//get user data
 	$strMysqlQuery = "SELECT * FROM $strTableUserName WHERE (email='".$_POST['frmNewEmail']."') AND (username!='".$_SESSION["username"]."')";
 	$result = mysql_query($strMysqlQuery);
 	if (mysql_num_rows($result)!==0)

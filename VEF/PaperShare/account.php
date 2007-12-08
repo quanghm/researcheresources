@@ -144,6 +144,8 @@ if ((logged_in())&& (!isset($strConn)))
 				echo "';\">Ngày yêu cầu</th>\n";
 				echo "      <th scope=\"col\" onclick=\"window.location='account.php?type=articles&sortby=status&order=".str_replace($_GET['order'],"",'ASCDESC');
 				echo "';\">Tình trạng</th>\n";
+				echo "      <th scope=\"col\" onclick=\"\")";
+				echo "';\">Bỏ yên cầu</th>\n";
 				echo "  </tr>";
 				$ArticleIndex = 1;
 				$row = 0;
@@ -176,17 +178,34 @@ if ((logged_in())&& (!isset($strConn)))
 					}
 					elseif ($arrArticleList['status'] == -1)		// Status is finished
 					{
-						echo "      <td >Hoàn tất</td>\n";
-	
+						echo "      <td >Hoàn tất</td>\n";	
 					}
 					elseif ($store_article_on_server)
 					{
 						echo "      <td ><a href=\"".$arrArticleList['download_link']."\">Ready</a></td>\n";				
 					}
+					echo "<td align=\"center\"><form name=\"frmCancel\" method=\"POST\" action=\"account.php?type=cancel_request\">
+									<input type=\"hidden\" name=\"frmRequestID\" value=\"".$arrArticleList['id']."\"/>
+									<input type=\"submit\" name=\"btnCancel\" value=\" Hủy bỏ \"/>
+									</form></td>\n";
 					echo "  </tr>\n";
 					$row++;
 				}
 				echo "</table>";
+			}
+		}
+		elseif ($_GET['type'] == 'cancel_request') // Huy bo yeu cau
+		{
+			$strCancelQuery = "DELETE FROM $strTableRequestName WHERE (requester = '".$_SESSION['username']."') AND (id = ".$_POST['frmRequestID'].")";
+			if (mysql_query($strCancelQuery))
+			{
+				echo "Đã hủy bỏ yêu cầu.";
+				echo '<script language="javascript" > setTimeout("window.location=\'account.php?type=articles\'",3000);</script>';
+			}
+			else
+			{
+			echo "Chưa hủy bỏ yêu cầu.".die(mysql_error());		
+			echo '<script language="javascript" > setTimeout("window.location=\'account.php?type=articles\'",3000);</script>';	
 			}
 		}
 		elseif ($_GET['type'] == 'request')   /////// If View the requests pending
@@ -522,41 +541,7 @@ if ((logged_in())&& (!isset($strConn)))
 			  </tr>
 			</table>
 			</form>';				
-		}
-		elseif ($_GET['type']=='topsuppliers')
-		{
-			echo "<center><b>Danh sách những supplier nhiệt tình nhất</b></center><br />\r\n";
-			$strMysqlQuery="
-				select supplier, count(*) as completed from tbl_request 
-				where status = -1
-				group by supplier 
-				order by completed DESC";
-			$result = mysql_query($strMysqlQuery) or die(mysql_error());
-	
-			if (mysql_num_rows($result)==0)
-			{
-				echo "Chưa có người cung cap nào!";
-			}
-			else
-			{
-				echo "<table align='center'>\r\n" .
-						"<tr>\r\n" .
-						"<th height=30 width=250>Tên người cung cấp</th>\r\n" .
-						"<th height=30 width=250>Số bài báo đã cung cấp</th>\r\n" .
-						"</tr>";
-				$strTrClass="odd";
-				while ($arrUserData=mysql_fetch_array($result))
-				{
-					echo "<tr class=\"$strTrClass\">\r\n" .
-						"\t<td>" .$arrUserData['supplier']."</td>\r\n".
-						"\t<td>" .$arrUserData['completed']."</td>\r\n".
-						"</tr>\r\n";
-					$strTrClass=str_replace($strTrClass,"",'oddeven');
-				}
-				echo "</table>\r\n";
-			}
-			
-		}
+		}		
 		elseif ($_GET['type']=='handle_request')	//////	Handle request
 		{
 			//////////// Get request   ///////////////////
