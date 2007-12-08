@@ -10,13 +10,9 @@ function freeRTE_Preload($content) {
 	return $content;
 }
 // Send the preloaded content to the function.
-$content = freeRTE_Preload("");
+$content = freeRTE_Preload("Soan thu gop y...");
 
-?>
-<center>
-<?php
-
-echo "Gửi thư góp ý cho trang web\r\n";
+echo "<div class='title' align='center'> Gửi thư góp ý cho trang web</div></br>\r\n";
 if (isset($_SESSION['ErrMesFeedback'])and ($_SESSION['ErrMesFeedback']!==''))
 {
 	echo "<center><span class=\"error\">" .
@@ -43,7 +39,6 @@ if (isset($_SESSION['ErrMesFeedback'])and ($_SESSION['ErrMesFeedback']!==''))
 		</td>
 	</tr>
 </table>
-</center>
 <?php
 /*
  * Created on Oct 16, 2007

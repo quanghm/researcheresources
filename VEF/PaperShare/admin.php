@@ -200,10 +200,12 @@ else	//start admin
 		{
 			$_POST['offset']=0;
 		}
+		
 		if (!isset($_GET['orderBy']))
 		{
 			$_GET['orderBy']='username';
 		}
+		
 		if (!isset($_GET['order']))
 		{
 			$_GET['order']='ASC';
@@ -218,7 +220,7 @@ else	//start admin
 		
 		$result = mysql_query($strMysqlQuery) or die(mysql_error());
 		
-		echo "<center>Danh sách thành viên</center><br />\r\n" .
+		echo "<div class='title' align='center'>Danh sách thành viên</div><br />\r\n" .
 			"<form method='POST' name='frmFilter' id='frmFilter' action='admin.php?action=users'>\r\n" .
 			"\t<center>" .
 			"\t Bắt đầu từ:<input name='offset' type='text' size='5' value='0'/>" .
@@ -242,6 +244,15 @@ else	//start admin
 		}
 		else
 		{
+			echo '<form action="admin.php?action=view_detail&type=user" ID="frmViewDetail" method="post">'."\r\n".
+				'	<input type="hidden" name="UserID" ID="UserID"/></form>  '."\r\n";
+			echo 	"<script language='javascript'>\r\n".
+					"	function submitID(id)\r\n" .
+					"	{\r\n" .
+					"		document.getElementById('UserID').value=id;\r\n" .
+					"		document.getElementById('frmViewDetail').submit();\r\n" .
+					"	}\r\n".
+					"</script>\r\n";
 			echo "<table align='center'>\r\n" .
 					"<tr>\r\n" .
 					"<th>Bí danh</th>\r\n" .
@@ -255,7 +266,7 @@ else	//start admin
 			$strTrClass="odd";
 			while ($arrUserData=mysql_fetch_array($result))
 			{
-				echo "<tr class=\"$strTrClass\">\r\n" .
+				echo "<tr onclick='javascript:submitID(".$arrUserData['ID'].")' class=\"$strTrClass\">\r\n" .
 					"\t<td>" .$arrUserData['username']."</td>\r\n".
 					"\t<td>" .$arrUserData['join_date']."</td>\r\n".
 					"\t<td>" .$arrUserData['field']."</td>\r\n".
@@ -293,7 +304,7 @@ else	//start admin
 		
 		$result = mysql_query($strMysqlQuery) or die(mysql_error());
 		
-		echo "<center>Danh sách yêu cầu</center><br />\r\n" .
+		echo "<div class='title' align='center'>Danh sách yêu cầu</div><br />\r\n" .
 			"<form method='POST' name='frmFilter' id='frmFilter' action='admin.php?action=requests'>\r\n" .
 			"\t<center>" .
 			"\t Bắt đầu từ:<input name='offset' type='text' size='5' value='0'/>" .
@@ -353,6 +364,25 @@ else	//start admin
 				$strTrClass=str_replace($strTrClass,"",'oddeven');
 			}
 			echo "</table>\r\n";
+		}
+	}
+	elseif ($_GET['action']=="view_detail") 
+	{
+		if (!isset($_GET['type']))
+		{
+			$_GET['type']="";
+		}
+		
+		if ($_GET['type']=="user")
+		{
+			$strMysqlQuery="SELECT * FROM $strTableUserName WHERE (id='".$_POST['UserID']."')";
+			$result = mysql_query($strMysqlQuery);
+			$arrUserDetail = mysql_fetch_array($result) or die(mysql_error());
+			echo "<div class='title' align='center'> Thong tin chi tiet cua <span style='color:#FF0000'>".$arrUserDetail['username']."</span></div>\r\n";
+		}
+		else
+		{
+			die("<script language='javascript'>window.location='admin.php';</script>");
 		}
 	}
 	else
