@@ -476,8 +476,7 @@ if ((logged_in())&& (!isset($strConn)))
 		}
 		</script>';
 	
-			echo "<center>Thông tin cá nhân";
-			echo"</center>";	
+			echo "<div class='title' align='center'>Thông tin cá nhân</div><br/>\r\n";	
 			if ($_SESSION['ErrMes']!=='') { echo '<center> <font color="#FF0000">'.$_SESSION['ErrMes']."</font></center>";$_SESSION['ErrMes']='';}
 			echo '<form id="frmChangeInfo" method="POST" onSubmit="return DataVerify()" action="change_info.php" name="frmChangeInfo">
 			<table align="center" width="100%" border="0">
