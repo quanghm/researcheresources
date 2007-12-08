@@ -1,7 +1,6 @@
-﻿<?php
+<?php
 include "chk_login.inc";
 ?>
-<html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Đăng ký thành viên</title>
@@ -164,7 +163,7 @@ return true;
   </tr>
   <tr>
     <td width="25%">&nbsp;</td>
-    <td width="25%">Bạn có muốn làm người cung cấp</td>
+    <td width="25%">Bạn có khả năng làm người cung cấp bài báo?</td>
     <td width="12%"><label>
       <input name="frmSupplier" type="radio" value="1" onChange="alert('Người cung cấp sẽ giúp các user khác lấy tài liệu khi được yêu cầu.\r\nNếu bạn chỉ đơn thuần cần tài liệu, bạn nên chọn KHÔNG.')" <?php if ($_POST['frmSupplier']==1) {echo "checked=\"checked\"";}?>>
     Có</label></td>

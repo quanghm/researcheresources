@@ -23,8 +23,16 @@ include $strIncDir."sendmail/mail.php";
 		$_SESSION['ErrMesFeedback']="Để tránh spam, chúng tôi yêu cầu góp ý phải chứa ít nhất 15 ký tự.";
 		die("<script languague='javascript'>window.location='feedback.php'</script>");
 	}
-	
-	if (do_send($strAdminEmail,"Admin","Annonymous feedback",$_POST['freeRTE_content']))
+
+	if (isset($_POST['senderEmail'])&&($_POST['senderEmail']!==''))
+	{
+		$subject = $_POST['senderEmail'];
+	}
+	else
+	{
+		$subject="Annonymous feedback";
+	}
+	if (do_send($strAdminEmail,"Admin",$subject,$_POST['freeRTE_content']))
 	//if (mail($emailto,'feedback',$_POST['txtContent'],$Headers))
 	{
 		echo "<center>Email đã được gửi. Cám ơn sự đóng góp của bạn. Đang quay lại trang chủ...<br>\r\n" .
