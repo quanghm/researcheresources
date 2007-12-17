@@ -37,9 +37,11 @@ if (!isset($_GET['action']))
 if ($_GET['action']=='finishing')	//	Successfully found paper and send
 {
 	/////////// increase number of requests handled AND decrease number of requests pending
-	$strMysqlQuery = "UPDATE $strTableUserName SET request_handle_number = request_handle_number + 1, request_pending_number = request_pending_number - 1  WHERE (username = '".$_SESSION['username']."')";
+	$strMysqlQuery = "UPDATE $strTableUserName SET request_handle_number = request_handle_number + 1  WHERE (username = '".$_SESSION['username']."')";
 	mysql_query($strMysqlQuery) or die(mysql_error());
 
+	$strMysqlQuery = "UPDATE $strTableUserName SET request_pending_number = request_pending_number - 1 WHERE (username = '".$arrRequestData['supplier']."')";
+	mysql_query($strMysqlQuery) or die(mysql_error());
 	/////*//////  Chage status of request to finished
 	$strMysqlQuery = "UPDATE $strTableRequestName SET status = -1 WHERE id=".$_POST['frmHandlingRequestID'];
 	mysql_query($strMysqlQuery) or die(mysql_error());	
