@@ -1,4 +1,4 @@
-﻿<?php
+﻿<?php 
 include "chk_login.inc";
 if ((logged_in())&& (!isset($strConn)))
 {
@@ -102,10 +102,7 @@ if ((logged_in())&& (!isset($strConn)))
 		if ($arrUserData['supplier'])
 		{
 			echo "	  <td width=\"25%\" bgcolor=\"#CCCCCC\"><a href=\"account.php?type=request\" class=\"submenu\">Yêu cầu gửi tới bạn</a> </td>\n";
-		}
-		if ($arrUserData['supplier'])
-		{
-			echo "	  <td width=\"25%\" bgcolor=\"#CCCCCC\"><a href=\"account.php?type=completed\" class=\"submenu\"> B&agrave;i b&aacute;o &#273;&atilde; cung c&#7845;p</a> </td>\n";
+			echo "	  <td width=\"25%\" bgcolor=\"#CCCCCC\"><a href=\"account.php?type=all_requests\" class=\"submenu\">Tất cả bài báo đang chờ</a> </td>\n";
 		}
 		echo "  </tr>\n</table>\n";
 		/////////////////////////////////////////////////////
@@ -267,7 +264,7 @@ if ((logged_in())&& (!isset($strConn)))
 					echo "      <td >".$arrArticleList['date_request']."</td>\n";
 					echo "      <td align=\"center\"><form name=\"frm".$ArticleIndex++."\" method=\"POST\" action=\"account.php?type=handle_request\">
 									<input type=\"hidden\" name=\"frmRequestID\" value=\"".$arrArticleList['id']."\"/>
-									<input type=\"submit\" name=\"frmSubmiHandle\" value=\" Chi tiết \"/>
+									<input type=\"submit\" name=\"frmSubmitHandle\" value=\" Chi tiết \"/>
 									</form></td>\n";
 					echo "  </tr>\n";
 				}
@@ -541,11 +538,11 @@ if ((logged_in())&& (!isset($strConn)))
 			</table>
 			</form>';				
 		}		
-		elseif ($_GET['type']=='handle_request')	//////	Handle request
+		elseif ($_GET['type']=='handle_request')	//////	Handle 
 		{
 			//////////// Get request   ///////////////////
 			$strMysqlQuery = "SELECT * FROM $strTableRequestName WHERE id = ".$_POST['frmRequestID'];
-			$result=mysql_query($strMysqlQuery) or die(mysql_error());
+			$result=mysql_query($strMysqlQuery) or die(mysql_error()."</br>$strMysqlQuery");
 			$arrRequestData = mysql_fetch_array($result);
 			//////////////////////////////////////////////
 			
@@ -610,7 +607,51 @@ if ((logged_in())&& (!isset($strConn)))
 					<a href="javascript: document.frmPassRequest.submit()">Báo cáo thất bại </a>
 				</form>';
 			}
-				echo '<a href="account.php?type=request">Quay lại </a>';		
+				echo '<a href="javascript: history.back()">Quay lại </a>';		
+		}
+		elseif ($_GET['type']=='all_requests') 
+		{
+			echo "<div align='center' class='menu'>Tất cả các bài báo đang chờ</div>\r\n";
+			$strMysqlQuery = 	"SELECT * FROM $strTableRequestName " .
+								"WHERE (status>=0) AND (field='".$arrUserData['field']."') " .
+								"ORDER BY date_request ASC";
+			$result = mysql_query($strMysqlQuery) or die(mysql_error());
+			if (mysql_num_rows($result)==0)
+			{
+				echo "Không có bài báo nào đang chờ\r\n";
+			}
+			else
+			{
+				echo "<table align='center' width='100%'>\r\n";
+				echo "	<tr>\r\n" .
+					 "		<th>STT</th>\r\n" .
+					 "		<th>Tên bài báo</th>\r\n" .
+					 "		<th>Tác giả</th>\r\n" .
+					 "		<th>Tạp chí</th>\r\n" .
+					 "		<th>Năm</th>\r\n" .
+					 "		<th>Ngày yếu cầu</th>\r\n" .
+					 "		<th>Chi tiết </th>" .
+					 "	</tr>\r\n";
+				$RequestIndex=1;
+				$strTrClass='even';
+				while ($arrRequestData=mysql_fetch_array($result))
+				{
+					$strTrClass=str_replace($strTrClass,"",'oddeven');
+					echo "	<tr class=$strTrClass onclick='document.getElementById(\"form$RequestIndex\").submit()'>\r\n" .
+						 "		<td align='right'>$RequestIndex</td>\r\n".
+						 "		<td>" .$arrRequestData['title']."</td>\r\n".
+						 "		<td>" .$arrRequestData['author']."</td>\r\n".
+						 "		<td>" .$arrRequestData['journal']."</td>\r\n".
+						 "		<td>" .$arrRequestData['year']."</td>\r\n".
+						 "		<td>" .$arrRequestData['date_request']."</td>\r\n" .			 			 
+						 "		<td><form id=\"form".($RequestIndex++)."\" method=\"POST\" action=\"account.php?type=handle_request\">" .
+						 "			<input type=\"hidden\" name=\"frmRequestID\" value=\"".$arrRequestData['id']."\"/>" .
+					 	 "			<input type=\"submit\" name=\"frmSubmitHandle\" value=\" Chi tiết \"/>" .
+				 	 "				</form></td>\n" .
+				 		 "	</tr>\r\n";						 
+				}
+				echo "</table>\r\n";
+			}
 		}
 		else					/////////// Default: Display general information
 		{
