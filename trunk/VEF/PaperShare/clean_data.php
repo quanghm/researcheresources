@@ -12,8 +12,16 @@ while ($arrSupplierData=mysql_fetch_array($result))
 	//echo $strMysqlQuery.'<br/>';
 	$result1 = mysql_query($strMysqlQuery) or die(mysql_error());
 	$pending_request = mysql_num_rows($result1);
+	
+	$strMysqlQuery ="SELECT * FROM $strTableRequestName " .
+					"WHERE (supplier='".$arrSupplierData['username']."')" .
+					" AND (status=-1)";
+	$result1 = mysql_query($strMysqlQuery) or die(mysql_error());
+	$handled_request = mysql_num_rows($result1);
+	
 	$strMysqlQuery =	"UPDATE $strTableUserName " .
 						"SET request_pending_number = " .$pending_request.
+						", request_handle_number = " .$handled_request.
 						" WHERE username='".$arrSupplierData['username']."'";
 	echo $strMysqlQuery."<br/>";					
 	mysql_query($strMysqlQuery) or die(mysql_error());
