@@ -43,7 +43,7 @@ if ($_GET['action']=='finishing')	//	Successfully found paper and send
 	$strMysqlQuery = "UPDATE $strTableUserName SET request_pending_number = request_pending_number - 1 WHERE (username = '".$arrRequestData['supplier']."')";
 	mysql_query($strMysqlQuery) or die(mysql_error());
 	/////*//////  Chage status of request to finished
-	$strMysqlQuery = "UPDATE $strTableRequestName SET status = -1 WHERE id=".$_POST['frmHandlingRequestID'];
+	$strMysqlQuery = "UPDATE $strTableRequestName SET status = -1, supplier='".$_SESSION['username']."' WHERE id=".$_POST['frmHandlingRequestID'];
 	mysql_query($strMysqlQuery) or die(mysql_error());	
 	
 	///////////	 Return to User's page
