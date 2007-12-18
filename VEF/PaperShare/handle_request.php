@@ -126,7 +126,7 @@ elseif ($_GET['action']=='passing')	//	pass paper to another user
 			{
 				$strMysqlQuery .= "AND (username !='".$arrPreviousSuppliers[$i]."') ";
 			}
-			$strMysqlQuery .= "ORDER BY request_handle_number ASC, request_pending_number ASC";
+			$strMysqlQuery .= "ORDER BY `tbl_user` ORDER BY last_assigned_request ASC, request_handle_number ASC, request_pending_number ASC";
 			$result = mysql_query($strMysqlQuery) or die(mysql_error());
 			$arrSupplierData = mysql_fetch_array($result);					
 		}
@@ -138,33 +138,8 @@ elseif ($_GET['action']=='passing')	//	pass paper to another user
 			$strMysqlQuery = "UPDATE $strTableRequestName SET status = -2 WHERE id=".$_POST['frmHandlingRequestID'];
 			mysql_query($strMysqlQuery) or die(mysql_error());	
 			
-			/*////	inform requesters about failure
-			$emlTo = $arrRequesterData['email'];
-			$Subject	= "Khong tim duoc bai bao cua ban";
-			$Headers = "From: ".$strAdminEmail."\r\n";
-			$Headers .= "MIME-Version: 1.0\r\n"; 
-			$Headers .= "content-type: text/html; charset=utf-8\r\n";
-		
-			$strDir=dirname($_SERVER['PHP_SELF']);
-			$message = "<html>
-			<head>
-			<title>Yêu cầu thất bại</title>
-			</head>
-			<body>
-			Đây là email tự động gửi từ ban quản trị của $strWebsiteName.<br/>
-			Chúng tôi không tìm được một trong những bài báo theo yêu cầu của bạn tại $strWebsiteName .<br />
-			Xin hãy đăng nhập vào trang web <a href=\"".'http://'.$_SERVER['SERVER_NAME'].$strDir."\">$strWebsiteName </a> để biết thêm chi tiết.
-			</body>
-			</html>";
-			if (mail($emlTo, $Subject, $message, $Headers))
-			{
-				echo "<center> Send email to ".$arrSupplierData['username'].": DONE.</center>\n";
-			}
-			else
-			{
-				echo ("<center>Send email to ".$arrSupplierData['username'].": FAILED.</center>\n");
-			}
-			*/
+			////	inform requesters about failure
+
 			$emlTo = $arrRequesterData['email'];
 			$Subject = "Khong tim duoc bai bao cua ban";
 			$message = "<html>
@@ -191,11 +166,13 @@ elseif ($_GET['action']=='passing')	//	pass paper to another user
 		$strMysqlQuery = "UPDATE $strTableRequestName SET previous_suppliers = '".$strPreviousSuppliers."', status = status + 1, supplier = '".$arrSupplierData['username']."' WHERE id = ".$arrRequestData['id'];
 		mysql_query($strMysqlQuery) or die(mysql_error());
 	
-		/////// update new supplier's request pending number
-		$strMysqlQuery = "UPDATE $strTableUserName SET request_pending_number = request_pending_number +1 WHERE username = '".$arrSupplierData['username']."'";
+		/////// update new supplier's data
+		$last_assigned_request = date('YmdHis');
+		$strMysqlQuery = "UPDATE $strTableUserName SET request_pending_number = request_pending_number +1, last_assigned_request = $last_assigned_request WHERE username = '".$arrSupplierData['username']."'";
 		mysql_query($strMysqlQuery) or die(mysql_error());
 		
-		// Decrease the number of pending request for current supplier
+		// Update previous supplier's data
+		$last_assigned_request = str_replace("-","",$arrRequestData['date_request']).'000000';
 		$strMysqlQuery="UPDATE $strTableUserName SET request_pending_number = request_pending_number -1 WHERE (username='".$_SESSION['username']."')";
 		mysql_query($strMysqlQuery) or die(mysql_error());
 		

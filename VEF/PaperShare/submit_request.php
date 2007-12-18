@@ -72,7 +72,7 @@ if (logged_in())
 	{
 		$strMysqlQuery.="(field ='".$arrFieldList[$_POST['optField']]."') AND ";
 	}
-	$strMysqlQuery.="(supplier = 1) AND (username != '".$_SESSION['username']."') ORDER BY  request_handle_number ASC, request_pending_number ASC";
+	$strMysqlQuery.="(supplier = 1) AND (username != '".$_SESSION['username']."') `tbl_user` ORDER BY last_assigned_request ASC, request_handle_number ASC, request_pending_number ASC";
 	$result = mysql_query($strMysqlQuery);
 	$row = mysql_fetch_array($result);		
 	if ($row===false)
@@ -87,8 +87,9 @@ if (logged_in())
 
 	 $result = mysql_query($strMysqlQuery) or die(mysql_error());
 	
-	/////////	Increase number of requests pending for supplier /////////
-	$strMysqlQuery = "UPDATE $strTableUserName SET request_pending_number = request_pending_number + 1 WHERE username = '".$row['username']."'";
+	/////////	Update supplier's data/////////
+	$last_assigned_request = date('YmdHis');
+	$strMysqlQuery = "UPDATE $strTableUserName SET request_pending_number = request_pending_number + 1, last_assigned_request=$last_assigned_request WHERE username = '".$row['username']."'";
 	mysql_query($strMysqlQuery) or die(mysql_error());
 	///////////////////////////////////////////////////////
 	
