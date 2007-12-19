@@ -176,6 +176,7 @@ if ((logged_in())&& (!isset($strConn)))
 					elseif ($arrArticleList['status'] == -1)		// Status is finished
 					{
 						echo "      <td >Hoàn tất</td>\n";	
+
 					}
 					elseif ($store_article_on_server)
 					{
@@ -202,7 +203,7 @@ if ((logged_in())&& (!isset($strConn)))
 			else
 			{
 			echo "Chưa hủy bỏ yêu cầu.".die(mysql_error());		
-			echo '<script language="javascript" > setTimeout("window.location=\'account.php?type=articles\'",3000);</script>';	
+			echo '<script language="javascript" > setTimeout("window.location=\'account.php?type=articles\'",3000);</script>'; // This line does nothing because it follow a die command.	
 			}
 		}
 		elseif ($_GET['type'] == 'request')   /////// If View the requests pending
@@ -613,7 +614,7 @@ if ((logged_in())&& (!isset($strConn)))
 		{
 			echo "<div align='center' class='menu'>Tất cả các bài báo đang chờ</div>\r\n";
 			$strMysqlQuery = 	"SELECT * FROM $strTableRequestName " .
-								"WHERE (status>=0) AND (field='".$arrUserData['field']."') " .
+								"WHERE (status>=0) AND (field='".$arrUserData['field']."') AND (requester !='".$_SESSION['username']."')" .
 								"ORDER BY date_request ASC";
 			$result = mysql_query($strMysqlQuery) or die(mysql_error());
 			if (mysql_num_rows($result)==0)

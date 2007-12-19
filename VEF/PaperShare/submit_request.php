@@ -72,7 +72,7 @@ if (logged_in())
 	{
 		$strMysqlQuery.="(field ='".$arrFieldList[$_POST['optField']]."') AND ";
 	}
-	$strMysqlQuery.="(supplier = 1) AND (username != '".$_SESSION['username']."') `tbl_user` ORDER BY last_assigned_request ASC, request_handle_number ASC, request_pending_number ASC";
+	$strMysqlQuery.="(supplier = 1) AND (username != '".$_SESSION['username']."') ORDER BY  last_assigned_request ASC, request_handle_number ASC, request_pending_number ASC";
 	$result = mysql_query($strMysqlQuery);
 	$row = mysql_fetch_array($result);		
 	if ($row===false)
