@@ -126,7 +126,7 @@ elseif ($_GET['action']=='passing')	//	pass paper to another user
 			{
 				$strMysqlQuery .= "AND (username !='".$arrPreviousSuppliers[$i]."') ";
 			}
-			$strMysqlQuery .= "ORDER BY `tbl_user` ORDER BY last_assigned_request ASC, request_handle_number ASC, request_pending_number ASC";
+			$strMysqlQuery .= "ORDER BY last_assigned_request ASC, request_handle_number ASC, request_pending_number ASC";
 			$result = mysql_query($strMysqlQuery) or die(mysql_error());
 			$arrSupplierData = mysql_fetch_array($result);					
 		}
@@ -172,8 +172,10 @@ elseif ($_GET['action']=='passing')	//	pass paper to another user
 		mysql_query($strMysqlQuery) or die(mysql_error());
 		
 		// Update previous supplier's data
-		$last_assigned_request = str_replace("-","",$arrRequestData['date_request']).'000000';
-		$strMysqlQuery="UPDATE $strTableUserName SET request_pending_number = request_pending_number -1 WHERE (username='".$_SESSION['username']."')";
+		$last_assigned_request = str_replace("-","",$arrRequestData['date_request']).'235959';
+		$strMysqlQuery=	"UPDATE $strTableUserName " .
+						"SET request_pending_number = request_pending_number -1, last_assigned_request=$last_assigned_request " .
+						"WHERE (username='".$arrRequestData['supplier']."')";
 		mysql_query($strMysqlQuery) or die(mysql_error());
 		
 		/////	Email Requester about delay
@@ -214,7 +216,10 @@ elseif ($_GET['action']=='failing')
 	mysql_query($strMysqlQuery) or die(mysql_error());	
 	
 	///////// Decrease request_pending_number
-	$strMysqlQuery = "UPDATE $strTableUserName SET request_pending_number = request_pending_number - 1  WHERE (username = '".$_SESSION['username']."')";
+	$last_assigned_request = str_replace("-","",$arrRequestData['date_request']).'235959';
+	$strMysqlQuery ="UPDATE $strTableUserName " .
+					"SET request_pending_number = request_pending_number - 1,last_assigned_request =$last_assigned_request " .
+					"WHERE (username = '".$arrRequestData['supplier']."')";
 	mysql_query($strMysqlQuery) or die(mysql_error());
 	
 	///////////  Inform requester about failure of request
