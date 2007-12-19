@@ -216,15 +216,48 @@ if ((logged_in())&& (!isset($strConn)))
 			{
 				$_GET['order']="DESC";
 			}
-			$strMysqlQuery = "SELECT * FROM $strTableRequestName WHERE (supplier = '".$_SESSION['username']."') AND (status>=0) ORDER BY ".$_GET['sortby']." ".$_GET['order'];
-			$result = mysql_query($strMysqlQuery) or die(mysql_error());
-
-			if (mysql_num_rows($result) == 0)
-			{	
-				echo "Hiện không có yêu cầu nào được gửi tới bạn!";
+			if (isset($_POST['status']))
+			{
+				$_GET['status']=$_POST['status'];
+			}
+			if (!isset($_GET['status']))
+			{
+				$_GET['status']=="0";
+			}
+			if ($_GET['status']=="1")
+			{
+				$strRequestStatus = "=-1";
+			}
+			elseif ($_GET['status']=="2")
+			{
+				$strRequestStatus = "=-2";
 			}
 			else
 			{
+				$strRequestStatus = ">=0";
+			}
+			$strMysqlQuery ="SELECT * FROM $strTableRequestName " .
+							"WHERE (supplier = '".$_SESSION['username']."') AND (status $strRequestStatus) ". //AND (status>=0) " .
+							"ORDER BY ";
+			$strMysqlQuery.=$_GET['sortby']." ".$_GET['order'];
+			$result = mysql_query($strMysqlQuery) or die(mysql_error());
+
+			/*if (mysql_num_rows($result) == 0)
+			{	
+				echo "Hiện không có yêu cầu nào được gửi tới bạn!";
+			}
+			else*/
+			{
+				echo "<div align='center' class='title'>Các yêu cầu được gửi đến bạn</div></br>\r\n";
+				echo "<div align='center'>" .
+					 "	<form action='account.php?type=request' method='POST' id='frmRequestStatus'>\r\n" .
+			 		 "		Trạng thái:<select name='status' id='optStatus' onchange='javascript:document.getElementById(\"frmRequestStatus\").submit()'>\r\n" .
+			 		 "			<option value='0' "; if ($_POST['status']=='0'){echo "selected";} echo" >Đang chờ</option>\r\n" .
+			 		 "			<option value='1' "; if ($_POST['status']=='1'){echo "selected";} echo" >Hoàn thành</option>\r\n" .
+			 		 "			<option value='2' "; if ($_POST['status']=='2'){echo "selected";} echo" >Thất bại</option>\r\n" .
+			 		 "		</select>" .
+					 "	</form>\r\n" .
+					 "</div>\r\n";
 				echo "<table width=\"100%\" cellpadding=\"1\" cellspacing=\"1\">";
 				echo "	<tr>\n";
 				echo "		<th scope=\"col\">STT</th>\n";
@@ -263,16 +296,28 @@ if ((logged_in())&& (!isset($strConn)))
 					echo "      <td >".$arrArticleList['journal']."</td>\n";
 					echo "      <td >".$arrArticleList['year']."</td>\n";
 					echo "      <td >".$arrArticleList['date_request']."</td>\n";
-					echo "      <td align=\"center\"><form name=\"frm".$ArticleIndex++."\" method=\"POST\" action=\"account.php?type=handle_request\">
+					echo "      <td align=\"left\">";
+					if ($arrArticleList['status']>=0)
+					{
+						echo "<form name=\"frm".$ArticleIndex++."\" method=\"POST\" action=\"account.php?type=handle_request\">
 									<input type=\"hidden\" name=\"frmRequestID\" value=\"".$arrArticleList['id']."\"/>
-									<input type=\"submit\" name=\"frmSubmitHandle\" value=\" Chi tiết \"/>
-									</form></td>\n";
-					echo "  </tr>\n";
+									<a  href=\"javascript:this.submit();\" > Chi tiết </a>
+									</form>";
+					}
+					elseif ($arrArticleList['status']==-1)
+					{
+						echo "Đã hoàn tất";
+					}
+					elseif ($arrArticleList['status']==-2)
+					{
+						echo "Thất bại";
+					}
+					echo "</td>\n	</tr>\n";
 				}
 				echo "</table>";
 			}
 		}
-		elseif ($_GET['type'] == 'completed')   /////// If View the requests pending
+		/*elseif ($_GET['type'] == 'completed')   /////// If View the requests pending
 		{			
 			if (!isset($_GET['sortby']))
 			{
@@ -334,7 +379,7 @@ if ((logged_in())&& (!isset($strConn)))
 				}
 				echo "</table>";
 			}
-		}
+		} */
 		elseif ($_GET['type'] == 'submit_request')   ///// If submit a request
 		{	
 			echo "<center> Yêu cầu bài báo<br>\n";
