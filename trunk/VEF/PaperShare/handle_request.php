@@ -111,7 +111,6 @@ elseif ($_GET['action']=='passing')	//	pass paper to another user
 										</form>');
 				die("<script language=\"javascript\"> document.frm1.submit();</script>");
 			}
-//			$strMysqlQuery = "SELECT * FROM $strTableUserName WHERE username='".$_POST['frmSupplier']."'";
 		}
 		else	//// No new supplier indicated
 		{
@@ -163,7 +162,9 @@ elseif ($_GET['action']=='passing')	//	pass paper to another user
 		}
 		//assign request to new supplier
 		$strPreviousSuppliers = $arrRequestData['previous_suppliers'].'arrPreviousSuppliers[]='.$_SESSION['username'].'&';
-		$strMysqlQuery = "UPDATE $strTableRequestName SET previous_suppliers = '".$strPreviousSuppliers."', status = status + 1, supplier = '".$arrSupplierData['username']."' WHERE id = ".$arrRequestData['id'];
+		$strMysqlQuery ="UPDATE $strTableRequestName SET previous_suppliers = '".$strPreviousSuppliers."', " .
+						"status = status + 1, supplier = '".$arrSupplierData['username']."' " .
+						"WHERE id = ".$arrRequestData['id'];
 		mysql_query($strMysqlQuery) or die(mysql_error());
 	
 		/////// update new supplier's data
