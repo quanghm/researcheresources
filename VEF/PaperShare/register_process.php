@@ -183,8 +183,7 @@ else
 		{
 			echo ("<center>Send email to ".$_POST['frmUsername'].": FAILED.</center>\n");
 		}
-	
-		*/
+		*/		
 		do_send($_POST['frmEmail'],$_POST['frmUsername'],$strSubject,$message);
 		echo "Chào mừng ";
 		echo $_SESSION["username"] = $_POST["frmUsername"];
