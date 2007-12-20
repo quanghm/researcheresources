@@ -380,6 +380,30 @@ if ((logged_in())&& (!isset($strConn)))
 				echo "</table>";
 			}
 		} */
+		elseif ($_GET['type'] == 'active_supplier')
+		{
+			$strMysqlQuery = "UPDATE $strTableUserName SET supplier='1' WHERE (username = '".$_SESSION['username']."')";
+			$result = mysql_query($strMysqlQuery) or die(mysql_error());
+			echo '<center>Bạn đã trở thành người cung cấp bài báo!</center><br>';
+			echo '<meta http-equiv="refresh" content="2; url=account.php"/>';
+		}
+		elseif ($_GET['type'] == 'cancel_supplier')
+		{
+			$strMysqlQuery = "SELECT * FROM $strTableRequestName WHERE (supplier = '".$_SESSION['username']."') AND (status>=0)";
+			$result = mysql_query($strMysqlQuery) or die(mysql_error());
+			$request_pending = mysql_num_rows($result);
+			if ($request_pending>0)
+			{
+				echo '<center>Bạn cần phải xử lý hết các yêu cầu gửi tới bạn trước khi tạm ngưng cung cấp!</center><br>';
+			}
+			else
+			{
+				$strMysqlQuery = "UPDATE $strTableUserName SET supplier='0' WHERE (username = '".$_SESSION['username']."')";
+				$result = mysql_query($strMysqlQuery) or die(mysql_error());
+				echo '<center>Bạn đã tạm ngưng cung cấp bài báo!</center><br>';
+				echo '<meta http-equiv="refresh" content="2; url=account.php"/>';
+			}
+		}
 		elseif ($_GET['type'] == 'submit_request')   ///// If submit a request
 		{	
 			echo "<center> Yêu cầu bài báo<br>\n";
