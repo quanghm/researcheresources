@@ -182,18 +182,40 @@ if ((logged_in())&& (!isset($strConn)))
 					{
 						echo "      <td ><a href=\"".$arrArticleList['download_link']."\">Ready</a></td>\n";				
 					}
-					echo "<td align=\"center\"><form name=\"frmCancel\" method=\"POST\" action=\"account.php?type=cancel_request\">
-									<input type=\"hidden\" name=\"frmRequestID\" value=\"".$arrArticleList['id']."\"/>
-									<input type=\"submit\" name=\"btnCancel\" value=\" Hủy bỏ \"/>
-									</form></td>\n";
-					echo "  </tr>\n";
+					echo "<td align=\"center\">";
+					if ($arrArticleList['status']>=0)
+					{
+						echo "<form name=\"frmCancel\" id=\"frm".$arrArticleList['id']."\" method=\"POST\" action=\"account.php?type=cancel_request\" onSubmit=\"return confirm('Bạn muốn hủy yêu cầu này?');\">\r\n" .
+							 "	<input type=\"hidden\" name=\"frmRequestID\" value=\"".$arrArticleList['id']."\"/>\r\n".
+							 "</form>";
+						echo "<button id=\"btn".$arrArticleList['id']."\" onClick=\"javascript: document.getElementById('frm".$arrArticleList['id']."').submit()\">  Hủy bỏ </button>";
+					}
+					else {echo "<button disable=\"disable\" id=\"btn".$arrArticleList['id']."\" >  Hủy bỏ </button>";}
+					echo "</td>\n  </tr>\n";
 					$row++;
 				}
 				echo "</table>";
 			}
 		}
 		elseif ($_GET['type'] == 'cancel_request') // Huy bo yeu cau
-		{
+		{	
+			// Get Request Data
+			$strMysqlQuery = "SELECT * FROM $strTableRequestName WHERE id='".$_POST['frmRequestID']."'";
+			$result= mysql_query($strMysqlQuery) or die(mysql_error());
+			$arrRequestData=mysql_fetch_array($result);
+			
+			//Update number of submitted requests
+			$strMysqlQuery = "UPDATE $strTableUserName " .
+							 "SET request_number=request_number-1 " .
+							 "WHERE username='".$arrRequestData['requester']."'";
+			mysql_query($strMysqlQuery) or die(mysql_error());
+			
+			//Update number of pending requests for supplier
+			$strMysqlQuery = "UPDATE $strTableUserName " .
+							 "SET request_pending_number = request_pending_number - 1 ".
+							 "WHERE username = '".$arrRequestData['supplier']."'";
+			mysql_query($strMysqlQuery) or die(mysql_error());
+			// Delete request from database
 			$strCancelQuery = "DELETE FROM $strTableRequestName WHERE (requester = '".$_SESSION['username']."') AND (id = ".$_POST['frmRequestID'].")";
 			if (mysql_query($strCancelQuery))
 			{
