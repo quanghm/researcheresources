@@ -13,7 +13,7 @@ $arrAnnouncementList = mysql_query($strMysqlQuery) or die(mysql_error());
 
 while ($arrAnnouncementData = mysql_fetch_array($arrAnnouncementList))
 {
-	echo"<strong>".$arrAnnouncementData['date']."</strong><br />\r\n" .
+	echo"<br/><strong>".$arrAnnouncementData['date']."</strong><br />\r\n" .
 			$arrAnnouncementData['content']."<br />\r\n" .
 					"____________________________<br /><br />\r\n";
 }
