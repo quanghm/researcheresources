@@ -93,7 +93,7 @@ else
 
 			if ($arrUserData['supplier']) 
 			{
-				////////	Get list of requests pending	/////////////
+				///////Get list of requests pending	/////////////
 				$strMysqlQuery = "SELECT * FROM $strTableRequestName WHERE (supplier = '".$_SESSION['username']."') AND (status >=0)";
 				$result = mysql_query($strMysqlQuery) or die(mysql_error());
 				$request_pending = mysql_num_rows($result);
@@ -105,14 +105,15 @@ else
 				echo "Bạn không có yêu cầu nào đang chờ!<br>\n";
 			}
 		}		
-		if ($arrUserData['supplier']==0)
+		if ($arrUserData['supplier']==5)
 		{
 			echo "<a href=\"account.php?type=active_supplier\"> Tham gia cung cấp bài báo</a><br>";
 		}
-		else
+		elseif ($arrUserData['supplier']==1)
 		{
 			echo "<a href=\"account.php?type=cancel_supplier\"> Tạm ngưng cung cấp bài báo</a><br>";
 		}
+		echo "<a href=\"account.php?type=receive_paper\"> Nhận bài đã yêu cầu </a><br>";
 		echo "<a href=\"account.php?type=change\"> Thay đổi thông tin cá nhân </a><br>";			
 		if ($arrUserData['admin']){echo "<a href=\"admin.php\">Đăng nhập trang quản trị</a>";}
 			//////// Close connection to database /////////
