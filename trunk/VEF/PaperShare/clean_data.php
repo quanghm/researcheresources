@@ -5,9 +5,9 @@ include "dbconnect.php";
 $strMysqlQuery = 	"SELECT * FROM $strTableUserName WHERE (supplier = 1)";
 $result = mysql_query($strMysqlQuery) or die(mysql_error());
 
-/*$strMysqlQuery = "UPDATE $strTableRequestName SET status=-1 WHERE (field = 'Physics') AND (status>-1) AND (date_request<'2007-12-18')";
+$strMysqlQuery = "UPDATE $strTableRequestName SET status=-1 WHERE (field = 'Physics') AND (status>-1) AND (date_request<'2007-12-18')";
 echo "$strMysqlQuery</br>";
-mysql_query($strMysqlQuery) or die(mysql_error());*/
+mysql_query($strMysqlQuery) or die(mysql_error());
 
 while ($arrSupplierData=mysql_fetch_array($result))
 {

@@ -402,6 +402,7 @@ if ((logged_in())&& (!isset($strConn)))
 				echo "</table>";
 			}
 		} */
+		
 		elseif ($_GET['type'] == 'active_supplier')
 		{
 			$strMysqlQuery = "UPDATE $strTableUserName SET supplier='1' WHERE (username = '".$_SESSION['username']."')";
@@ -420,12 +421,13 @@ if ((logged_in())&& (!isset($strConn)))
 			}
 			else
 			{
-				$strMysqlQuery = "UPDATE $strTableUserName SET supplier='0' WHERE (username = '".$_SESSION['username']."')";
+				$strMysqlQuery = "UPDATE $strTableUserName SET supplier='5' WHERE (username = '".$_SESSION['username']."')";
 				$result = mysql_query($strMysqlQuery) or die(mysql_error());
 				echo '<center>Bạn đã tạm ngưng cung cấp bài báo!</center><br>';
 				echo '<meta http-equiv="refresh" content="2; url=account.php"/>';
 			}
 		}
+		
 		elseif ($_GET['type'] == 'submit_request')   ///// If submit a request
 		{	
 			echo "<center> Yêu cầu bài báo<br>\n";
@@ -524,6 +526,48 @@ if ((logged_in())&& (!isset($strConn)))
 			echo '</script>';
 
 		}
+		elseif ($_GET['type'] == 'receive_paper')	
+		{
+			if (!isset($_GET['sortby']))
+			{
+				$_GET['sortby']= "date_request";
+			}
+			if (!isset($_GET['order']))
+			{
+				$_GET['order']="DESC";
+			}
+			$strMyQuery = "SELECT * FROM $strTableRequestName WHERE status=-1 AND requester = '".$_SESSION['username']."' ORDER BY ".$_GET['sortby']." ".$_GET['order'];
+			$result = mysql_query($strMyQuery) or die(mysql_error());
+			if (mysql_num_rows($result) == 0)
+			{	
+				echo "Bạn chưa nhận được bài báo nào!";
+			}
+			else
+			{
+				echo "<table width=\"100%\" border=\"0\" cellpadding=\"1\" cellspacing=\"1\">";
+				echo "	<tr >\n";
+				echo "		<th scope=\"col\">STT</th>\n";
+				echo "      <th scope=\"col\">Tiêu đề</th>\n";
+				echo "      <th scope=\"col\">Ngày yêu cầu</th>\n";
+				echo "      <th scope=\"col\">Tải file</th>\n";
+				echo "  </tr>";
+				$ArticleIndex = 1;
+				$row = 0;
+				while ($arrArticleList = mysql_fetch_array($result))
+				{
+					
+					echo "	<tr ";					
+					echo ">
+								<td >".$ArticleIndex++."</td>\n";
+					echo "      <td >".$arrArticleList['title']."</td>\n";
+					echo "      <td >".$arrArticleList['date_request']."</td>\n";
+					echo "      <td ><a href='".$arrArticleList['stored_link']."' target=\"_blank\">Download now</a></td>\n";
+					echo "  </tr>\n";
+					$row++;
+				}
+				echo "</table>";
+			}
+		}
 		elseif ($_GET['type'] == 'change')			////// Change personal information
 		{
 		echo'<script language="javascript">
@@ -607,17 +651,18 @@ if ((logged_in())&& (!isset($strConn)))
 				</tr>
 			  <tr>
 				<td >Bạn có muốn làm người cung cấp</td>
-				<td width="25%"><label>
-				  <input name="frmNewSupplier" type="radio" value="1"';
-			if ($arrUserData['supplier']) {echo "checked";}	  
-			echo'>
-				Có</label></td>
-				<td width="25%"><label>
-				  <input name="frmNewSupplier" type="radio" value="0"';
-			if (!($arrUserData['supplier'])) {echo "checked";}	  
-			echo'>
-				Không</label></td>
-				</tr>
+				<td width=\"25%\">';
+			if ($arrUserData['supplier']>0) 
+				{
+				echo "<label><input name=\"frmNewSupplier\" type=\"radio\" value=\"1\" checked>Có</label></td>";
+				echo "<td width=\"25%\"><label><input name=\"frmNewSupplier\" type=\"radio\" value=\"0\">Không</label></td>";
+				}
+			elseif (($arrUserData['supplier'])==0)
+				{
+				echo "<label><input name=\"frmNewSupplier\" type=\"radio\" value=\"1\">Có</label></td>";
+				echo "<td width=\"25%\"><label><input name=\"frmNewSupplier\" type=\"radio\" value=\"5\" checked>Không</label></td>";
+				}
+				echo '</tr>
 			  <tr>
 				<td colspan="3" align="left"><i><br>(*) Yêu cầu nếu bạn muốn thay đổi bất cứ thông tin nào. <br>
 				(**) Bỏ trống nếu bạn không muốn đổi mật khẩu. </i>
@@ -680,9 +725,13 @@ if ((logged_in())&& (!isset($strConn)))
 				<td>'.$arrRequestData['year'].'</td>
 			  </tr>
 			</table>
-			<form method="POST" name="frmFinishRequest" action="handle_request.php?action=finishing"> 
-				<input name="frmHandlingRequestID" type="hidden" value="'.$arrRequestData['id'].'"/>
-				<a href="javascript: document.frmFinishRequest.submit()">Báo cáo hoàn tất </a></form>';
+			<form enctype="multipart/form-data" action="handle_request.php?action=finishing" method="post"> 
+			<input type="hidden" name="MAX_FILE_SIZE" value="1000000"> File: 
+			<input name="userfile" type="file"> 
+			<input name="frmHandlingRequestID" type="hidden" value="'.$arrRequestData['id'].'"/>
+			<input name="frmHandlingRequestName" type="hidden" value="'.$arrRequestData['requester'].'"/>
+			<input type="submit" value="Upload"> 
+			</form>';
 			if ($_SESSION['username']==$arrRequestData['supplier'])
 			{
 				if ($arrRequestData['status']<$max_pass)
@@ -780,29 +829,39 @@ if ((logged_in())&& (!isset($strConn)))
 		if (logged_in())
 		{
 			//////////// Select user from database /////////////
-	$strMyQuery = "SELECT * FROM $strTableUserName WHERE username = '".$_SESSION['username']."'";
-	$result = mysql_query($strMyQuery) or die(mysql_error());
-	$arrUserData = mysql_fetch_array($result);
-	////////////////////////////////////////////////////
+			$strMyQuery = "SELECT * FROM $strTableUserName WHERE username = '".$_SESSION['username']."'";
+			$result = mysql_query($strMyQuery) or die(mysql_error());
+			$arrUserData = mysql_fetch_array($result);
+			////////////////////////////////////////////////////
 
 			echo "Chào mừng ".$_SESSION["username"]."! <button onClick=\"javascript:window.location = 'login.php?action=logout'\">Khắc xuất</button><br><br/>\n";
 
-		echo "Bạn đã gửi ".$arrUserData['request_number']." yêu cầu! <a href=\"account.php?type=submit_request\">Yêu cầu bài báo</a><br>\n";
-		if ($arrUserData['supplier']) 
-		{
-			////////	Get list of requests pending	/////////////
-			$strMysqlQuery = "SELECT * FROM $strTableRequestName WHERE (supplier = '".$_SESSION['username']."') AND (status >=0)";
-			$result = mysql_query($strMysqlQuery) or die(mysql_error());
-			$request_pending = mysql_num_rows($result);
-			if ($request_pending>0)
-			{	echo "Bạn có ".$request_pending." yêu cầu đang chờ <a href=\"account.php?type=request\">xử lý!</a><br>\n";
+			echo "Bạn đã gửi ".$arrUserData['request_number']." yêu cầu! <a href=\"account.php?type=submit_request\">Yêu cầu bài báo</a><br>\n";
+
+			if ($arrUserData['supplier']) 
+			{
+				///////Get list of requests pending	/////////////
+				$strMysqlQuery = "SELECT * FROM $strTableRequestName WHERE (supplier = '".$_SESSION['username']."') AND (status >=0)";
+				$result = mysql_query($strMysqlQuery) or die(mysql_error());
+				$request_pending = mysql_num_rows($result);
+				if ($request_pending>0)
+				{	echo "Bạn có ".$request_pending." yêu cầu đang chờ <a href=\"account.php?type=request\">xử lý!</a><br>\n";
 			}
 			else
 			{
 				echo "Bạn không có yêu cầu nào đang chờ!<br>\n";
 			}
+		}		
+		if ($arrUserData['supplier']==5)
+		{
+			echo "<a href=\"account.php?type=active_supplier\"> Tham gia cung cấp bài báo</a><br>";
 		}
-		echo "<br />\r\n <a href=\"account.php?type=change\"> Thay đổi thông tin cá nhân </a><br>";			
+		elseif ($arrUserData['supplier']==1)
+		{
+			echo "<a href=\"account.php?type=cancel_supplier\"> Tạm ngưng cung cấp bài báo</a><br>";
+		}
+		echo "<a href=\"account.php?type=receive_paper\"> Nhận bài đã yêu cầu </a><br>";
+		echo "<a href=\"account.php?type=change\"> Thay đổi thông tin cá nhân </a><br>";			
 		if ($arrUserData['admin']){echo "<a href=\"admin.php\">Đăng nhập trang quản trị</a>";}
 			//////// Close connection to database /////////
 			include "dbclose.php";
