@@ -426,7 +426,7 @@ else	//start admin
 			{
 				echo "Bạn không có yêu cầu nào đang chờ!<br>\n";
 			}
-		}		
+		}/*		
 		if ($arrUserData['supplier']==5)
 		{
 			echo "<a href=\"account.php?type=active_supplier\"> Tham gia cung cấp bài báo</a><br>";
@@ -434,8 +434,8 @@ else	//start admin
 		elseif ($arrUserData['supplier']==1)
 		{
 			echo "<a href=\"account.php?type=cancel_supplier\"> Tạm ngưng cung cấp bài báo</a><br>";
-		}
-		echo "<a href=\"account.php?type=receive_paper\"> Nhận bài đã yêu cầu </a><br>";
+		}*/
+		//echo "<a href=\"account.php?type=receive_paper\"> Nhận bài đã yêu cầu </a><br>";
 		echo "<a href=\"account.php?type=change\"> Thay đổi thông tin cá nhân </a><br>";			
 		if ($arrUserData['admin']){echo "<a href=\"admin.php\">Đăng nhập trang quản trị</a>";}
 			//////// Close connection to database /////////
