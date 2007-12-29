@@ -38,16 +38,26 @@ if (!isset($_GET['action']))
 if ($_GET['action']=='finishing')	//	Successfully found paper and send
 {
 	// $userfile is where file went on webserver 
+	/*if (!$store_article_on_server){
+		echo "Không được phép upload!";	
+		echo '<script language="javascript"> window.location="account.php?type=request";</script>';	
+		exit;
+	}*/
 	$userfile = $HTTP_POST_FILES['userfile']['tmp_name']; 
 	// $userfile_name is original file name 
 	$userfile_name = $HTTP_POST_FILES['userfile']['name'];
 	// $userfile_size is size in bytes 
 	$userfile_size = $HTTP_POST_FILES['userfile']['size']; 
 	// $userfile_type is mime type e.g. image/gif 
-	$userfile_type = $HTTP_POST_FILES['userfile']['type']; 
-	// $userfile_error is any error encountered 
-	$userfile_error = $HTTP_POST_FILES['userfile']['error']; 
-	
+	$userfile_type = $HTTP_POST_FILES['userfile']['type'];
+	$userfile_error = $HTTP_POST_FILES['userfile']['error'];
+	if (!preg_match('/\.(pdf|doc|xls)$/i',$userfile_name))
+	{
+	echo "Loi kieu file upload.";	
+	echo '<script language="javascript"> window.location="account.php?type=request";</script>';
+	exit;	
+	}
+	// $userfile_error is any error encountered 	 	
 	// userfile_error was introduced at PHP 4.2.0 
 	// use this code with newer versions 
 	
@@ -68,8 +78,7 @@ if ($_GET['action']=='finishing')	//	Successfully found paper and send
 	break; 
 	} 
 	exit; 
-	} 	
-	
+	} 		
 	// put the file where we'd like it 
 	$upfile = 'upload/'.$userfile_name; 
 	$random_digit=rand(0000,9999);
@@ -79,14 +88,18 @@ if ($_GET['action']=='finishing')	//	Successfully found paper and send
 		if(copy($HTTP_POST_FILES['userfile']['tmp_name'], "upload/".$upfile_new)){
 		echo 'File uploaded successfully<br /><br />';}
 		else {
-		echo 'Problem<br /><br />';}
+		echo 'Problem<br /><br />';
+		ẽexit;
+		}
 	}
 	else
 	{
 		$upfile_new=$userfile_name;
 		if(copy($HTTP_POST_FILES['userfile']['tmp_name'], $upfile)){
 		echo 'File uploaded successfully<br /><br />';}
-		else {echo 'Problem<br /><br />';}
+		else {echo 'Problem<br /><br />';
+			ẽexit;
+		}
 	}
 	/*
 	if (file_exists($upfile)) 
