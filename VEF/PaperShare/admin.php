@@ -333,16 +333,17 @@ else	//start admin
 						);
 		if ($_POST['status']=='-1')
 		{
-			$strCondition = " WHERE status=-1 ";
+			$strCondition = " WHERE (status=-1) ";
 		}
 		elseif ($_POST['status']=='-2')
 		{
-			$strCondition = " WHERE status=-2 ";
+			$strCondition = " WHERE (status=-2) ";
 		}
 		else
 		{
-			$strCondition = " WHERE status>-1 ";
+			$strCondition = " WHERE (status>-1) ";
 		}
+		if ($_POST['field']>0){$strCondition .= "AND (field='".$arrFieldList[$_POST['field']]."') ";}
 		draw_table('Request',$arrField,$_GET['orderBy'],$_POST['offset'],'account.php?type=handle_request',$strCondition);
 	}
 	elseif ($_GET['action']=="view_detail") 
