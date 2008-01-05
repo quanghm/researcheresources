@@ -223,8 +223,8 @@ else	//start admin
 		echo "<div class='title' align='center'>Danh sách thành viên</div><br />\r\n" .
 			"<form method='POST' name='frmFilter' id='frmFilter' action='admin.php?action=users'>\r\n" .
 			"\t<center>" .
-			"\t Bắt đầu từ:<input name='offset' type='text' size='5' value='0'/>" .
-			"\t Chuyên ngành:<select name='field' onchange='document.getElementById(\"frmFilter\").submit()'>\r\n";
+			"\tBắt đầu từ:<input name='offset' type='text' size='5' value='0'/>" .
+			"\tChuyên ngành:<select name='field' onchange='document.getElementById(\"frmFilter\").submit()'>\r\n";
 		foreach ($arrFieldList as $key => $value)
 		{
 			echo "\t\t<option value='$key' ";
@@ -309,6 +309,17 @@ else	//start admin
 			echo ">$value</option>\r\n";
 		}
 		echo "\t</select>\r\n" .
+			"\tTrạng thái:<select name='status' onchange='document.getElementById(\"frmFilter\").submit()'>\r\n" .
+			"\t\t<option value='0'";
+		if ($_POST['status']=='0'){echo "selected='selected'";}
+		echo ">Đang chờ</option>\r\n" .
+			"\t\t<option value='-1'";
+		if ($_POST['status']=='-1'){echo "selected='selected'";}
+		echo ">Hoàn tất</option>\r\n" .
+			"\t\t<option value='-2'";
+		if ($_POST['status']=='-2'){echo "selected='selected'";}
+		echo ">Thất bại</option>\r\n" .
+			"</select>" .
 			"\t<input type='submit' value='Lọc'>" .
 			"\t</center>" .
 			"</form>\r\n";
@@ -320,7 +331,19 @@ else	//start admin
 						'requester' => "Người yêu cầu",
 						'supplier' => "Người cung cấp"						
 						);
-		draw_table('Request',$arrField,$_GET['orderBy'],$_POST['offset'],'account.php?type=handle_request','WHERE status>-1 ');
+		if ($_POST['status']=='-1')
+		{
+			$strCondition = " WHERE status=-1 ";
+		}
+		elseif ($_POST['status']=='-2')
+		{
+			$strCondition = " WHERE status=-2 ";
+		}
+		else
+		{
+			$strCondition = " WHERE status>-1 ";
+		}
+		draw_table('Request',$arrField,$_GET['orderBy'],$_POST['offset'],'account.php?type=handle_request',$strCondition);
 	}
 	elseif ($_GET['action']=="view_detail") 
 	{
