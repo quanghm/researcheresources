@@ -720,6 +720,10 @@ if ((logged_in())&& (!isset($strConn)))
 				<td>Số</td>
 				<td>'.$arrRequestData['issue'].'</td>
 			  </tr>
+	  		  <tr>' .
+	  		  		'<td>Số trang</td>' .
+	  		  		'<td>' .$arrRequestData['pages'].
+	  		  		'
 			  <tr>
 				<td>Năm xuất bản </td>
 				<td>'.$arrRequestData['year'].'</td>
@@ -728,16 +732,15 @@ if ((logged_in())&& (!isset($strConn)))
 			<form method="POST" name="frmFinishRequest" action="handle_request.php?action=finishing"> 
 				<input name="frmHandlingRequestID" type="hidden" value="'.$arrRequestData['id'].'"/>
 				<a href="javascript: document.frmFinishRequest.submit()">Báo cáo hoàn tất </a></form>';
-			if ($arrUserData['supplier']){
-			echo '<form enctype="multipart/form-data" action="handle_request.php?action=finishing" method="post"> 
+			/*
+			<form enctype="multipart/form-data" action="handle_request.php?action=finishing" method="post"> 
 			<input type="hidden" name="MAX_FILE_SIZE" value="1000000"> File: 
 			<input name="userfile" type="file"> 
 			<input name="frmHandlingRequestID" type="hidden" value="'.$arrRequestData['id'].'"/>
 			<input name="frmHandlingRequestName" type="hidden" value="'.$arrRequestData['requester'].'"/>
 			<input type="submit" value="Upload"> 
-			</form>';
-			}
-			if ($_SESSION['username']==$arrRequestData['supplier'])
+			</form>';*/
+			if (($_SESSION['username']==$arrRequestData['supplier'])or ($arrUserData['admin']))
 			{
 				if ($arrRequestData['status']<$max_pass)
 				{
