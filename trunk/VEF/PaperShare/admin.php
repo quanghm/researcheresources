@@ -282,7 +282,7 @@ else	//start admin
 	}
 	elseif ($_GET['action']=='requests')
 	{
-		if (!isset($_POST['offset']))
+		if ((!isset($_POST['offset'])) or (!is_int($_POST['offset'])))
 		{
 			$_POST['offset']=0;
 		}
@@ -294,20 +294,10 @@ else	//start admin
 		{
 			$_GET['order']='DESC';
 		}
-
-		$strMysqlQuery="SELECT * FROM $strTableRequestName";
-		if ((isset($_POST['field']))and ($_POST['field']>0))
-		{
-			$strMysqlQuery=$strMysqlQuery." WHERE (field='".$arrFieldList[$_POST['field']]."')";
-		}
-		$strMysqlQuery.= (" ORDER BY ".$_GET['orderBy']." ".$_GET['order']);
-		
-		$result = mysql_query($strMysqlQuery) or die(mysql_error());
-		
 		echo "<div class='title' align='center'>Danh sách yêu cầu</div><br />\r\n" .
 			"<form method='POST' name='frmFilter' id='frmFilter' action='admin.php?action=requests'>\r\n" .
 			"\t<center>" .
-			"\t Bắt đầu từ:<input name='offset' type='text' size='5' value='0'/>" .
+			"\t Bắt đầu từ:<input name='offset' type='text' size='5' value='".$_POST['offset']."'/>" .
 			"\t Chuyên ngành:<select name='field' onchange='document.getElementById(\"frmFilter\").submit()'>\r\n";
 		foreach ($arrFieldList as $key => $value)
 		{
@@ -322,49 +312,15 @@ else	//start admin
 			"\t<input type='submit' value='Lọc'>" .
 			"\t</center>" .
 			"</form>\r\n";
-		if (mysql_num_rows($result)==0)
-		{
-			echo "Chưa có yêu cầu nào!";
-		}
-		else
-		{
-			echo "<table width=\"100%\" align='center'>\r\n" .
-					"<tr>\r\n" .
-					"<th width=\"30%\">Tên bài báo</th>\r\n" .
-					"<th>Ngày yêu cầu</th>\r\n" .
-					"<th>Chuyên ngành</th>\r\n" .
-					"<th>Người yêu cầu</th>\r\n" .
-					"<th>Người cung cấp</th>\r\n" .
-					"<th>Trạng thái</th>\r\n" .
-					"</tr>";
-			$strTrClass="odd";
-			while ($arrRequestData=mysql_fetch_array($result))
-			{
-				echo "<tr class=\"$strTrClass\">\r\n" .
-					"\t<td>" .$arrRequestData['title']."</td>\r\n".
-					"\t<td>" .$arrRequestData['date_request']."</td>\r\n".
-					"\t<td>" .$arrRequestData['field']."</td>\r\n".
-					"\t<td>" .$arrRequestData['requester']."</td>\r\n".
-					"\t<td>" .$arrRequestData['supplier']."</td>\r\n".
-					"\t<td>" ;
-				if ( $arrRequestData['status'] == -1)
-				{
-					echo "Hoàn tất";
-				}
-				elseif ($arrRequestData['status']==-2)
-				{
-					echo "Thất bại";
-				}
-				else
-				{
-					echo "Đang chờ";
-				}
-				echo "</td>\r\n".
-					"</tr>\r\n";
-				$strTrClass=str_replace($strTrClass,"",'oddeven');
-			}
-			echo "</table>\r\n";
-		}
+		include "make_list.inc.php";
+		$arrField= array(
+						'title'=>"Tên bài báo",
+						'date_request' => "Ngày yêu cầu",
+						'field' => "Chuyên ngành",
+						'requester' => "Người yêu cầu",
+						'supplier' => "Người cung cấp"						
+						);
+		draw_table('Request',$arrField,$_GET['orderBy'],$_POST['offset'],'account.php?type=handle_request','WHERE status>-1 ');
 	}
 	elseif ($_GET['action']=="view_detail") 
 	{

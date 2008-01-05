@@ -742,7 +742,7 @@ if ((logged_in())&& (!isset($strConn)))
 			</form>';*/
 			if (($_SESSION['username']==$arrRequestData['supplier'])or ($arrUserData['admin']))
 			{
-				if ($arrRequestData['status']<$max_pass)
+				if (($arrRequestData['status']<$max_pass) and ($arrRequestData['status']>-1))
 				{
 					echo '<form method="POST" name="frmPassRequest" action="handle_request.php?action=passing">' .
 						'	<input name="frmHandlingRequestID" type="hidden" value="'.$arrRequestData['id'].'"/>' .
@@ -752,7 +752,7 @@ if ((logged_in())&& (!isset($strConn)))
 						'	<span style="font-style: italic; font-size:small; color:#CC0033">(Để trống nếu bạn không muốn chỉ định người cung cấp mới)</span>' .
 						'</form>';
 				}
-				else
+				if (($arrRequestData['status']==$max_pass) or ($arrUserData['admin']==1))
 				{
 					echo '<form method="POST" name="frmPassRequest" action="handle_request.php?action=failing">
 						<input name="frmHandlingRequestID" type="hidden" value="'.$arrRequestData['id'].'"/>
