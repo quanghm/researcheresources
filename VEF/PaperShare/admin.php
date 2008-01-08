@@ -344,7 +344,7 @@ else	//start admin
 			$strCondition = " WHERE (status>-1) ";
 		}
 		if ($_POST['field']>0){$strCondition .= "AND (field='".$arrFieldList[$_POST['field']]."') ";}
-		draw_table('Request',$arrField,$_GET['orderBy'],$_POST['offset'],'account.php?type=handle_request',$strCondition);
+		draw_table('Request',$arrField,$_GET['orderBy']." ".$_GET['order'],$_POST['offset'],'account.php?type=handle_request',$strCondition);
 	}
 	elseif ($_GET['action']=="view_detail") 
 	{
