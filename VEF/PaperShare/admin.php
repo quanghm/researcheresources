@@ -365,11 +365,101 @@ else	//start admin
 			die("<script language='javascript'>window.location='admin.php';</script>");
 		}
 	}
+	elseif ($_GET['action']=="all_supplier") 
+	{
+		$strMysqlQuery="SELECT * FROM $strTableUserName WHERE supplier=1";
+		$result = mysql_query($strMysqlQuery) or die(mysql_error());
+		echo "Tổng số supplier: ".$num_row=mysql_num_rows($result);
+		echo "<table align='center'>\r\n" .
+					"<tr>\r\n" .
+					"<th>Bí danh</th>\r\n" .
+					"<th>Chuyên ngành</th>\r\n" .
+					"<th>Yêu cầu đã hoàn tất</th>\r\n" .
+					"<th>Yêu cầu đang chờ</th>\r\n" .
+					"<th>Email</th>\r\n" .
+					"<th>Stop cung cấp</th>\r\n" .
+					"</tr>";
+		$strTrClass="odd";
+		while ($arrList_User = mysql_fetch_array($result))
+		{
+		 echo "<tr class=\"$strTrClass\">\r\n" .
+					"\t<td>" .$arrList_User['username']."</td>\r\n".
+					"\t<td>" .$arrList_User['field']."</td>\r\n".
+					"\t<td>" .$arrList_User['request_handle_number']."</td>\r\n".
+					"\t<td>" .$arrList_User['request_pending_number']."</td>\r\n".
+					"\t<td>" .$arrList_User['email']."</td>\r\n".
+					"\t<td>".
+					"<form name=\"frm".$arrList_User['ID']."\" method=\"POST\" action=\"admin.php?action=stop_supplier\">".
+									"<input type=\"hidden\" name=\"txtId\" value=\"".$arrList_User['ID']."\"/>".
+									"<input type=\"submit\" name=\"btnStop\" value=\" Stop \"/>".
+									"</form>".
+					"</td>\r\n".
+					"</tr>\r\n";
+					$strTrClass=str_replace($strTrClass,"",'oddeven');
+		}		
+		echo "</table>\r\n";
+		//echo "<div class='title' align='center'> Thong tin chi tiet cua <span style='color:#FF0000'>".$arrList_User['username']."</span></div>\r\n";		
+	}
+	elseif ($_GET['action']=="stop_supplier") 
+	{
+		$strMysqlQuery = "UPDATE $strTableUserName " .
+						"SET supplier = 0 ".
+						"WHERE id = '".$_POST['txtId']."'";
+		mysql_query($strMysqlQuery) or die(mysql_error());
+		echo "Supplier này đã dừng cung cấp";
+		echo '<meta http-equiv="refresh" content="2; url=admin.php?action=all_supplier"/>';
+	}
+	elseif ($_GET['action']=="all_notsupplier") 
+	{
+		$strMysqlQuery="SELECT * FROM $strTableUserName WHERE supplier=0";
+		$result = mysql_query($strMysqlQuery) or die(mysql_error());
+		echo "Tổng số thành viên không cung cấp: ".$num_row=mysql_num_rows($result);
+		echo "<table align='center'>\r\n" .
+					"<tr>\r\n" .
+					"<th>Bí danh</th>\r\n" .
+					"<th>Chuyên ngành</th>\r\n" .
+					"<th>Yêu cầu đã hoàn tất</th>\r\n" .
+					"<th>Yêu cầu đang chờ</th>\r\n" .
+					"<th>Email</th>\r\n" .
+					"<th>Stop cung cấp</th>\r\n" .
+					"</tr>";
+		$strTrClass="odd";
+		while ($arrList_User = mysql_fetch_array($result))
+		{
+		 echo "<tr class=\"$strTrClass\">\r\n" .
+					"\t<td>" .$arrList_User['username']."</td>\r\n".
+					"\t<td>" .$arrList_User['field']."</td>\r\n".
+					"\t<td>" .$arrList_User['request_handle_number']."</td>\r\n".
+					"\t<td>" .$arrList_User['request_pending_number']."</td>\r\n".
+					"\t<td>" .$arrList_User['email']."</td>\r\n".
+					"\t<td>".
+					"<form name=\"frm".$arrList_User['ID']."\" method=\"POST\" action=\"admin.php?action=start_supplier\">".
+									"<input type=\"hidden\" name=\"txtId\" value=\"".$arrList_User['ID']."\"/>".
+									"<input type=\"submit\" name=\"btnStart\" value=\" Start \"/>".
+									"</form>".
+					"</td>\r\n".
+					"</tr>\r\n";
+					$strTrClass=str_replace($strTrClass,"",'oddeven');
+		}		
+		echo "</table>\r\n";
+		//echo "<div class='title' align='center'> Thong tin chi tiet cua <span style='color:#FF0000'>".$arrList_User['username']."</span></div>\r\n";		
+	}
+	elseif ($_GET['action']=="start_supplier") 
+	{
+		$strMysqlQuery = "UPDATE $strTableUserName " .
+						"SET supplier = 1 ".
+						"WHERE id = ".$_POST['txtId']."";
+		mysql_query($strMysqlQuery) or die(mysql_error());
+		echo "User này đã trở thành supplier";
+		echo '<meta http-equiv="refresh" content="2; url=admin.php?action=all_notsupplier"/>';
+	}
 	else
 	{
 		echo '<a href="admin.php?action=mail">Gửi email nhắc việc cho các suppliers</a><br />'."\n";
 		echo '&nbsp;<a href="admin.php?action=announce">Gửi thông báo </a><br />'."\n";
 		echo '&nbsp;<a href="admin.php?action=users">Danh sách thành viên </a><br />'."\n";
+		echo '&nbsp;<a href="admin.php?action=all_supplier">Danh sách supplier </a><br />'."\n";
+		echo '&nbsp;<a href="admin.php?action=all_notsupplier">Danh sách thành viên không cung cấp</a><br />'."\n";		
 		echo '&nbsp;<a href="admin.php?action=requests">Danh sách bài báo </a><br />'."\n";
 		echo '&nbsp;<a href="admin.php?action=topsuppliers">Top suppliers</a>';		
 	}
