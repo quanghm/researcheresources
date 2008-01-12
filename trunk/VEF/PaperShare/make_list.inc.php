@@ -7,7 +7,7 @@ function draw_table($type,$arrField,$sortBy,$startFrom,$urlRedirect,$strConditio
 	
 	if ($type=='User')
 	{
-		$strMysqlQuery.=("$strTableUserName " );
+		$strMysqlQuery.="$strTableUserName ";
 	}
 	else
 	{
@@ -40,12 +40,12 @@ function draw_table($type,$arrField,$sortBy,$startFrom,$urlRedirect,$strConditio
 		while ($arrRecordData = mysql_fetch_array($result))
 		{
 			$strTrClass=str_replace($strTrClass,'',"oddeven");
-			echo "	<tr class='$strTrClass' height='25pt' onclick='document.getElementById(\"record".$arrRecordData['ID']."\").submit()'>\r\n";
+			echo "	<tr class='$strTrClass' height='25pt' onclick='document.getElementById(\"record".$arrRecordData['id']."\").submit()'>\r\n";
 			foreach ($arrField as $key => $value)
 			{
 				echo "		<td>".$arrRecordData[$key]."</td>\r\n";
 			}
-			echo "		<form id='record".$arrRecordData['ID']."' method='post' action='$urlRedirect'>\r\n" .
+			echo "		<form id='record".$arrRecordData['id']."' method='post' action='$urlRedirect'>\r\n" .
 			 		 "			<input type='hidden' name='frm".$type."ID' value='".$arrRecordData['id']."'>\r\n" .
 			 		 "		</form>\r\n" .
 			 		 "	</tr>\r\n";
