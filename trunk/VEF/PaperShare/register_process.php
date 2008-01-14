@@ -171,7 +171,7 @@ else
 				"Thông tin đăng ký của bạn như sau:<br/>" .
 				"Bí danh: ".$_POST['frmUsername']."<br/>" .
 				"Mật khẩu: ".$_POST["frmPassword"]."<br/>" .
-				"Bạn hãy click vào link sau để click hoạt tài khoản <a href=\"http://$strWebsiteName/test/active.php?user_id=".$_POST['frmUsername']."&active=".$encoded_password."&status=".crypt(1)."\" target=_blank> click here to active account</a>".
+				"Bạn hãy click vào link sau để click hoạt tài khoản <a href=\"http://$strWebsiteName/test/active.php?user_id=".$_POST['frmUsername']."&active=".$encoded_password."&status=".crypt(1)."\" target=_blank> click here to active account</a>".				
 		"<br>Chúng tôi rất mong nhận được sự đóng góp thường xuyên của bạn cho trang web.
 		</body>
 		</html>";

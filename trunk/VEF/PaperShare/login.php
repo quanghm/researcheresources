@@ -43,7 +43,7 @@ elseif ($_GET["action"] == "login")
 	
 	////////////////////////////////////////////////////
 	//////////// Select user from database /////////////
-	$strMyQuery = "SELECT * FROM $strTableUserName WHERE username = '$_POST[frmUsername]'";
+	$strMyQuery = "SELECT * FROM $strTableUserName WHERE username = '$_POST[frmUsername]' AND user_level=1";
 	$result = mysql_query($strMyQuery) or die(mysql_error());
 	////////////////////////////////////////////////////
 	/////////// Determine if user exists  //////////////
