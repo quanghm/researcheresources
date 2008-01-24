@@ -14,3 +14,6 @@ Please test this comment in "web/test" in Hosting.
 || 12/05/07 || [http://code.google.com/p/researcheresources/issues/detail?id=18 18] || Trong || Cancel Request || 30m ||
 || 12/05/07 || [http://code.google.com/p/researcheresources/issues/detail?id=18 18] || Trong || Update DB || 30m ||
 || 12/06/07 || [http://code.google.com/p/researcheresources/issues/detail?id=21 21] || Trong || hoan tat || 5m ||
+
+Past Work
+  * [November2007WorkPad November 2007 WorkPad]
