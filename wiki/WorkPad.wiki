@@ -5,4 +5,4 @@ Please test this comment in "web/test" in Hosting.
 || ?? || [http://code.google.com/p/researcheresources/issues/detail?id=21 ??] || ?? || ?? || ?? ||
 
 Past Work
-  * [November2007WorkPad November 2007 WorkPad]
+  * [November2007WorkPad 2007 WorkPad]
