@@ -4,6 +4,15 @@ Please test this comment in "web/test" in Hosting.
 || *Date* || *Issue ID* || *Completed by* || *Comments* || *Hours worked* || 
 || 01/08 || [http://code.google.com/p/researcheresources/issues/detail?id=22 22] || Trong || hoantat || 15m ||
 || 01/08 || [http://code.google.com/p/researcheresources/issues/detail?id=23 23] || Trong || hoantat || 00 ||
+|| 01/08 || [http://code.google.com/p/researcheresources/issues/detail?id=25 25] || Trong || hoantat || 2h ||
+|| 01/08 || [http://code.google.com/p/researcheresources/issues/detail?id=26 26] || Trong || hoantat || 10m ||
+|| 01/08 || [http://code.google.com/p/researcheresources/issues/detail?id=27 27] || Trong || hoantat || 30m ||
+|| 01/08 || [http://code.google.com/p/researcheresources/issues/detail?id=29 29] || Trong || hoantat || 3h ||
+|| 01/08 || [http://code.google.com/p/researcheresources/issues/detail?id=30 30] || Trong || hoantat || 2h ||
+|| 01/08 || [http://code.google.com/p/researcheresources/issues/detail?id=31 31] || Trong || hoantat || 3h ||
+|| 01/08 || [http://code.google.com/p/researcheresources/issues/detail?id=32 32] || Trong || hoantat || 30m ||
+|| 01/08 || [http://code.google.com/p/researcheresources/issues/detail?id=33 33] || Trong || hoantat || 2h ||
+
 
 Past Work
   * [November2007WorkPad 2007 WorkPad]
