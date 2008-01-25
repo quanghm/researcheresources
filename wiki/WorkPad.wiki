@@ -2,7 +2,8 @@ This page is to document our progress in system development.
 Please test this comment in "web/test" in Hosting.
 
 || *Date* || *Issue ID* || *Completed by* || *Comments* || *Hours worked* || 
-|| ?? || [http://code.google.com/p/researcheresources/issues/detail?id=21 ??] || ?? || ?? || ?? ||
+|| 01/08 || [http://code.google.com/p/researcheresources/issues/detail?id=22 22] || Trong || hoantat || 15m ||
+|| 01/08 || [http://code.google.com/p/researcheresources/issues/detail?id=23 23] || Trong || hoantat || 00 ||
 
 Past Work
   * [November2007WorkPad 2007 WorkPad]
