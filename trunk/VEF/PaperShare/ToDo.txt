@@ -12,8 +12,7 @@ Build Admin Page:
 	
 View statistics:	user statistics, request statistics => send as announcements.
 
-	
-Add option:$archive_request
+i += 1
 	
 		If yes:	save paper on server
 	
