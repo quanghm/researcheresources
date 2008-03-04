@@ -43,6 +43,7 @@ if ($_GET['action']=='finishing')	//	Successfully found paper and send
 		echo '<script language="javascript"> window.location="account.php?type=request";</script>';	
 		exit;
 	}*/
+	/*
 	$userfile = $HTTP_POST_FILES['userfile']['tmp_name']; 
 	// $userfile_name is original file name 
 	$userfile_name = $HTTP_POST_FILES['userfile']['name'];
@@ -118,11 +119,12 @@ if ($_GET['action']=='finishing')	//	Successfully found paper and send
 			exit;
 		} 
 	} 	 
-	*/
+	
 	// show what was uploaded 
 	echo 'Preview of uploaded file contents:<br /><hr />'; 
 	echo $upfile_new;
 	echo '<br /><hr />';
+	*/
 	/////////// increase number of requests handled AND decrease number of requests pending
 	$strMysqlQuery = "UPDATE $strTableUserName SET request_handle_number = request_handle_number + 1, request_pending_number = request_pending_number - 1  WHERE (username = '".$_SESSION['username']."')";
 	mysql_query($strMysqlQuery) or die(mysql_error());
@@ -277,7 +279,7 @@ elseif ($_GET['action']=='passing')	//	pass paper to another user
 	
 		/////// update new supplier's data
 		$last_assigned_request = date('YmdHis');
-		$strMysqlQuery = "UPDATE $strTableUserName SET request_pending_number = request_pending_number +1, last_assigned_request = $last_assigned_request WHERE username = '".$arrSupplierData['username']."'";
+		$strMysqlQuery = "UPDATE $strTableUserName SET request_pending_number = request_pending_number +1, last_assigned_request = $last_assigned_request WHERE  (user_level='1') AND username = '".$arrSupplierData['username']."'";
 		mysql_query($strMysqlQuery) or die(mysql_error());
 		
 		// Update previous supplier's data
