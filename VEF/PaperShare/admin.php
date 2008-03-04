@@ -5,6 +5,27 @@
 		$_GET['action']='';
 	}
 ?>
+<?php
+function compareDate($i_sFirstDate, $i_sSecondDate)
+{
+//Break the Date strings into seperate components
+$arrFirstDate = explode ("-", $i_sFirstDate);
+$arrSecondDate = explode ("-", $i_sSecondDate);
+
+$intFirstYear = $arrFirstDate[0];
+$intFirstMonth = $arrFirstDate[2];
+$intFirstDay = $arrFirstDate[1];
+
+$intSecondYear = $arrSecondDate[0];
+$intSecondMonth = $arrSecondDate[2];
+$intSecondDay = $arrSecondDate[1];
+// Calculate the diference of the two dates and return the number of days.
+$intDate1 = gregoriantojd($intFirstDay, $intFirstMonth, $intFirstYear);
+$intDate2 = gregoriantojd($intSecondDay, $intSecondMonth, $intSecondYear);
+
+return $intDate1 - $intDate2;
+}//end Compare Date
+?> 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><!-- InstanceBegin template="/Templates/paper_share.dwt.php" codeOutsideHTMLIsLocked="false" -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -367,7 +388,7 @@ else	//start admin
 	}
 	elseif ($_GET['action']=="all_supplier") 
 	{
-		$strMysqlQuery="SELECT * FROM $strTableUserName WHERE supplier=1";
+		$strMysqlQuery="SELECT * FROM $strTableUserName WHERE supplier=1 and field='".$arrUserData['field']."'";
 		$result = mysql_query($strMysqlQuery) or die(mysql_error());
 		echo "Tổng số supplier: ".$num_row=mysql_num_rows($result);
 		echo "<table align='center'>\r\n" .
@@ -404,14 +425,298 @@ else	//start admin
 	{
 		$strMysqlQuery = "UPDATE $strTableUserName " .
 						"SET supplier = 0 ".
-						"WHERE id = '".$_POST['txtId']."'";
-		mysql_query($strMysqlQuery) or die(mysql_error());
-		echo "Supplier này đã dừng cung cấp";
+						"WHERE id = ".$_POST['txtId']."";
+		mysql_query($strMysqlQuery) or die(mysql_error());		
+		
+		//CHUYEN BAI BAO CHO NGUOI CUNG CAP KHAC
+		
+		//Select this member
+		$strSelectQuery="SELECT * FROM $strTableUserName WHERE id = '".$_POST['txtId']."'";
+		//echo $strSelectQuery;
+		$Select_result=mysql_query($strSelectQuery) or die(mysql_error());
+		$arrSelectMember = mysql_fetch_array($Select_result);
+		//Update number of pending requests for supplier
+		$strUpdateQuery = "UPDATE $strTableUserName " .
+						"SET request_pending_number = 0 ".
+						"WHERE username = '".$arrSelectMember['username']."'";
+		mysql_query($strUpdateQuery) or die(mysql_error());	
+		//Select request and requester passing
+		$strSelectRequestOfMember = "SELECT * FROM $strTableRequestName WHERE supplier='".$arrSelectMember['username']."' AND status <> '-1'";
+		//echo "<br>".$strSelectRequestOfMember."<br>";
+		$Select_request_result=mysql_query($strSelectRequestOfMember) or die(mysql_error());
+		while ($arrSelectRequestOfMember = mysql_fetch_array($Select_request_result))
+		{
+			parse_str($arrSelectRequestOfMember['previous_suppliers']);
+			//
+			$select_desc_number_requester="SELECT * FROM $strTableUserName WHERE (supplier ='1') AND (field = '".$arrSelectRequestOfMember['field']."') AND (username != '".$arrRequestData['requester']."') AND username!='".$arrSelectMember['username']."'";			
+			for ($i=0; $i<$arrSelectRequestOfMember['status']; $i++)
+			{
+				$select_desc_number_requester .= " AND (username !='".$arrPreviousSuppliers[$i]."') ";
+			}
+			$select_desc_number_requester .=" ORDER BY last_assigned_request ASC, request_handle_number ASC, request_pending_number ASC";
+			//echo "<br>".$select_desc_number_requester."<br>";
+			$result_desc_number_requester = mysql_query($select_desc_number_requester) or die(mysql_error());
+			$arrSupplierData_desc_number_requester = mysql_fetch_array($result_desc_number_requester);
+			
+			//Update change request for supplier other
+			$strPreviousSuppliers = $arrSelectRequestOfMember['previous_suppliers'].'arrPreviousSuppliers[]='.$arrSelectMember['username'].'&';
+			$strMysql_update_change_request ="UPDATE $strTableRequestName SET previous_suppliers = '".$strPreviousSuppliers."', " .
+						"status = status + 1, supplier = '".$arrSupplierData_desc_number_requester['username']."' " .
+						"WHERE id = '".$arrSelectRequestOfMember['id']."'";
+			mysql_query($strMysql_update_change_request) or die(mysql_error());
+			
+			//Update request for new supplier
+			$last_assigned_request = date('YmdHis');
+			$strMysqlQuery = "UPDATE $strTableUserName SET request_pending_number = request_pending_number +1, last_assigned_request = $last_assigned_request WHERE username = '".$arrSupplierData_desc_number_requester['username']."'";
+			mysql_query($strMysqlQuery) or die(mysql_error());
+		}
+		
+		
+		//send mail
+		
+		$strEmailTo=$arrSelectMember['email'];
+		$strSubject="Xin chào ".$arrSelectMember['username'];
+		$Headers="From: ".$strAdminEmail."\r\n";
+		$Headers .= "MIME-Version: 1.0\r\n"; 
+		$Headers .= "content-type: text/html; charset=utf-8\r\n";
+		$strDir=dirname($_SERVER['PHP_SELF']);
+		$message = "<html>
+		<head>
+		<title>Xin chào ".$arrSelectMember['username']."</title>
+		</head>
+		<body>
+		Đây là email tự động gửi từ ban quản trị của $strWebsiteName.<br/>
+		Chức năng cung cấp bài báo của bạn tạm thời ngưng hoạt động, lý do là bạn chưa có thời gian để cung cấp bài báo. Nếu có những thắc mắc gì, hoặc bạn muốn trở lại cung cấp khi có thời gian thì hãy thông báo cho ban quản trị. Cảm ơn bạn!".
+		"<br>Chúng tôi rất mong nhận được sự đóng góp thường xuyên của bạn cho trang web.
+		</body>
+		</html>";
+		
+		//messages to member
+		do_send($strEmailTo,$arrSelectMember['username'],$strSubject,$message);
+		
+		echo "Supplier này đã dừng cung cấp<br>";
+		echo "Đã gửi email thông báo tới member.<br>";					
+		
+		//F5
 		echo '<meta http-equiv="refresh" content="2; url=admin.php?action=all_supplier"/>';
+	}
+	elseif ($_GET['action']=="message_2day") 
+	{
+		$strMysqlQuery="SELECT * FROM $strTableRequestName WHERE status>=0";
+		$strMysqlQuery_Distinct="SELECT DISTINCT supplier,title,requester,supplier,date_request FROM $strTableRequestName WHERE status>=0";
+		$result = mysql_query($strMysqlQuery) or die(mysql_error());
+		$result_user = mysql_query($strMysqlQuery_Distinct) or die(mysql_error());
+		if ($num_row=mysql_num_rows($result)==0)
+		{
+			echo "Hiện tại không có yêu cầu nào cần xử lý";
+		}
+		else
+		{
+			$today=date('Y-m-d');
+			echo "Danh sách bài báo đang có thời gian chờ 2-3 ngày.";
+				echo "<table width=100% align='center'>\r\n" .
+								"<tr>\r\n" .
+								"<th>Tiêu đề</th>\r\n" .
+								"<th>Người yêu cầu</th>\r\n" .
+								"<th>Người cung cấp</th>\r\n" .
+								"<th>Số ngày chờ</th>\r\n" .
+								"</tr>";
+					$strTrClass="odd";			
+			while ($arrList_request = mysql_fetch_array($result))
+			{				
+				if ((compareDate($today,$arrList_request['date_request'])>=2)&&(compareDate($today,$arrList_request['date_request'])<=3))
+				{					
+					echo "<tr class=\"$strTrClass\">\r\n" .
+								"\t<td>" .$arrList_request['title']."</td>\r\n".
+								"\t<td>" .$arrList_request['requester']."</td>\r\n".
+								"\t<td>" .$arrList_request['supplier']."</td>\r\n".
+								"\t<td>" .compareDate($today,$arrList_request['date_request'])."</td>\r\n".
+								"</tr>\r\n";
+								$strTrClass=str_replace($strTrClass,"",'oddeven');												
+				}				
+			}
+			echo "</table>\r\n<br>";			
+			echo "<br>&nbsp;Danh sách thành viên có bài báo chờ xử lý 2-3 ngày.";
+				echo "<table width=100% align='center'>\r\n" .
+								"<tr>\r\n" .
+								"<th>User Name</th>\r\n" .
+								"<th>Yêu cầu đã xử lý</th>\r\n" .
+								"<th>Yêu cầu đang chờ</th>\r\n" .
+								"<th>Mail to supplier</th>\r\n" .
+								"</tr>";
+					$strTrClass="odd";
+			while ($arrList_request_user = mysql_fetch_array($result_user))
+			{
+				if ((compareDate($today,$arrList_request_user['date_request'])>=2)&&(compareDate($today,$arrList_request_user['date_request'])<=3))
+				{
+					$str_select_user="SELECT * FROM $strTableUserName WHERE username='".$arrList_request_user['supplier']."'";
+					$result_user_list = mysql_query($str_select_user) or die(mysql_error());
+					while ($arrList_user = mysql_fetch_array($result_user_list))
+					{				
+						echo "<tr class=\"$strTrClass\">\r\n" .
+								"\t<td>" .$arrList_user['username']."</td>\r\n".
+								"\t<td>" .$arrList_user['request_handle_number']."</td>\r\n".
+								"\t<td>" .$arrList_user['request_pending_number']."</td>\r\n".
+								"\t<td>".
+								"<form name=\"frm".$arrList_user['ID']."\" method=\"POST\" action=\"admin.php?action=mail_2day\">".
+									"<input type=\"hidden\" name=\"txtId\" value=\"".$arrList_user['ID']."\"/>".
+									"<input type=\"submit\" name=\"btnStop\" value=\" Send mail \"/>".
+									"</form>".
+								"</td>\r\n".
+								"</tr>\r\n";
+								$strTrClass=str_replace($strTrClass,"",'oddeven');																				
+					}
+				}				
+			}			
+			echo "</table>\r\n";
+			echo "&nbsp;<form name=\"frmMailAll\" method=\"POST\" action=\"admin.php?action=mail_all_2day\">".									
+									"<input type=\"submit\" name=\"btnStop\" value=\" Mail to all this supplier \"/>".
+									"</form>";
+		}
+	}
+	elseif ($_GET['action']=="mail_all_2day")
+	{
+		$strMysqlQuery_Distinct="SELECT DISTINCT supplier,title,requester,supplier,date_request FROM $strTableRequestName WHERE status>=0";
+		$result_user = mysql_query($strMysqlQuery_Distinct) or die(mysql_error());
+		if ($num_row=mysql_num_rows($result)==0)
+		{
+			echo "Hiện tại không có yêu cầu nào cần xử lý";
+		}
+		else
+		{
+			$today=date('Y-m-d');
+			while ($arrList_request_user = mysql_fetch_array($result_user))
+			{
+				if ((compareDate($today,$arrList_request_user['date_request'])>=2)&&(compareDate($today,$arrList_request_user['date_request'])<=3))
+				{
+					$str_select_user="SELECT * FROM $strTableUserName WHERE username='".$arrList_request_user['supplier']."'";
+					$result_user_list = mysql_query($str_select_user) or die(mysql_error());
+					while ($arrList_user = mysql_fetch_array($result_user_list))
+					{				
+						echo "<tr class=\"$strTrClass\">\r\n" .
+								"\t<td>" .$arrList_user['username']."</td>\r\n".
+								"\t<td>" .$arrList_user['request_handle_number']."</td>\r\n".
+								"\t<td>" .$arrList_user['request_pending_number']."</td>\r\n".
+								"\t<td>".
+								"<form name=\"frm".$arrList_user['ID']."\" method=\"POST\" action=\"admin.php?action=mail_2day\">".
+									"<input type=\"hidden\" name=\"txtId\" value=\"".$arrList_user['ID']."\"/>".
+									"<input type=\"submit\" name=\"btnStop\" value=\" Send mail \"/>".
+									"</form>".
+								"</td>\r\n".
+								"</tr>\r\n";
+								$strTrClass=str_replace($strTrClass,"",'oddeven');																				
+					}
+				}				
+			}			
+			echo "</table>\r\n";
+			echo "&nbsp;<form name=\"frmMailAll\" method=\"POST\" action=\"admin.php?action=mail_all_2day\">".									
+									"<input type=\"submit\" name=\"btnStop\" value=\" Mail to all this supplier \"/>".
+									"</form>";
+		}
+	}
+	elseif ($_GET['action']=="mail_2day")
+	{
+		$strSelectQuery="SELECT * FROM $strTableUserName WHERE id = '".$_POST['txtId']."'";
+		//echo $strSelectQuery;
+		$Select_result=mysql_query($strSelectQuery) or die(mysql_error());
+		$arrSelectMember = mysql_fetch_array($Select_result);
+		
+		$strEmailTo=$arrSelectMember['email'];
+		$strSubject="Xin chào ".$arrSelectMember['username'];
+		$Headers="From: ".$strAdminEmail."\r\n";
+		$Headers .= "MIME-Version: 1.0\r\n"; 
+		$Headers .= "content-type: text/html; charset=utf-8\r\n";
+		$strDir=dirname($_SERVER['PHP_SELF']);
+		$message = "<html>
+		<head>
+		<title>Xin chào ".$arrSelectMember['username']."</title>
+		</head>
+		<body>
+		Đây là email tự động gửi từ ban quản trị của $strWebsiteName.<br/>
+		Bạn đang có yêu cầu cần xử lý gấp. Xin mời truy cập website http://nghiencuusinh.org để xử lý yêu cầu bài báo. Cảm ơn bạn!
+		</body>
+		</html>";		
+		//messages to member
+		do_send($strEmailTo,$arrSelectMember['username'],$strSubject,$message);
+		
+		echo "Đã gửi email tới supplier này<br>";							
+		//F5
+		echo '<meta http-equiv="refresh" content="2; url=admin.php?action=message_2day"/>';
+	}
+	elseif ($_GET['action']=="message_4day") 
+	{
+		$today=date('Y-m-d');
+		$strMysqlQuery="SELECT * FROM $strTableRequestName WHERE status>=0";
+		$strMysqlQuery_Distinct="SELECT DISTINCT supplier,title,requester,supplier,date_request FROM $strTableRequestName WHERE status>=0";
+		$result = mysql_query($strMysqlQuery) or die(mysql_error());
+		$result_user = mysql_query($strMysqlQuery_Distinct) or die(mysql_error());
+		if ($num_row=mysql_num_rows($result)==0)
+		{
+			echo "Hiện tại không có yêu cầu nào cần xử lý";
+		}
+		else
+		{									
+			echo "Danh sách bài báo sau thông báo 2 ngày(4 ngày kể từ ngày gửi) mà chưa được xử lý.<br>";
+				echo "<table width=100% align='center'>\r\n" .
+								"<tr>\r\n" .
+								"<th>Tiêu đề</th>\r\n" .
+								"<th>Người yêu cầu</th>\r\n" .
+								"<th>Người cung cấp</th>\r\n" .
+								"<th>Số ngày chờ</th>\r\n" .
+								"</tr>";
+					$strTrClass="odd";			
+			while ($arrList_request = mysql_fetch_array($result))
+			{				
+				if (compareDate($today,$arrList_request['date_request'])>=35)
+				{					
+					echo "<tr class=\"$strTrClass\">\r\n" .
+								"\t<td>" .$arrList_request['title']."</td>\r\n".
+								"\t<td>" .$arrList_request['requester']."</td>\r\n".
+								"\t<td>" .$arrList_request['supplier']."</td>\r\n".
+								"\t<td>" .compareDate($today,$arrList_request['date_request'])."</td>\r\n".
+								"</tr>\r\n";
+								$strTrClass=str_replace($strTrClass,"",'oddeven');												
+				}				
+			}
+			echo "</table>\r\n<br>";
+			echo "<br>&nbsp;Danh sách thành viên trễ xử lý bài báo sau thông báo 2 ngày(4 ngày kể từ ngày gửi).<br>";
+				echo "<table width=100% align='center'>\r\n" .
+								"<tr>\r\n" .
+								"<th>User Name</th>\r\n" .
+								"<th>Yêu cầu đã xử lý</th>\r\n" .
+								"<th>Yêu cầu đang chờ</th>\r\n" .
+								"<th>Stop supplier</th>\r\n" .
+								"</tr>";
+					$strTrClass="odd";
+			while ($arrList_request_user = mysql_fetch_array($result_user))
+			{
+				if (compareDate($today,$arrList_request_user['date_request'])>=35)
+				{
+					$str_select_user="SELECT * FROM $strTableUserName WHERE username='".$arrList_request_user['supplier']."'";
+					$result_user_list = mysql_query($str_select_user) or die(mysql_error());
+					while ($arrList_user = mysql_fetch_array($result_user_list))
+					{				
+						echo "<tr class=\"$strTrClass\">\r\n" .
+								"\t<td>" .$arrList_user['username']."</td>\r\n".
+								"\t<td>" .$arrList_user['request_handle_number']."</td>\r\n".
+								"\t<td>" .$arrList_user['request_pending_number']."</td>\r\n".
+								"\t<td>".
+								"<form name=\"frm".$arrList_user['ID']."\" method=\"POST\" action=\"admin.php?action=stop_supplier\">".
+									"<input type=\"hidden\" name=\"txtId\" value=\"".$arrList_user['ID']."\"/>".
+									"<input type=\"submit\" name=\"btnStop\" value=\" Stop \"/>".
+									"</form>".
+								"</td>\r\n".
+								"</tr>\r\n";
+								$strTrClass=str_replace($strTrClass,"",'oddeven');																				
+					}
+				}				
+			}			
+			echo "</table>\r\n";
+		}
 	}
 	elseif ($_GET['action']=="all_notsupplier") 
 	{
-		$strMysqlQuery="SELECT * FROM $strTableUserName WHERE supplier=0";
+		$strMysqlQuery="SELECT * FROM $strTableUserName WHERE supplier=0 and field='".$arrUserData['field']."'";
 		$result = mysql_query($strMysqlQuery) or die(mysql_error());
 		echo "Tổng số thành viên không cung cấp: ".$num_row=mysql_num_rows($result);
 		echo "<table align='center'>\r\n" .
@@ -450,12 +755,49 @@ else	//start admin
 						"SET supplier = 1 ".
 						"WHERE id = ".$_POST['txtId']."";
 		mysql_query($strMysqlQuery) or die(mysql_error());
-		echo "User này đã trở thành supplier";
+		$strSelectQuery="SELECT * FROM $strTableUserName WHERE id = '".$_POST['txtId']."'";
+		$Select_result=mysql_query($strSelectQuery) or die(mysql_error());
+		$arrSelectMember = mysql_fetch_array($Select_result);
+		//send mail
+		$strEmailTo=$arrSelectMember['email'];
+		$strSubject="Xin chào ".$arrSelectMember['username'];
+		$Headers="From: ".$strAdminEmail."\r\n";
+		$Headers .= "MIME-Version: 1.0\r\n"; 
+		$Headers .= "content-type: text/html; charset=utf-8\r\n";
+		$strDir=dirname($_SERVER['PHP_SELF']);
+		$message = "<html>
+			<head>
+			<title>Chào mừng ".$_POST["frmUsername"]."</title>
+			</head>
+			<body>
+			Đây là email tự động gửi từ ban quản trị của $strWebsiteName.<br/>
+			<br>Cám ơn bạn đã đồng ý tham gia cung cấp tài liệu tại www.nghiencuusinh.org.  
+			Là một supplier (người cung cấp tài liệu) xin bạn lưu ý những điều sau :
+			<br><br>
+			Ý nghĩa: 
+			Khi bạn đồng ý tham gia, chắc chắn bạn đã ý thức được chúng ta làm việc này hoàn toàn không vì lợi ích cá nhân. Đơn giản, chúng ta chỉ muốn góp một phần nhỏ vào việc giải quyết tình trạng khan hiếm tài liệu (chủ yếu là các bài báo trên tạp chí quốc tế) dùng trong nghiên cứu, giảng dạy và học tập tại Việt Nam. 
+			www.nghiencuusinh.org mặc dù chỉ là một giải pháp tạm thời nhưng hết sức quan trọng. Cho tới khi các trường đại học Việt Nam có thể tự bỏ tiền ra mua báo, www.nghiencuusinh.org chắc chắn sẽ vẫn là một địa chỉ vô cùng hữu ích.
+			<br><br>
+			Nghĩa vụ: 
+			-	Có trách nhiệm với yêu cầu gửi tới bạn : lấy sớm, lấy đúng bài báo, gửi tới đúng người yêu cầu, lưu bài báo lại trong một thời gian nhất định (phòng trường hợp bạn gửi mail nhưng quên không attach) và đặc biệt phải check mail hoặc kiểm tra mục “Yêu cầu gửi đến bạn” hằng ngày tại www.nghiencuusinh.org.
+			-	Khuyến khích giúp đỡ các suppliers khác: khi bạn có thời gian hãy kiểm tra thêm mục “Tất cả các bài báo đang chờ” để xử lý giùm các yêu cầu của các supplier khác. Điều này sẽ giúp quá trình xử lý yêu cầu nhanh hơn và giảm tải cho các suppliers khác khi họ bận việc đột xuất.
+			-	Có trách nhiệm quảng bá cho www.nghiencuusinh.org. Càng nhiều người tham gia cung cấp tài liệu, cũng như càng nhiều người tham gia gửi yêu cầu, công việc của chúng ta càng hiệu qủa và hữu ích. 
+			<br><br>
+			Bạn có thể tham khảo chi tiết hơn về quyền lợi và nghĩa vụ của một supplier tại http://www.nghiencuusinh.org/about.php. Cám ơn bạn rất nhiều
+			<br/>Chúng tôi rất mong nhận được sự đóng góp thường xuyên của bạn cho trang web.
+			</body>
+			</html>";
+		//messages to member
+		do_send($strEmailTo,$arrSelectMember['username'],$strSubject,$message);
+		echo "User này đã trở thành supplier<br>";
+		echo "Đã gửi email thông báo tới member.<br>";
 		echo '<meta http-equiv="refresh" content="2; url=admin.php?action=all_notsupplier"/>';
 	}
 	else
 	{
 		echo '<a href="admin.php?action=mail">Gửi email nhắc việc cho các suppliers</a><br />'."\n";
+		echo '&nbsp;<a href="admin.php?action=message_2day">Supplier có yêu cầu chờ qúa 2 ngày</a><br />'."\n";
+		echo '&nbsp;<a href="admin.php?action=message_4day">Supplier nhận thông báo qúa 2 ngày</a><br />'."\n";
 		echo '&nbsp;<a href="admin.php?action=announce">Gửi thông báo </a><br />'."\n";
 		echo '&nbsp;<a href="admin.php?action=users">Danh sách thành viên </a><br />'."\n";
 		echo '&nbsp;<a href="admin.php?action=all_supplier">Danh sách supplier </a><br />'."\n";

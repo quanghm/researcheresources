@@ -731,18 +731,20 @@ if ((logged_in())&& (!isset($strConn)))
 			</table>';
 			if ($arrRequestData['status']>-1)
 			{
+											
 				echo '
-			<form method="POST" name="frmFinishRequest" action="handle_request.php?action=finishing"> 
+				<form method="POST" name="frmFinishRequest" action="handle_request.php?action=finishing"> 
 				<input name="frmHandlingRequestID" type="hidden" value="'.$arrRequestData['id'].'"/>
 				<a href="javascript: document.frmFinishRequest.submit()">Báo cáo hoàn tất </a></form>';
-			/*
-			<form enctype="multipart/form-data" action="handle_request.php?action=finishing" method="post"> 
-			<input type="hidden" name="MAX_FILE_SIZE" value="1000000"> File: 
-			<input name="userfile" type="file"> 
-			<input name="frmHandlingRequestID" type="hidden" value="'.$arrRequestData['id'].'"/>
-			<input name="frmHandlingRequestName" type="hidden" value="'.$arrRequestData['requester'].'"/>
-			<input type="submit" value="Upload"> 
-			</form>';*/
+				
+				/*
+				<form enctype="multipart/form-data" action="handle_request.php?action=finishing" method="post"> 
+				<input type="hidden" name="MAX_FILE_SIZE" value="1000000"> File: 
+				<input name="userfile" type="file"> 
+				<input name="frmHandlingRequestID" type="hidden" value="'.$arrRequestData['id'].'"/>
+				<input name="frmHandlingRequestName" type="hidden" value="'.$arrRequestData['requester'].'"/>
+				<input type="submit" value="Upload"> 
+				</form>';*/
 			
 				if (($_SESSION['username']==$arrRequestData['supplier'])or ($arrUserData['admin']))
 				{
@@ -787,7 +789,7 @@ if ((logged_in())&& (!isset($strConn)))
 					 "		<th>Tác giả</th>\r\n" .
 					 "		<th>Tạp chí</th>\r\n" .
 					 "		<th>Năm</th>\r\n" .
-					 "		<th>Ngày yếu cầu</th>\r\n" .
+					 "		<th>Ngày yêu cầu</th>\r\n" .
 					 "		<th>Chi tiết </th>" .
 					 "	</tr>\r\n";
 				$RequestIndex=1;

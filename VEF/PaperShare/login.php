@@ -43,7 +43,7 @@ elseif ($_GET["action"] == "login")
 	
 	////////////////////////////////////////////////////
 	//////////// Select user from database /////////////
-	$strMyQuery = "SELECT * FROM $strTableUserName WHERE username = '$_POST[frmUsername]' AND user_level=1";
+	$strMyQuery = "SELECT * FROM $strTableUserName WHERE username = '$_POST[frmUsername]'";
 	$result = mysql_query($strMyQuery) or die(mysql_error());
 	////////////////////////////////////////////////////
 	/////////// Determine if user exists  //////////////
@@ -57,22 +57,32 @@ elseif ($_GET["action"] == "login")
 	else
 	{	
 		$row = mysql_fetch_array($result);
-		$strPasswordOnServer = $row["password"];
-		if (crypt($_POST["frmPassword"],$strPasswordOnServer) == $strPasswordOnServer)
+		if ($row['user_level']==1)
 		{
-			$_SESSION["username"] = $_POST["frmUsername"];
-			$_SESSION["password"] = $strPasswordOnServer;
-			echo "logged in successfully";
-			echo "<script language=\"javascript\">";
-			echo "window.location = \"index.php\";";
-			echo "</script>";
+			$strPasswordOnServer = $row["password"];
+			if (crypt($_POST["frmPassword"],$strPasswordOnServer) == $strPasswordOnServer)
+			{
+				$_SESSION["username"] = $_POST["frmUsername"];
+				$_SESSION["password"] = $strPasswordOnServer;
+				echo "logged in successfully";
+				echo "<script language=\"javascript\">";
+				echo "window.location = \"index.php\";";
+				echo "</script>";
+			}
+			else
+			{
+				$_SESSION["ErrMes"] = $strErrMessage;
+				echo "<script language=\"javascript\">";
+				echo "history.back();";
+				echo "</script>";
+			}
 		}
-		else
+		elseif ($row['user_level']==0)
 		{
-			$_SESSION["ErrMes"] = $strErrMessage;
-			echo "<script language=\"javascript\">";
-			echo "history.back();";
-			echo "</script>";
+				$_SESSION["ErrMes"] = "Bạn phải checkmail kích hoạt trước khi đăng nhập!";
+				echo "<script language=\"javascript\">";
+				echo "history.back();";
+				echo "</script>";
 		}
 	}
 }
