@@ -7,6 +7,7 @@ Chao mung ban tham gia vao du an nghiencuusinh dot org
 = Details =
 
 1. Project Management
+
 Project home : http://code.google.com/p/researcheresources/
 Svn repo url: https://researcheresources.googlecode.com/svn/trunk/
 
@@ -18,12 +19,14 @@ Ban nen download phan mem [http://tortoisesvn.tigris.org/ TortoiseSVN] cho windo
 Ban can dang ky 1 gmail account, roi gui email cho project owner de add vao developer list. Sau khi tro thanh project member, ban vao phan [http://code.google.com/p/researcheresources/source/checkout Source] cua Google Code de generate password cho minh.
 
 3. Install local servers
+
 Ban can cai LAMP (Apache server, MySQL server, PHP, Linux is preferred,
 but not required).
 Tao virtual directory http://localhost/PaperShare tro vao thu muc
 PaperShare vua check out.
 
 4. Database
+
 Please send an email to one of project owners de biet chi tiet
 
 5. FTP server. 
