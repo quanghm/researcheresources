@@ -6,7 +6,7 @@
 **********************************************************************/
 <?php $strDir="incs/rte";?>
 // Width of the rich text editor.
-rteWidth = "60%";
+rteWidth = "100%";
 // Name of the IFRAME (content editor).
 rteName = "freeRTE";
 // Name of the hidden form field.
