@@ -97,14 +97,10 @@ else	//start admin
 						<body>
 						Đây là email tự động gửi từ ban quản trị của $strWebsiteName.<br/>
 						Hiện thời bạn có ".$arrSupplierData['request_pending_number']." yêu cầu cần giải quyết.<br />
-						Xin hãy đăng nhập vào trang web <a href=\"".'http://'.$_SERVER['SERVER_NAME'].$strDir."\">$strWebsiteName </a> để xử lý các yêu cầu.
+						Xin hãy đăng nhập vào trang web <a href=\"$strWebsiteName\">$strWebsiteName </a> để xử lý các yêu cầu.
 						</body>
 						</html>";
 			$Subject = "Ban co yeu cau dang cho o website $strWebsiteName";
-			/*$Headers = "From: ".$strAdminEmail."\r\n";
-			$Headers .= "MIME-Version: 1.0\r\n"; 
-			$Headers .= "content-type: text/html; charset=utf-8\r\n";
-			if (mail($To, $Subject, $message, $Headers))*/
 			
 			if (do_send($arrSupplierData['email'],$arrSupplierData['username'],$Subject,$message))
 			{
@@ -136,12 +132,6 @@ else	//start admin
 	}
 	elseif ($_GET['action']=='post_announce') 
 	{
-		/*
-		 if ($_SERVER['HTTP_REFERER']!=='http://'.$_SERVER['SERVER_NAME'].dirname($_SERVER['PHP_SELF'])."/admin.php?action=announce")
-		{
-			die("Invalid referer");
-		}
-		*/
 		if ($_POST['sendtype']=='0')
 		{
 			// Get date
@@ -287,7 +277,7 @@ else	//start admin
 			$strTrClass="odd";
 			while ($arrUserData=mysql_fetch_array($result))
 			{
-				echo "<tr onclick='javascript:submitID(".$arrUserData['ID'].")' class=\"$strTrClass\">\r\n" .
+				echo "<tr onclick='javascript:submitID(".$arrUserData['id'].")' class=\"$strTrClass\">\r\n" .
 					"\t<td>" .$arrUserData['username']."</td>\r\n".
 					"\t<td>" .$arrUserData['join_date']."</td>\r\n".
 					"\t<td>" .$arrUserData['field']."</td>\r\n".
