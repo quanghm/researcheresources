@@ -788,26 +788,32 @@ if ((logged_in())&& (!isset($strConn)))
 					 "		<th>Tên bài báo</th>\r\n" .
 					 "		<th>Tác giả</th>\r\n" .
 					 "		<th>Tạp chí</th>\r\n" .
-					 "		<th>Năm</th>\r\n" .
 					 "		<th>Ngày yêu cầu</th>\r\n" .
-					 "		<th>Chi tiết </th>" .
+					 "		<th>Người yêu cầu</th>\r\n" .
+					 "		<th>Hoàn tất</th>\r\n".
 					 "	</tr>\r\n";
 				$RequestIndex=1;
 				$strTrClass='even';
 				while ($arrRequestData=mysql_fetch_array($result))
 				{
 					$strTrClass=str_replace($strTrClass,"",'oddeven');
+					$strMysqlQuery="SELECT * FROM $strTableUserName WHERE (username='".$arrRequestData['requester']."')";
+					$result1=mysql_query($strMysqlQuery) or die(mysql_error());
+					$arrRequesterData = mysql_fetch_array($result1);
 					echo "	<tr class=$strTrClass onclick='document.getElementById(\"form$RequestIndex\").submit()'>\r\n" .
-						 "		<td align='right'>$RequestIndex</td>\r\n".
-						 "		<td>" .$arrRequestData['title']."</td>\r\n".
+						 "		<td align='right'>".$RequestIndex++."</td>\r\n".
+						 "		<td title=\"".$arrRequestData['title']."\"><a target=\"blank\" href=\"".$arrRequestData['download_link']."\">" .substr($arrRequestData['title'],0,20)."...</a></td>\r\n".
 						 "		<td>" .$arrRequestData['author']."</td>\r\n".
 						 "		<td>" .$arrRequestData['journal']."</td>\r\n".
-						 "		<td>" .$arrRequestData['year']."</td>\r\n".
 						 "		<td>" .$arrRequestData['date_request']."</td>\r\n" .			 			 
-						 "		<td><form id=\"form".($RequestIndex++)."\" method=\"POST\" action=\"account.php?type=handle_request\">" .
+						/* "		<td><form id=\"form".($RequestIndex++)."\" method=\"POST\" action=\"account.php?type=handle_request\">" .
 						 "			<input type=\"hidden\" name=\"frmRequestID\" value=\"".$arrRequestData['id']."\"/>" .
 					 	 "			<input type=\"submit\" name=\"frmSubmitHandle\" value=\" Chi tiết \"/>" .
-				 	 "				</form></td>\n" .
+				 	 	 "			</form></td>\n" .*/
+						 "		<td><a href=\"mailto:".$arrRequesterData['email']."\">".$arrRequestData['requester']."</a></td>\r\n".
+						 "		<td>".'<form method="POST" name="frmFinishRequest" action="handle_request.php?action=finishing">'.
+						 '				<input name="frmHandlingRequestID" type="hidden" value="'.$arrRequestData['id'].'"/>
+						 <input type="submit" value="Hoàn tất" /></form>'."\r\n".
 				 		 "	</tr>\r\n";						 
 				}
 				echo "</table>\r\n";
