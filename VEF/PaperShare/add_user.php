@@ -8,12 +8,14 @@
 include "config.php";
 include "dbconnect.php";
 $encoded_password = crypt("testing");
-for ($i = 1; $i<=5; $i++)
+for ($i = 0; $i<=20; $i++)
 {
 	$today = date("Y-m-d");
-	$strMysqlQuery = "INSERT INTO $strTableUserName (username, password, email, field, supplier,join_date) VALUES ('testacc".$i."', '$encoded_password', 'test".$i."@yahoo.com', 'Mathematics', '1','$today')";
+	$strMysqlQuery ="INSERT INTO $strTableUserName (username, password, email, field, supplier,join_date,user_level)".
+					" VALUES ('testacc".$i."', '$encoded_password', 'admin@nghiencuusinh.org', 'Mathematics', '1','$today',1)";
 	mysql_query($strMysqlQuery);
 }
+
 include "dbclose.php";
 echo "done";
 ?>

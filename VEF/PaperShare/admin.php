@@ -87,30 +87,28 @@ else	//start admin
 			}
 			else while ($arrSupplierData = mysql_fetch_array($result))
 			{
-			//////	Suppliers found, sending mail
-			$strDir=dirname($_SERVER['PHP_SELF']);
-			$message = "<html>
-						<head>
-						<title>Bạn có yêu cầu đang chờ</title>
-						</head>
-						
-						<body>
-						Đây là email tự động gửi từ ban quản trị của $strWebsiteName.<br/>
-						Hiện thời bạn có ".$arrSupplierData['request_pending_number']." yêu cầu cần giải quyết.<br />
-						Xin hãy đăng nhập vào trang web <a href=\"$strWebsiteName\">$strWebsiteName </a> để xử lý các yêu cầu.
-						</body>
-						</html>";
-			$Subject = "Ban co yeu cau dang cho o website $strWebsiteName";
-			
-			if (do_send($arrSupplierData['email'],$arrSupplierData['username'],$Subject,$message))
-			{
-				echo" Send email to ".$arrSupplierData['username'].": DONE.<br>\n";
-			}
-			else
-			{
-				echo (" Send email to ".$arrSupplierData['username'].": FAILED.<br>\n");
-			}
-			
+				//////	Suppliers found, sending mail
+				$message = "<html>
+							<head>
+							<title>Bạn có yêu cầu đang chờ</title>
+							</head>
+							
+							<body>
+							Đây là email tự động gửi từ ban quản trị của $strWebsiteName.<br/>
+							Hiện thời bạn có ".$arrSupplierData['request_pending_number']." yêu cầu cần giải quyết.<br />
+							Xin hãy đăng nhập vào trang web <a href=\"http://$strWebsiteName\">$strWebsiteName </a> để xử lý các yêu cầu.
+							</body>
+							</html>";
+				$Subject = "Ban co yeu cau dang cho o website $strWebsiteName";
+				
+				if (do_send($arrSupplierData['email'],$arrSupplierData['username'],$Subject,$message))
+				{
+					echo" Send email to ".$arrSupplierData['username'].": DONE.<br>\n";
+				}
+				else
+				{
+					echo (" Send email to ".$arrSupplierData['username'].": FAILED.<br>\n");
+				}
 			}
 		}
 	echo "\n".'<br /><button onClick="javascript:window.location=\'admin.php\'">Quay lại trang điều khiển</button>';
