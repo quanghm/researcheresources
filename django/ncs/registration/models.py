@@ -59,7 +59,7 @@ class RegistrationManager(models.Manager):
                 return user
         return False
     
-    def create_inactive_user(self, username, password, email,
+    def create_inactive_user(self, username, password, email,research_field = "NONE", is_supplier = False,
                              send_email=True, profile_callback=None):
         """
         Create a new, inactive ``User``, generates a
@@ -87,21 +87,23 @@ class RegistrationManager(models.Manager):
         registration_profile = self.create_profile(new_user)
         
         if profile_callback is not None:
-            profile_callback(user=new_user)
+            profile_callback(user=new_user, research_field = research_field, is_supplier = is_supplier)
         
         if send_email:
             from django.core.mail import send_mail
             current_site = Site.objects.get_current()
             
             subject = render_to_string('registration/activation_email_subject.txt',
-                                       { 'site': current_site })
+                                       { 'site': current_site ,
+                                        'username' : username})
             # Email subject *must not* contain newlines
             subject = ''.join(subject.splitlines())
             
             message = render_to_string('registration/activation_email.txt',
                                        { 'activation_key': registration_profile.activation_key,
                                          'expiration_days': settings.ACCOUNT_ACTIVATION_DAYS,
-                                         'site': current_site })
+                                         'site': current_site,
+                                         'username' :username })
             
             send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [new_user.email])
         return new_user
