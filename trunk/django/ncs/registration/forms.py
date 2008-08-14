@@ -10,7 +10,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
 
 from registration.models import RegistrationProfile
-
+from ncs.papershare.models import RESEARCH_FIELDS
 
 # I put this on all required fields, because it's easier to pick up
 # on them with CSS or JavaScript if they have a class of "required"
@@ -35,7 +35,7 @@ class RegistrationForm(forms.Form):
     """
     username = forms.CharField(max_length=30,
                                widget=forms.TextInput(attrs=attrs_dict),
-                               label=_(u'username'))
+                               label=_(u'username'), help_text = "blah blah")
     email = forms.EmailField(widget=forms.TextInput(attrs=dict(attrs_dict,
                                                                maxlength=75)),
                              label=_(u'email address'))
@@ -43,6 +43,10 @@ class RegistrationForm(forms.Form):
                                 label=_(u'password'))
     password2 = forms.CharField(widget=forms.PasswordInput(attrs=attrs_dict, render_value=False),
                                 label=_(u'password (again)'))
+    #TODO: did I repeat my self here? this is the same as in PaperShareProfile
+    research_field = forms.ChoiceField(choices=RESEARCH_FIELDS)
+    #is_supplier = forms.BooleanField()
+    is_supplier = forms.IntegerField(widget=forms.RadioSelect(choices=((1,"Yes"),(0,"No"))))
     
     def clean_username(self):
         """
@@ -86,6 +90,8 @@ class RegistrationForm(forms.Form):
         new_user = RegistrationProfile.objects.create_inactive_user(username=self.cleaned_data['username'],
                                                                     password=self.cleaned_data['password1'],
                                                                     email=self.cleaned_data['email'],
+                                                                    research_field = self.cleaned_data['research_field'],
+                                                                    is_supplier = self.cleaned_data['is_supplier'],
                                                                     profile_callback=profile_callback)
         return new_user
 
