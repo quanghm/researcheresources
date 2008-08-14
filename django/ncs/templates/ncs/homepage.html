@@ -1,0 +1,37 @@
+{% extends "ncs/base.html" %}
+
+{% block main %}
+{% for item in announcements %}
+<strong>{{ item.date }}</strong> <br />  
+  {{ item.content|safe}}   <br />
+____________________________<br />
+{% endfor %}
+{% endblock %}
+
+{% block sidebar %}
+<center>Bạn chưa đăng nhập</center>
+<form method="post" action="/accounts/login/">
+	<table align="center" border="0" width="90%" id="table1">
+		<tr>
+			<td scope="row" align="left">Bí danh</td>
+			<td><input name="username" size="15" type="text" width="15"></td>
+		</tr>
+		<tr>
+			<td scope="row" align="left">Mật khẩu</td>
+			<td>
+			<input name="password" size="15" type="password">
+			<input name="next" value="/papershare/mine/" type="hidden">
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2" align="center"><br>
+			<input value="Vừng ơi mở ra!" type="submit"> </td>
+		</tr>		
+	</table>
+	<span style="color:#FF0000">{{ message }}</span>
+</form>
+Quên mật khẩu? <a href="/accounts/forgotpassword/">Tạo mật 
+khẩu mới</a>.<br>
+Chưa có tài khoản? <a href="/accounts/register/">Đăng ký thành 
+viên...</a>
+{% endblock %}

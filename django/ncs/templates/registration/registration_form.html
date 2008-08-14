@@ -1,0 +1,138 @@
+{% extends "ncs/base.html" %}
+
+{% block title %}Create an account{% endblock %}
+
+{% block content %}
+  <h3>Create an account</h3>
+  <div align=center>
+  <form action="." method="post">
+    <table>
+    <tr>
+    <td>
+    </td>
+    <td>
+    {% if form.errors %}
+      <span class="error">Please correct the errors below.</span>
+    {% endif %}
+    </td>
+    </tr>
+    
+    <tr>
+    <td>
+    <label for="id_username">Username:</label> 
+    </td>
+    <td>
+    {{ form.username }}
+    
+    {% if form.username.errors %}
+    	<span class="error">{{ form.username.errors|join:", " }}</span>
+    {% endif %}
+    </td> 
+	</tr>
+	<tr>
+	<td>
+    <label for="id_email">Email:</label> 
+    </td>
+    <td>
+    {{ form.email }}
+     
+    {% if form.email.errors %}
+    	<span class="error">{{ form.email.errors|join:", " }}</span>
+    {% endif %}
+    </td>
+    </tr>
+    <tr> 
+	<td>
+    <label for="id_password1">Password: </label>
+    </td>
+    <td>
+    {{ form.password1 }} 
+    {% if form.password1.errors %}
+      <span class="error">{{ form.password1.errors|join:", " }}</span>
+    {% endif %}
+    </td>
+	</tr>
+	<tr>
+	<td>
+    <label for="id_password2">Password (again):</label> 
+    </td>
+    <td>
+    {{ form.password2 }} 
+    {% if form.password2.errors %}
+      <span class="error">{{ form.password2.errors|join:", " }}</span>
+    {% endif %}
+    </td>
+    </tr>
+    <tr>
+    <td>
+    <label for="id_research_field">Research Field:</label> 
+    </td>
+    <td>
+    {{ form.research_field }} 
+    {% if form.research_field.errors %}
+      <span class="error">Please select your field of study</span>
+    {% endif %}
+    </td>
+	</tr>
+	<tr> 
+	<td>   
+	<label for="id_is_supplier">Can you supply?</label>
+	</td>
+	<td>
+	<label for="id_is_supplier_0"><input type="radio" id="id_is_supplier_0" value="1" name="is_supplier" onChange="alert('Người cung cấp sẽ giúp các user khác lấy tài liệu khi được yêu cầu.\r\nNếu bạn chỉ đơn thuần cần tài liệu, bạn nên chọn KHÔNG.')"/> Yes</label></li>
+	<label for="id_is_supplier_1"><input type="radio" id="id_is_supplier_1" value="0" name="is_supplier" /> No</label></li>
+	</td>
+	</tr>
+	<tr>
+	<td>
+	Term of Service
+	</td>
+	<td>
+	<textarea name="txtTermOfUse" rows="10" cols="60" readonly="readonly">
+Quyền lợi và trách nhiệm của người dùng:
+
+   1. Quyền lợi:
+          * Tất cả mọi người có nhu cầu đối với bài báo khoa học đều có thể sử dụng website. Sau khi lập một tài khoản cho mình, người dùng có thể yêu cầu bài báo mình cần thông qua mẫu form có sẵn. 
+          * Bài báo sẽ được cung cấp thông qua địa chỉ email của người dùng 1 ngày sau khi được yêu cầu.
+          * Người dùng có quyền đóng góp ý kiến xây dựng website thông qua hòm thư góp ý.
+   2. Trách nhiệm:
+          * Người dùng có trách nhiệm giới thiệu, quảng bá website cho những ai có nhu cầu.
+          * Thông tin yêu cầu bài báo trên mẫu form phải hợp lệ, trong đó quan trọng nhất là đường link trực tiếp đến bài báo. Đường link này là nhằm tiết kiệm thời gian và công sức cho người cung cấp.
+          * Đối với những bài báo được cung cấp bởi website, người dùng có trách nhiệm chia sẻ với người khác khi được quản trị yêu cầu.
+
+Quyền lợi và trách nhiệm của người cung cấp:
+
+   1. Quyền lợi:
+          * Người cung cấp là những người có khả năng cung cấp bài báo khoa học thông qua tài khoản của trường hoặc viện nghiên cứu. Người cung cấp tham gia website hoàn toàn tự nguyện và có quyền dừng tham gia bất cứ lúc nào mà không cần giải thích, sau khi đã thông báo với quản trị mạng.
+          * Người cung cấp có quyền loại bỏ những yêu cầu không hợp lệ hoặc nằm ngoài khả năng cung cấp của mình, sau khi đã giải thích rõ ràng với người dùng.
+          * Website sẽ cố gắng điều chỉnh để thời gian mà mỗi người cung cấp bỏ ra mỗi ngày chỉ dao dộng trong khoảng 10-15 phút.
+          * Người cung cấp vẫn có thể yêu cầu bài báo mình cần như một người dùng.
+   2. Trách nhiệm:
+          * Người cung cấp có trách nhiệm đáp ứng yêu cầu của người dùng đúng thời gian quy định: 1 ngày sau ngày yêu cầu.
+          * Website tự động phân bổ các yêu cầu một cách công bằng cho tất cả những người cung cấp. Người cung cấp có trách nhiệm tuân thủ sự phân công của website.    
+    </textarea>
+    </td>
+    </tr>
+    <tr> 
+    <td>
+    </td>
+	<td>
+	<label for="id_tos">I accept</label> 
+	{{ form.tos }} 
+    {% if form.tos.errors %}
+      <span class="error">You must accept the term</span>
+    {% endif %}
+    </td>
+    </tr>
+    <tr>
+    <td>
+    </td>
+    <td>
+    <input type="submit" value="Create the account" />
+    </td>
+    </tr>
+  </table>
+  </form>
+  </div>
+  <p> </p>
+{% endblock %}
