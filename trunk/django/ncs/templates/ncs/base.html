@@ -1,0 +1,128 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+<head>
+	<title>{% block title %}Nghiên Cứu Sinh chấm org : giúp đỡ nhau cùng phát triển{% endblock %}</title>
+
+	<meta name="css layout" content="http://www.456bereastreet.com/lab/developing_with_web_standards/csslayout/2-col/finished.html">
+
+	<style type="text/css">
+	body,
+	html {
+		margin:0;
+		padding:0;
+		background:#a7a09a;
+		color:#000;
+	}
+	body {
+		min-width:750px;
+	}
+	#wrap {
+		background:#99c;
+		margin:0 auto;
+		width:800px;
+	}
+	#header {
+		background:#ddd;
+	}
+	#header h1 {
+    	padding:5px;
+	    margin:0;
+    }
+	#nav {
+		background:#CCCC66;
+		padding:5px;
+
+	}
+	#nav ul{
+		margin:0;
+		padding:5px;		
+		list-style-type:none
+	}
+	#nav li{
+		display:inline;
+		margin:0;
+		padding:0;
+		margin-right: 2em;
+	}
+	#main {
+		background:#9c9;
+		float:left;
+		width:500px;
+		padding:10px;
+	}
+	#main h2, #main h3, #main p {
+		padding:0 10px;
+    }
+	#sidebar {
+		background:#99c;
+		float:right;
+		width:280px;
+	}
+	#sidebar ul {
+		margin-bottom:0;
+    }
+    #sidebar h3, #sidebar p {
+		padding:0 10px 0 0;
+    }
+	#footer {
+		background:#cc9;
+		clear:both;
+	}
+	#footer p {
+		padding:5px;
+		margin:0;
+    }
+    span.error  { 
+    	color: #AF0000; 
+    	font-style: bold; 
+    }
+	</style>
+</head>
+<body>
+<div id="wrap">
+	<div id="header"><h1>Nghien cuu sinh cham org</h1></div>
+	<div id="nav">
+		<ul>
+			<li><a class="menu" href="/papershare/">Trang chủ</a></li>
+			<li><a href="/accounts/register/">Đăng ký thành viên</a></li>
+			<li><a href="#">Blog</a></li>
+			<li><a href="#">Góp ý</a></li>
+			<li><a href="#">Về chúng tôi</a></li>
+			<li><a href="#">FAQ</a></li>
+		</ul>
+	</div>
+<div id="content">
+{% block content %}
+	<div id="main">
+	{% block main %} {% endblock %}
+	</div>
+	<div id="sidebar">
+	{% block sidebar %} {% endblock %}
+	</div>
+{% endblock %}
+</div>
+	<div id="footer">
+		<table border="0" width="100%" align="center">
+			<tr >
+			    <td colspan="2" valign="top" align="center"><!-- Google CSE Search Box Begins  -->
+					<form action="http://www.google.com/cse" id="searchbox_004865859078258633675:18sqvplglto">
+					<input type="hidden" name="cx" value="004865859078258633675:18sqvplglto" />
+			 		<input type="text" name="q" size="25" />
+			  		<input type="submit" name="sa" value="Search" />
+					</form>
+				<!-- Google CSE Search Box Ends -->
+			© Copyright 2007 by Nghiencuusinh.org</td>
+			</tr>
+		</table>
+		<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+		</script>
+		<script type="text/javascript">
+		_uacct = "UA-2793588-2";
+		urchinTracker();
+		</script>
+	</div>
+</div>
+</body>
+</html>
