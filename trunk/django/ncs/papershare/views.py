@@ -3,7 +3,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 import datetime
 from ncs.papershare.models import Announcement
 from django.contrib import auth
-
+from django.template import RequestContext
 
 def homepage(request, message = None):
     announcements = Announcement.objects.order_by('-date')
@@ -28,6 +28,13 @@ def mypage(request):
     #check if user logged in
     if not request.user.is_authenticated():
         return HttpResponseRedirect("/papershare/")
+    announcements = Announcement.objects.order_by('-date')
+    context = {}
     
-    return HttpResponse("hahah")
+    context = RequestContext(request)
+    context.update({
+            "announcements" : announcements,
+            "requested" : 0,
+            "to_serve" : 0})
+    return render_to_response('ncs/mypage.html', context)
 
