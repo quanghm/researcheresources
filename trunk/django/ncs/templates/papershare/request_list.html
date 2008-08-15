@@ -1,0 +1,29 @@
+{% extends "ncs/base.html" %}
+
+{% block content %}
+    <h2>Requests</h2>
+    <table align='center' width='100%'>
+		<tr>
+			<th>STT</th>
+			<th>Tên bài báo</th>
+			<th>Tác giả</th>
+			<th>Tạp chí</th>
+	
+			<th>Ngày yêu cầu</th>
+			<th>Người yêu cầu</th>
+			<th>Chi Tiet</th>
+		</tr>
+		
+        {% for request in request_list %}
+        	<tr class="{% cycle odd,even %}">
+	            <td align='right'>{{ forloop.counter }}</td>
+				<td><a target="blank" href="{{request.paper.link}}">{{ request.paper.title }}</a></td>
+				<td>{{request.paper.author}}</td>
+				<td>{{request.paper.publisher}}</td>
+				<td>{{request.date_requested}}</td>
+				<td><a href="/papershare/contact/{{ request.requester.id }}">{{request.requester.username}}</a></td>
+				<td><a href="/papershare/details/{{ request.id }}/">Details <a/></td>
+			</tr>        
+		{% endfor %}
+		</table>
+{% endblock %}
