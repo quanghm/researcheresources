@@ -14,6 +14,7 @@ urlpatterns = patterns('',
     # Uncomment the next line for to enable the admin:
     (r'^admin/(.*)', admin.site.root),
     (r'^accounts/', include('ncs.registration.urls')),
-    (r'^papershare/$', "ncs.papershare.views.homepage"),
-    (r'^papershare/mine/$', "ncs.papershare.views.mypage"),
+    (r'^papershare/', include('ncs.papershare.urls')),
+    (r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': 'C:/cuong/nghiencuusinh.org/trunk/django/ncs/media'}),
+    
 )

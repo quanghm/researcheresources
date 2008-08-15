@@ -1,84 +1,16 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
         "http://www.w3.org/TR/html4/strict.dtd">
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-
+<html>
 <head>
 	<title>{% block title %}Nghiên Cứu Sinh chấm org : giúp đỡ nhau cùng phát triển{% endblock %}</title>
-
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<meta name="css layout" content="http://www.456bereastreet.com/lab/developing_with_web_standards/csslayout/2-col/finished.html">
 
+	<link href="/static/css/layout.css" rel="stylesheet" type="text/css" />
+	<link href="/static/css/style.css" rel="stylesheet" type="text/css" />
 	<style type="text/css">
-	body,
-	html {
-		margin:0;
-		padding:0;
-		background:#a7a09a;
-		color:#000;
-	}
-	body {
-		min-width:750px;
-	}
-	#wrap {
-		background:#99c;
-		margin:0 auto;
-		width:800px;
-	}
-	#header {
-		background:#ddd;
-	}
-	#header h1 {
-    	padding:5px;
-	    margin:0;
-    }
-	#nav {
-		background:#CCCC66;
-		padding:5px;
-
-	}
-	#nav ul{
-		margin:0;
-		padding:5px;		
-		list-style-type:none
-	}
-	#nav li{
-		display:inline;
-		margin:0;
-		padding:0;
-		margin-right: 2em;
-	}
-	#main {
-		background:#9c9;
-		float:left;
-		width:500px;
-		padding:10px;
-	}
-	#main h2, #main h3, #main p {
-		padding:0 10px;
-    }
-	#sidebar {
-		background:#99c;
-		float:right;
-		width:280px;
-	}
-	#sidebar ul {
-		margin-bottom:0;
-    }
-    #sidebar h3, #sidebar p {
-		padding:0 10px 0 0;
-    }
-	#footer {
-		background:#cc9;
-		clear:both;
-	}
-	#footer p {
-		padding:5px;
-		margin:0;
-    }
-    span.error  { 
-    	color: #AF0000; 
-    	font-style: bold; 
-    }
 	</style>
+	{% block extrahead %}{% endblock %}
 </head>
 <body>
 <div id="wrap">
@@ -86,11 +18,11 @@
 	<div id="nav">
 		<ul>
 			<li><a class="menu" href="/papershare/">Trang chủ</a></li>
-			<li><a href="/accounts/register/">Đăng ký thành viên</a></li>
-			<li><a href="#">Blog</a></li>
-			<li><a href="#">Góp ý</a></li>
-			<li><a href="#">Về chúng tôi</a></li>
-			<li><a href="#">FAQ</a></li>
+			<li><a class="menu"  href="/accounts/register/">Đăng ký thành viên</a></li>
+			<li><a class="menu"  href="#">Blog</a></li>
+			<li><a class="menu" href="#">Góp ý</a></li>
+			<li><a class="menu" href="#">Về chúng tôi</a></li>
+			<li><a class="menu" href="#">FAQ</a></li>
 		</ul>
 	</div>
 <div id="content">

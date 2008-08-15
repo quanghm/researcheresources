@@ -2,11 +2,17 @@
 
 {% block title %}Logout{% endblock %}
 
+{% block extrahead %}
+<meta http-equiv="REFRESH" content="3;url=/papershare/">
+{% endblock %}
+
 {% block content %}
 
 <p>
 You have been logged out !
-You will be redirected to the homepage in 5 seconds...
+You will be redirected to the homepage in 3 seconds...
 <p>
+<a href="/papershare/">click here to log in again</a>
+</p>
 
 {% endblock %}
