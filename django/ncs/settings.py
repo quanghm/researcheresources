@@ -93,3 +93,8 @@ EMAIL_HOST = "smtp.comcast.net"
 #see http://www.b-list.org/weblog/2006/jun/06/django-tips-extending-user-model/
 AUTH_PROFILE_MODULE = "papershare.PaperShareProfile"
 
+TEMPLATE_CONTEXT_PROCESSORS = (
+    "django.core.context_processors.auth",
+)
+
+TEMPLATE_STRING_IF_INVALID = "--%s--"
