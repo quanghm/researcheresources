@@ -4,8 +4,10 @@ DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
-    # ('Your Name', 'your_email@domain.com'),
+    ('Cuong', 'kimcuong@gmail.com'),
 )
+
+DEFAULT_FROM_EMAIL = 'admin@nghiencuusinh.org'
 
 MANAGERS = ADMINS
 
@@ -35,12 +37,13 @@ USE_I18N = True
 
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
-MEDIA_ROOT = ''
+# make sure you create a folder "uploaded" and make it world-read-writable for uploaded files
+MEDIA_ROOT = 'C:/cuong/nghiencuusinh.org/trunk/django/ncs/media'
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash if there is a path component (optional in other cases).
 # Examples: "http://media.lawrence.com", "http://example.com/media/"
-MEDIA_URL = ''
+MEDIA_URL = 'http://localhost:8000/static/'
 
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
 # trailing slash.
@@ -97,4 +100,6 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.auth",
 )
 
-TEMPLATE_STRING_IF_INVALID = "--%s--"
+TEMPLATE_STRING_IF_INVALID = "" #"--%s--"
+
+FILE_UPLOAD_TEMP_DIR = "C:/cuong/nghiencuusinh.org/trunk/django/ncs/media/uploaded"

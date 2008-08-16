@@ -15,6 +15,9 @@ urlpatterns = patterns('',
     (r'^admin/(.*)', admin.site.root),
     (r'^accounts/', include('ncs.registration.urls')),
     (r'^papershare/', include('ncs.papershare.urls')),
+    (r'^testing/', include('ncs.testing.urls')),
+    #see how to deal with static files
+    #http://oebfare.com/blog/2007/dec/31/django-and-static-files/
     (r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': 'C:/cuong/nghiencuusinh.org/trunk/django/ncs/media'}),
     
 )

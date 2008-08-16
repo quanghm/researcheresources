@@ -1,12 +1,15 @@
 {% extends "ncs/base.html" %}
 
 {% block title %}Create an account{% endblock %}
-
+{% block extrahead %}
+<meta http-equiv="REFRESH" content="3;url=/papershare/mine/">
+{% endblock %}
 {% block content %}
 
 <p>
 
 Chúc mừng {{ user.username }}, yêu cầu bài báo "{{ request.paper.title }}" của bạn đã được ghi lại thành công !
 
+Quay lại trang của bạn trong 3 giây...
 <p>
 {% endblock %}

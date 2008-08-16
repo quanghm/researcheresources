@@ -1,29 +1,35 @@
-{% extends "ncs/base.html" %}
+{% extends "ncs/mypage.html" %}
 
-{% block content %}
-    <h2>Requests</h2>
-    <table align='center' width='100%'>
-		<tr>
-			<th>STT</th>
-			<th>Tên bài báo</th>
-			<th>Tác giả</th>
-			<th>Tạp chí</th>
-	
-			<th>Ngày yêu cầu</th>
-			<th>Người yêu cầu</th>
-			<th>Chi Tiet</th>
-		</tr>
+{% block main %}
+    
+    {% if not request_list %}
+    	<h2>Không có yêu cầu nào</h2>
+    {% else %}
+	    {% if is_paginated %}
+	    	{% if has_previous %}<span class="prev"><a href="/papershare/list/{{ previous }}" title="Previous Page">&laquo Previous</a></span>{% else %}<span class="prev-na">&laquo Previous</span>{% endif %}
+	    	{% if has_next %}<span class="next"><a href="/papershare/list/{{ next }}" title="Next Page">Next &raquo</a></span>{% else %}<span class="next-na">Next &raquo</span>{% endif %}
+	    {% endif %}
+	    <h2>Danh sách các yêu cầu</h2>
+	    <table align='center' width='100%'>
+			<tr>
+				{# <th>STT</th> #}
+				<th>Tên bài báo</th>
+				<th>Tác giả</th>
+				<th>Tạp chí</th>
 		
-        {% for request in request_list %}
-        	<tr class="{% cycle odd,even %}">
-	            <td align='right'>{{ forloop.counter }}</td>
-				<td><a target="blank" href="{{request.paper.link}}">{{ request.paper.title }}</a></td>
-				<td>{{request.paper.author}}</td>
-				<td>{{request.paper.publisher}}</td>
-				<td>{{request.date_requested}}</td>
-				<td><a href="/papershare/contact/{{ request.requester.id }}">{{request.requester.username}}</a></td>
-				<td><a href="/papershare/details/{{ request.id }}/">Details <a/></td>
-			</tr>        
-		{% endfor %}
-		</table>
+			</tr>
+			
+	        {% for request in request_list %}
+	        	<tr class="{% cycle odd,even %}" onclick="window.location = '/papershare/details/{{ request.id }}/'">
+		            {# <td align='right'>{{ forloop.counter }}</td> #}
+					<td><a target="_blank" href="{{request.paper.link}}">{{ request.paper.title }}</a></td>
+					<td>{{request.paper.author}}</td>
+					<td>{{request.paper.publisher}}</td>
+					
+				</tr>        
+			{% endfor %}
+			</table> 
+    {% endif %}
+    
+    
 {% endblock %}

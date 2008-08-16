@@ -8,17 +8,14 @@ URLConf to include this URLConf for any URL beginning with
 """
 
 from django.conf.urls.defaults import *
-from django.views.generic import list_detail
 from models import Paper, Request
-
-request_info = {
-    "queryset" : Request.objects.all(),
-    "template_object_name" : "request",
-}
 
 urlpatterns = patterns('',
     (r'^$', "ncs.papershare.views.homepage"),
     (r'^mine/$', "ncs.papershare.views.mypage"),
     (r'^request/$', "ncs.papershare.views.requestPaper"),
-    (r'^list/$', list_detail.object_list, request_info)
+    (r'^my_requests/(?P<page>[0-9]*)$', "ncs.papershare.views.listRequests"),
+    (r'^supply/(?P<page>[0-9]*)$', "ncs.papershare.views.listRequestsToSupply"),
+    (r'^details/(?P<object_id>\d+)/$', "ncs.papershare.views.detailRequest"),
+    (r'^upload/$', "ncs.papershare.views.uploadPaper"),
 )

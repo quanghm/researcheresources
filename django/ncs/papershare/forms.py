@@ -2,7 +2,7 @@ from django import forms
 from django.core.validators import alnum_re
 from django.contrib.auth.models import User
 
-from papershare.models import Paper, Request, RESEARCH_FIELDS
+from models import Paper, Request, RESEARCH_FIELDS, REQUEST_STATUS_CHOICES
 from datetime import datetime
 
 class PaperRequestForm(forms.Form):
@@ -52,4 +52,33 @@ class PaperRequestForm(forms.Form):
                                          )
         return request
     
+        
+class PaperUploadForm(forms.Form):
+    file  = forms.FileField()
+    request_id  = forms.IntegerField()
+    
+    def clean_file(self):
+        fileName = self.cleaned_data['file'].name
+        pos = fileName.rfind(".")
+        if pos != -1 and fileName[pos+1:].lower() in ["pdf","ps","doc"]:
+            return fileName
+        else:
+            raise forms.ValidationError('Only pdf,ps,doc file accepted')
+    
+    def clean_request_id(self):
+        if Request.objects.get(id=self.cleaned_data['request_id']) is None:
+            raise forms.ValidationError('Request id is invalid')
+        else:
+            return self.cleaned_data['request_id']
+    
+    def save(self, uploaded_url = None):
+        "save uploaded file for request_id"
+        if uploaded_url is None:
+            return
+        
+        request = Request.objects.get(id=self.cleaned_data['request_id'])
+        request.paper.local_link = uploaded_url
+        request.status = REQUEST_STATUS_CHOICES[3][0]
+        request.paper.save()
+        request.save()
         

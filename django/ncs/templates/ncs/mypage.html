@@ -11,16 +11,17 @@ ____________________________<br />
 {% block sidebar %}
 <p> Chào {{ user }} !
 
-<h4>Status</h4>
+<h4>Cặp của bạn</h4>
 <ul>
-<li>Bạn đang yêu cầu {{ requested }} bài báo</li>
-<li>Bạn có {{ to_serve }} yêu cầu cần sử lý</li>
+<li>Bạn đang yêu cầu <a href="/papershare/my_requests/">{{ requested }} bài báo</a></li>
+<li>Bạn có <a href="/papershare/supply/">{{ to_serve }} yêu cầu </a>cần xử lý</li>
 </ul>
-<h4>Action</h4>
+<h4>Hành động</h4>
 <ul>
-<li><a href="/papershare/request/">Make Request</a></li>
-<li><a href="/papershare/list/">Show Requests</a></li>
-<li><a href="/accounts/settings/">Settings</a></li>
-<li><a href="/accounts/logout/">Logout</a></li>
+<li><a href="/papershare/request/">Yêu cầu bài báo</a></li>
+<li><a href="/papershare/supply/">Xử lý yêu cầu</a></li>
+<li><a href="/accounts/settings/">Thông tin cá nhân</a></li>
+<li><a href="/accounts/logout/">Khắc xuất</a></li>
 </ul>
+<p>
 {% endblock %}
