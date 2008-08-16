@@ -44,11 +44,12 @@ REQUEST_STATUS_CHOICES = (
 
 class Request(models.Model):
     paper = models.ForeignKey(Paper, related_name = "paper to request")
-    date_requested = models.DateField()
-    date_assigned = models.DateField(null = True)
+    date_requested = models.DateTimeField()
+    date_assigned = models.DateTimeField(null = True)
     requester = models.ForeignKey(User, related_name = "paper requester")
     supplier =  models.ForeignKey(User, related_name = "paper supplier", null = True)
     status = models.SmallIntegerField(choices = REQUEST_STATUS_CHOICES)
+    previously_assigned = models.CharField(max_length = 255)
     
     def __unicode__(self):
         return "[%d] Request for paper %d" % (self.id,self.paper.id)
@@ -58,11 +59,11 @@ class Request(models.Model):
 class PaperShareProfile(models.Model):
     # This is the only required field
     user = models.ForeignKey(User, unique=True)
-
     
     # The rest is completely up to you...
     research_field = models.CharField(max_length=4, choices = RESEARCH_FIELDS);
     is_supplier = models.BooleanField()
+    last_assignment = models.DateTimeField()
     
     def __unicode__(self):
         return "Profile for %d" % self.user.id

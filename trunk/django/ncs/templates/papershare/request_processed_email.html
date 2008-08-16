@@ -1,0 +1,11 @@
+Chúc mừng {{ request.requester.username }} ! 
+
+Bài báo có tựa đề <b>{{ request.paper.title }}</b>, yều cầu vào ngày <b>{{ request.date_requested|date:"D d M Y"}}</b>
+đã được xử lý bởi <b>{{ request.supplier.username}}</b>. 
+
+<p>
+Bạn có thể truy cập vào bài báo 
+
+<a href="{{ request.paper.local_link}}">ở đây</a>
+<p>
+Nghiencuusinh.org admin. 

@@ -1,0 +1,66 @@
+{% extends "ncs/mypage.html" %}
+
+{% block main %}
+    <h2>Xử lý yêu cầu </h2>
+    <form enctype="multipart/form-data" action="/papershare/upload/" method="post">
+    <table>
+		<tr>
+		     <td>Link đến bài báo</td>
+		     <td>		   
+		     <a target="_blank" href="{{request.paper.link}}">Ấn vào đây (mỏ cửa sổ mới)</a>)
+		     </td>
+		</tr>
+		<tr>
+		     <td>Người yêu cầu</td>
+		     <td>
+		     {{request.requester}}
+		     (<a target="blank" href="/papershare/contact/{{ request.id }}/">Liên hệ</a>)
+		     </td>
+		</tr>
+		<tr>
+		     <td>Tiêu đề</td>
+		     <td>
+		     {{request.paper.title}}
+		     </td>
+		</tr>
+		<tr>
+		     <td>Tác giả</td>
+		     <td>
+		      {{request.paper.author}}
+		     </td>
+		</tr>
+		<tr>
+		     <td>Tạp chí</td>
+		     <td>
+		     {{request.paper.publisher}}
+		     </td>
+		</tr>
+		<tr>
+		     <td>Năm xuất bản</td>
+		     <td>
+		     {{request.paper.year}}
+		     </td>
+		</tr>
+		<tr>
+		     <td>Số</td>
+		     <td>
+		     {{request.paper.issue}}
+		     </td>
+		</tr>
+		<tr>
+		     <td>Trang</td>
+		     <td>
+		     {{request.paper.page}}
+		     </td>
+		</tr>
+		<tr>
+		     <td>Gửi bài</td>
+		     <td>
+		     {{ form.file}}
+		     <input type="hidden" name="request_id" id="id_request_id" value="{{request.id}}"/>
+		     </td>
+		</tr>
+	</table>
+	<input type="submit" value="Submit" />
+	</form>
+{% endblock %}
