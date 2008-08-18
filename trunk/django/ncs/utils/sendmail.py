@@ -18,7 +18,7 @@ def sendmailFromHtml(fromAddr,toAddr,subject,html_content):
         return False
 
 def sendmailFromTemplate(fromAddr=None,toAddr=None,subject=None,template_name=None,context=None):
-        print "----" , subject, fromAddr, toAddr, template_name
+        #print "----" , subject, fromAddr, toAddr, template_name
     #try:
         if fromAddr is None:
             fromAddr = "admin@nghiencuusinh.org"
@@ -26,7 +26,7 @@ def sendmailFromTemplate(fromAddr=None,toAddr=None,subject=None,template_name=No
             toAddr = [toAddr]
         html_content = render_to_string(template_name, context)
         text_content = htmlToText(html_content)
-        print "------- ", subject, text_content, fromAddr, toAddr
+        #print "------- ", subject, text_content, fromAddr, toAddr
         msg = EmailMultiAlternatives(subject, text_content, fromAddr, toAddr)
         msg.attach_alternative(html_content, "text/html")
         msg.send()

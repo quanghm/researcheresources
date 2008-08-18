@@ -10,8 +10,8 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 
-from registration.forms import RegistrationFormTermsOfService
-from registration.models import RegistrationProfile
+from ncs.registration.forms import RegistrationFormTermsOfService
+from ncs.registration.models import RegistrationProfile
 
 #for profile_callback
 from ncs.papershare.models import paper_share_profile_callback

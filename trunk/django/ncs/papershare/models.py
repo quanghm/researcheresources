@@ -1,7 +1,7 @@
 from django.db import models
 from django.db import models
 from django.contrib.auth.models import User
-
+from django.contrib import admin
 
 class Announcement(models.Model):
     content = models.TextField()
@@ -52,8 +52,13 @@ class Request(models.Model):
     previously_assigned = models.CharField(max_length = 255)
     
     def __unicode__(self):
-        return "[%d] Request for paper %d" % (self.id,self.paper.id)
-    
+        if self.status == 0:
+            return "[%d][requester=%s] Pending request for paper '%s'" % (self.id,self.requester.username,self.paper.title)
+        elif self.status in (1,2):
+            return "[%d][requester=%s] Request for paper '%s' assigned to %s" % (self.id,self.requester.username,self.paper.title, self.supplier)
+        else:
+            return "[%d][requester=%s][status=%d] Request for paper '%s' assigned to %s" % (self.id,self.requester.username,self.status, self.paper.title, self.supplier)
+
 #extend user with a profile
 # see http://www.b-list.org/weblog/2006/jun/06/django-tips-extending-user-model/
 class PaperShareProfile(models.Model):
@@ -63,7 +68,7 @@ class PaperShareProfile(models.Model):
     # The rest is completely up to you...
     research_field = models.CharField(max_length=4, choices = RESEARCH_FIELDS);
     is_supplier = models.BooleanField()
-    last_assignment = models.DateTimeField()
+    last_assignment = models.DateTimeField(null=True)
     
     def __unicode__(self):
         return "Profile for %d" % self.user.id
@@ -73,3 +78,9 @@ def paper_share_profile_callback(user, research_field, is_supplier):
     profile = PaperShareProfile(user=user, research_field = research_field, is_supplier = is_supplier)
     profile.save()
     
+admin.site.register(Announcement)
+admin.site.register(Request)
+admin.site.register(Paper)
+admin.site.register(PaperShareProfile)
+
+
