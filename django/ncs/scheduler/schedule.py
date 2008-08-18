@@ -15,7 +15,10 @@ def findSupplier(request):
     request.supplier = supplierProfile.user
     last_assignment = supplierProfile.last_assignment
     
-    t = max(datetime.now() , last_assignment) 
+    if last_assignment is not None:
+        t = max(datetime.now() , last_assignment) 
+    else:
+        t = datetime.now()
     supplierProfile.last_assignment = datetime(t.year, t.month, t.day, t.hour, t.minute + 1, t.second) #make sure the user will not get request until next minute  
     supplierProfile.save()
      

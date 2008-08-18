@@ -1,7 +1,7 @@
 Chào {{ username }}, 
 
 Bạn hãy ấn vào link này để kích họat tài khoản nghiencuusinh.org của bạn 
-http://localhost:8000/accounts/activate/{{activation_key}}/
+http://{{ site }}{% url ncs.registration.views.activate activation_key %}
 
 Chào mừng bạn gia nhập cộng đồng nghiêncưusinh của chúng ta!
 
