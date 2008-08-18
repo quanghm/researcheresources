@@ -1,6 +1,7 @@
 from django.http import HttpResponse
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
+from django.conf import settings
 
 from ncs.lib.stripogram import html2text
 from ncs.lib.feedparser import _sanitizeHTML
@@ -17,11 +18,9 @@ def sendmailFromHtml(fromAddr,toAddr,subject,html_content):
     except:
         return False
 
-def sendmailFromTemplate(fromAddr=None,toAddr=None,subject=None,template_name=None,context=None):
+def sendmailFromTemplate(fromAddr=settings.DEFAULT_FROM_EMAIL,toAddr=None,subject=None,template_name=None,context=None):
         #print "----" , subject, fromAddr, toAddr, template_name
     #try:
-        if fromAddr is None:
-            fromAddr = "admin@nghiencuusinh.org"
         if type(toAddr) != list and type(toAddr) != tuple:
             toAddr = [toAddr]
         html_content = render_to_string(template_name, context)

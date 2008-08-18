@@ -1,8 +1,13 @@
 from ncs.papershare.models import Request
 from django.contrib.auth.models import User
+from django.conf import settings
+from django.template.loader import render_to_string
+from django.contrib.sites.models import Site
 
 from ncs.papershare.models import PaperShareProfile
 from ncs.papershare.models import REQUEST_STATUS_CHOICES
+from ncs.utils.sendmail import sendmailFromTemplate
+
 from datetime import datetime
 
 def findSupplier(request):
@@ -28,11 +33,23 @@ def findSupplier(request):
     else:
         request.status = REQUEST_STATUS_CHOICES[2][0] #"re-assigned"
     request.save()
+    sendReminderEmailToSupplier(request)
     print "Request %s (%s) is assigned to user %s(%s)" % (unicode(request), 
                                                           request.date_requested, 
                                                           unicode(supplierProfile.user),
                                                           last_assignment)
-    
+
+def sendReminderEmailToSupplier(request):
+    current_site = Site.objects.get_current()
+    template_name = 'papershare/supplier_email.txt'
+    context = { 'request': request ,
+                'site' : current_site}
+    subject = "%s wanted" % request.paper.title
+    sendmailFromTemplate(template_name = template_name,
+                         toAddr = request.supplier.email, 
+                         subject = subject, 
+                         context = context)
+
 def main(argv):
     requestQueue = Request.objects.filter(status__exact=0).order_by('date_requested')
     for request in requestQueue:
