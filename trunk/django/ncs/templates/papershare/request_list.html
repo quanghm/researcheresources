@@ -6,8 +6,8 @@
     	<h2>Không có yêu cầu nào</h2>
     {% else %}
 	    {% if is_paginated %}
-	    	{% if has_previous %}<span class="prev"><a href="/papershare/list/{{ previous }}" title="Previous Page">&laquo Previous</a></span>{% else %}<span class="prev-na">&laquo Previous</span>{% endif %}
-	    	{% if has_next %}<span class="next"><a href="/papershare/list/{{ next }}" title="Next Page">Next &raquo</a></span>{% else %}<span class="next-na">Next &raquo</span>{% endif %}
+	    	{% if has_previous %}<span class="prev"><a href="{{ previous }}" title="Previous Page">&laquo Previous</a></span>{% else %}<span class="prev-na">&laquo Previous</span>{% endif %}
+	    	{% if has_next %}<span class="next"><a href="{{ next }}" title="Next Page">Next &raquo</a></span>{% else %}<span class="next-na">Next &raquo</span>{% endif %}
 	    {% endif %}
 	    <h2>Danh sách các yêu cầu</h2>
 	    <table align='center' width='100%'>

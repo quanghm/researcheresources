@@ -3,7 +3,7 @@
 
 from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect, HttpResponse
-from django.contrib import auth
+from django.contrib.auth.models import User
 from django.template import RequestContext
 from django.views.generic import list_detail
 from django.contrib.auth.decorators import login_required
@@ -44,10 +44,8 @@ def mypage(request):
             }).update(get_my_stats(request.user.id))
     return render_to_response('ncs/mypage.html', context)
 
+@login_required
 def requestPaper(request, form_class = PaperRequestForm):
-    if not request.user.is_authenticated():
-        return HttpResponseRedirect("/papershare/")
-    
     if request.method == 'POST':
         form = form_class(data=request.POST, files=request.FILES)
         if form.is_valid():
@@ -70,7 +68,7 @@ def requestPaper(request, form_class = PaperRequestForm):
                               { 'form': form },
                               context_instance=context)
     
-
+@login_required
 def listRequests(request,page=1):
     if not request.user.is_authenticated():
         return HttpResponseRedirect("/papershare/")
@@ -83,10 +81,8 @@ def listRequests(request,page=1):
                                    extra_context = extra_context,
                                    paginate_by = 10,
                                    page = page)
-
+@login_required
 def listRequestsToSupply(request,page=1):
-    if not request.user.is_authenticated():
-        return HttpResponseRedirect("/papershare/")
     queryset = Request.objects.filter(supplier__exact=request.user, status__lt=3)
     template_object_name = "request"
     extra_context = get_my_stats(request.user)
@@ -97,7 +93,20 @@ def listRequestsToSupply(request,page=1):
                                    paginate_by = 10,
                                    page = page)
 
-                                    
+@login_required
+def showPublicPool(request,page=1):
+    my_research_field = User.objects.get(pk = request.user.id).get_profile().research_field
+    queryset = Request.objects.filter(status__lt=3, paper__research_field__exact = my_research_field)
+    template_object_name = "request"
+    extra_context = get_my_stats(request.user)
+    
+    return list_detail.object_list(request, queryset=queryset, 
+                                   template_object_name = template_object_name , 
+                                   extra_context = extra_context,
+                                   paginate_by = 10,
+                                   page = page)
+
+
 @login_required    
 def detailRequest(request, object_id):
     queryset = Request.objects.all()

@@ -7,7 +7,7 @@ class Announcement(models.Model):
     content = models.TextField()
     date = models.DateField()
     def __unicode__(self):
-        return "Announcement : %s" % self.content[:20]
+        return "Announcement : %s" % self.content[:45]
     
 RESEARCH_FIELDS = (
         ('BIO', 'Biology'),
