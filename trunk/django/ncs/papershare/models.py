@@ -26,8 +26,8 @@ class Paper(models.Model):
     author = models.CharField(max_length = 255)
     publisher = models.CharField(max_length = 255)
     year = models.IntegerField()
-    issue = models.IntegerField()
-    page = models.IntegerField()
+    issue = models.IntegerField(null=True)
+    page = models.IntegerField(null=True)
     research_field = models.CharField(max_length=4, choices = RESEARCH_FIELDS);
     local_link = models.URLField()
     

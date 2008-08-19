@@ -10,10 +10,10 @@ class PaperRequestForm(forms.Form):
     Form for requesting a paper.
     """
     link = forms.URLField()
-    title = forms.CharField(max_length = 255, required = False)
-    author = forms.CharField(max_length = 255, required = False)
-    publisher = forms.CharField(max_length = 255, required = False)
-    year = forms.IntegerField(required = False)
+    title = forms.CharField(max_length = 255 )
+    author = forms.CharField(max_length = 255)
+    publisher = forms.CharField(max_length = 255)
+    year = forms.IntegerField()
     issue = forms.IntegerField(required = False)
     page = forms.IntegerField(required = False)
     research_field = forms.ChoiceField(choices = RESEARCH_FIELDS)
