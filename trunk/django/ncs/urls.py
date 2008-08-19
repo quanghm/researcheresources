@@ -1,5 +1,6 @@
 from django.conf.urls.defaults import *
 from django.contrib.auth.views import login, logout,password_reset
+from django.conf import settings
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
@@ -18,6 +19,6 @@ urlpatterns = patterns('',
     (r'^testing/', include('ncs.testing.urls')),
     #see how to deal with static files
     #http://oebfare.com/blog/2007/dec/31/django-and-static-files/
-    (r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': 'C:/working/django/ncs/media'}),
+    (r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
     
 )

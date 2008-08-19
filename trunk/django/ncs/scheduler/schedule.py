@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.conf import settings
 from django.template.loader import render_to_string
 from django.contrib.sites.models import Site
+from django.db.models import Q
 
 from ncs.papershare.models import PaperShareProfile
 from ncs.papershare.models import REQUEST_STATUS_CHOICES
@@ -12,7 +13,7 @@ from datetime import datetime
 
 def findSupplier(request):
     try:    
-        supplierProfile = PaperShareProfile.objects.filter(is_supplier=True,research_field=request.paper.research_field).order_by('last_assignment')[0]
+        supplierProfile = PaperShareProfile.objects.filter(is_supplier=True,research_field=request.paper.research_field).filter(~Q(user=request.requester)).order_by('last_assignment')[0]
     except IndexError:
         print "!!!!! Field %s doesn't have any supplier [%s]" % (request.paper.research_field, request)
         return

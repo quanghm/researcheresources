@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: UTF-8 -*-
+
 from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib import auth
@@ -110,24 +113,40 @@ def detailRequest(request, object_id):
 @login_required
 def uploadPaper(request):
     #handle form submit
-    if request.method == 'POST':
+    if request.method == 'POST' :
         form = PaperUploadForm(request.POST, request.FILES)
         context = RequestContext(request)
         context.update(get_my_stats(request.user))
-        if form.is_valid():
-            uploaded_url = handle_uploaded_file(request.FILES['file'])   
-            form.save(uploaded_url)
-            paperRequest = Request.objects.get(id=form.cleaned_data['request_id'])
-            context.update({'uploaded_url' : uploaded_url,
-                            'request' : paperRequest})
-            sendmailFromTemplate(toAddr=paperRequest.requester.email,
-                                 subject=u"Good news ! your paper request has been processed",
-                                 template_name="papershare/request_processed_email.html",
-                                 context=context)            
-            return render_to_response('papershare/upload_complete.html',context)
-        else:
-            context.update({'form':form})
-            return render_to_response('papershare/upload_error.html',context)
+        if request.POST.get("buttonSupply") is not None:
+            if form.is_valid():
+                uploaded_url = handle_uploaded_file(request.FILES['file'])   
+                form.save(uploaded_url)
+                paperRequest = Request.objects.get(id=form.cleaned_data['request_id'])
+                context.update({'uploaded_url' : uploaded_url,
+                                'request' : paperRequest})
+                sendmailFromTemplate(toAddr=paperRequest.requester.email,
+                                     subject=u"Good news ! your paper request has been processed",
+                                     template_name="papershare/request_processed_email.html",
+                                     context=context)            
+                return render_to_response('papershare/upload_complete.html',context)
+            else:
+                context.update({'form':form})
+                return render_to_response('papershare/upload_error.html',context)
+        else: #pass to other supplier
+            requestId = request.POST.get('request_id')
+            if requestId is not None and requestId.isdigit():
+                paperRequest = Request.objects.get(id=int(requestId))
+                if paperRequest.previously_assigned is None:
+                    paperRequest.previously_assigned = paperRequest.supplier.id
+                else:
+                    paperRequest.previously_assigned = paperRequest.previously_assigned + ";%d" % paperRequest.supplier.id
+                paperRequest.supplier = None
+                paperRequest.status = 0 #pending. 
+                paperRequest.save()
+                message = u"Yêu cầu %d đã được chuyển cho người khác, tuy nhiên bạn vẫn có thể vào public pool để cung cấp nếu muốn" % paperRequest.id
+                context.update({'message' : message}) 
+                return render_to_response('ncs/simple_message.html', context)
+                                          
     return HttpResponseRedirect("/papershare/")
 
 def handle_uploaded_file(f):
