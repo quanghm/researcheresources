@@ -16,6 +16,7 @@ urlpatterns = patterns('',
     (r'^request/$', "ncs.papershare.views.requestPaper"),
     (r'^my_requests/(?P<page>[0-9]*)$', "ncs.papershare.views.listRequests"),
     (r'^supply/(?P<page>[0-9]*)$', "ncs.papershare.views.listRequestsToSupply"),
+    (r'^public_pool/(?P<page>[0-9]*)$', "ncs.papershare.views.showPublicPool"),
     (r'^details/(?P<object_id>\d+)/$', "ncs.papershare.views.detailRequest"),
     (r'^upload/$', "ncs.papershare.views.uploadPaper"),
 )
