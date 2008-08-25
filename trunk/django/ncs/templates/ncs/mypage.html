@@ -24,5 +24,10 @@ ____________________________<br />
 <li><a href="/accounts/settings/">Sửa thông tin cá nhân</a></li>
 <li><a href="/accounts/logout/">Khắc xuất</a></li>
 </ul>
-<p>
+{% if user.is_staff %}
+<h4>quản trị</h4>
+<ul>
+<li><a href="/admin/">Trang quản trị</a></li>
+</ul>
+{% endif %}
 {% endblock %}
