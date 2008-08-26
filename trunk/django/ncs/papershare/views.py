@@ -9,7 +9,7 @@ from django.views.generic import list_detail
 from django.contrib.auth.decorators import login_required
 
 from models import Announcement, Request
-from forms import PaperRequestForm, PaperUploadForm
+from forms import PaperRequestForm, PaperUploadForm, FeedbackForm
 from ncs.settings import MEDIA_ROOT, MEDIA_URL
 from ncs.utils.sendmail import sendmailFromTemplate
 
@@ -28,6 +28,12 @@ def homepage(request):
     context = {"announcements" : announcements}
     return render_to_response('ncs/homepage.html', context)
 
+def getCommonContext(request):
+    context = RequestContext(request)
+    if request.user.is_authenticated():
+        context.update(get_my_stats(request.user))
+    return context
+    
 def get_my_stats(user):
     return {"requested" : Request.objects.filter(requester=user, status__lt=3).count(),
             "to_serve" : Request.objects.filter(supplier=user, status__lt=3).count()}
@@ -170,3 +176,20 @@ def handle_uploaded_file(f):
     relFileName = fileName[len(MEDIA_ROOT)+1:]
     relFileName = re.sub("\\\\", "/", relFileName)
     return MEDIA_URL + relFileName
+
+def feedback(request):
+    if request.method == 'POST' :
+        form = FeedbackForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            context = getCommonContext(request)
+            context.update({'message' : 'Cám ơn bạn đã góp ý cho chúng tôi.'})
+            return render_to_response('ncs/simple_message.html', context)
+    else:
+        form = FeedbackForm()
+    return render_to_response("papershare/feedback_form.html",
+                              { 'form': form }
+                              )
+def static(request, template = None):
+    if template is not None:
+        return render_to_response(template)

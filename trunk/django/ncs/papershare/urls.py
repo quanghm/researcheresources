@@ -19,4 +19,7 @@ urlpatterns = patterns('',
     (r'^public_pool/(?P<page>[0-9]*)$', "ncs.papershare.views.showPublicPool"),
     (r'^details/(?P<object_id>\d+)/$', "ncs.papershare.views.detailRequest"),
     (r'^upload/$', "ncs.papershare.views.uploadPaper"),
+    (r'^feedback/$', "ncs.papershare.views.feedback"),
+    (r'^aboutus/$', "ncs.papershare.views.static", { 'template' : 'ncs/about.html'} ),
+#    (r'^faq/$', "ncs.papershare.views.static", { 'template' : 'ncs/FAQ.html'} ),
 )
