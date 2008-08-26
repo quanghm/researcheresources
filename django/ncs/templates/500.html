@@ -1,4 +1,4 @@
-{% extends "admin/base_site.html" %}
+{% extends "ncs/base.html" %}
 {% load i18n %}
 
 {% block breadcrumbs %}<div class="breadcrumbs"><a href="/">{% trans "Home" %}</a> &rsaquo; {% trans "Server error" %}</div>{% endblock %}
@@ -8,5 +8,5 @@
 {% block content %}
 <h1>{% trans 'Server Error <em>(500)</em>' %}</h1>
 <p>{% trans "There's been an error. It's been reported to the site administrators via e-mail and should be fixed shortly. Thanks for your patience." %}</p>
-
+<p>If you have any comment, please let the admin know via <a href="/papershare/feedback/">our feedback form</a></p>
 {% endblock %}

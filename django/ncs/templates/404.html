@@ -1,4 +1,4 @@
-{% extends "admin/base_site.html" %}
+{% extends "ncs/base.html" %}
 {% load i18n %}
 
 {% block title %}{% trans 'Page not found' %}{% endblock %}
@@ -8,5 +8,5 @@
 <h2>{% trans 'Page not found' %}</h2>
 
 <p>{% trans "We're sorry, but the requested page could not be found." %}</p>
-
+<p>Please let the admin know via <a href="/papershare/feedback/">our feedback form</a></p>
 {% endblock %}

@@ -1,9 +1,16 @@
+#!/usr/bin/env python
+# -*- coding: UTF-8 -*-
+
 from django import forms
 from django.core.validators import alnum_re
 from django.contrib.auth.models import User
+from django.conf import settings
+from django.core.mail import mail_admins
 
 from models import Paper, Request, RESEARCH_FIELDS, REQUEST_STATUS_CHOICES
 from datetime import datetime
+from ncs.utils.logger import getLogger
+from ncs.utils.misc import getChoiceValue
 
 class PaperRequestForm(forms.Form):
     """
@@ -81,4 +88,27 @@ class PaperUploadForm(forms.Form):
         request.status = REQUEST_STATUS_CHOICES[3][0]
         request.paper.save()
         request.save()
+        
+        
+FEEDBACK_TYPE_CHOICES = (
+        (3,u"Góp ý cho admin"),
+        (1,u"Tôi gặp sự cố kỹ thuật"),
+        (2,u"Tôi gặp khó khăn khi sử dụng website"),
+        (4,u"Các góp ý khác"),
+    )
+
+class FeedbackForm(forms.Form):
+    email  = forms.EmailField(required=False)
+    type = forms.ChoiceField(choices = FEEDBACK_TYPE_CHOICES)
+    content  = forms.CharField(widget=forms.Textarea)
+    
+    def save(self):
+        "save feedback forms"
+        email = self.cleaned_data['email']
+        type = int(self.cleaned_data['type'])
+        content = self.cleaned_data['content']
+        getLogger().info("Got feedback from %s, type = %s, content : %s" % (`email`, `type`, `content`) )
+        print len(getChoiceValue(FEEDBACK_TYPE_CHOICES, type))
+        subject = "[%s] from '%s'" % (getChoiceValue(FEEDBACK_TYPE_CHOICES, type), email)
+        mail_admins(subject, content, fail_silently=False)
         

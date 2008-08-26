@@ -1,0 +1,20 @@
+{% extends "ncs/base.html" %}
+
+{% block title %}Góp ý cho nghiencuusinh.org{% endblock %}
+
+{% block content %}
+  <h3>Góp ý</h3>
+  <div align=center>
+  <form action="." method="post">
+
+    {% if form.errors %}
+      <span class="error">{{ form.errors }}</span>
+    {% endif %}
+
+	  {{ form.as_ul}}
+	  <input type="submit" value="Gửi góp ý" />
+
+  </form>
+  </div>
+  <p> </p>
+{% endblock %}

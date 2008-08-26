@@ -1,5 +1,12 @@
 {% extends "ncs/mypage.html" %}
 
-{% block main %}
-    <p> {{ message }}
-{% endblock %}
+{% if request.user.is_authenticated %}
+	{% block main %}
+	    <p> {{ message }}
+	{% endblock %}
+{% else %}
+	{% block content %}
+	    <p> {{ message }}
+	{% endblock %}
+{% endif %}
+

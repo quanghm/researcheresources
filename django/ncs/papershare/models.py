@@ -32,7 +32,7 @@ class Paper(models.Model):
     local_link = models.URLField()
     
     def __unicode__(self):
-        return "Paper : %s" % self.title[:20]
+        return "%s" % self.title[:30]
     
 REQUEST_STATUS_CHOICES = (
         (0, "pending"),
@@ -73,14 +73,44 @@ class PaperShareProfile(models.Model):
     def __unicode__(self):
         return "Profile for %d" % self.user.id
 
+    def is_admin(self):
+        return self.user.is_staff
+    is_admin.short_description = 'Is Admin?'
+
+
 def paper_share_profile_callback(user, research_field, is_supplier):
     print "--- HAHA"
     profile = PaperShareProfile(user=user, research_field = research_field, is_supplier = is_supplier)
     profile.save()
     
 admin.site.register(Announcement)
-admin.site.register(Request)
-admin.site.register(Paper)
-admin.site.register(PaperShareProfile)
 
+class ProfileAdmin(admin.ModelAdmin):
+    list_display = ('user', 'research_field','is_supplier')
+    list_filter = ('is_supplier',)
+    search_fields = ['user__username',]
+    
+admin.site.register(PaperShareProfile,ProfileAdmin)
+
+class RequestAdmin(admin.ModelAdmin):
+    list_display = ('paper', 'requester', 'date_requested', 'status','supplier')
+    list_filter = ('status',)
+    date_hierarchy = 'date_requested'
+    search_fields = ['paper__title']
+
+admin.site.register(Request,RequestAdmin)
+
+class RequestInline(admin.TabularInline):
+    model = Request
+
+class PaperAdmin(admin.ModelAdmin):
+    list_display = ('title', 'author', 'publisher', 'research_field')
+    list_filter = ('research_field',)
+#    date_hierarchy = 'date_requested'
+    search_fields = ['title','author']
+    inlines = [
+        RequestInline,
+    ]
+
+admin.site.register(Paper,PaperAdmin)
 
