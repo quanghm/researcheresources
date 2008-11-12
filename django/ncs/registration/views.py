@@ -6,15 +6,17 @@ Views which allow users to create and activate accounts.
 
 from django.conf import settings
 from django.core.urlresolvers import reverse
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render_to_response
 from django.template import RequestContext
+from django.contrib.auth.decorators import login_required
 
 from ncs.registration.forms import RegistrationFormTermsOfService
 from ncs.registration.models import RegistrationProfile
 
 #for profile_callback
 from ncs.papershare.models import paper_share_profile_callback
+from django.forms import form_for_instance
 
 def activate(request, activation_key,
              template_name='registration/activate.html',
@@ -161,6 +163,29 @@ def register(request, success_url=None,
     context = RequestContext(request)
     for key, value in extra_context.items():
         context[key] = callable(value) and value() or value
+    return render_to_response(template_name,
+                              { 'form': form },
+                              context_instance=context)
+
+@login_required
+def edit(request, form_class=RegistrationFormTermsOfService, profile_callback=paper_share_profile_callback,
+             template_name='registration/registration_form.html'):
+    """
+    """
+    if request.method == 'POST':
+        form = form_class(data=request.POST, files=request.FILES)
+        if form.is_valid():
+            new_user = form.save(profile_callback=profile_callback)
+            # success_url needs to be dynamically generated here; setting a
+            # a default value using reverse() will cause circular-import
+            # problems with the default URLConf for this application, which
+            # imports this file.
+            return HttpResponseRedirect(success_url or reverse('registration_complete'))
+    else:
+        form = form_for_instance(request.user)()
+        return HttpResponse(unicode(form))
+    
+    context = RequestContext(request)
     return render_to_response(template_name,
                               { 'form': form },
                               context_instance=context)

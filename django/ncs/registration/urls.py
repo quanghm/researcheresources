@@ -12,8 +12,7 @@ from django.conf.urls.defaults import *
 from django.views.generic.simple import direct_to_template
 from django.contrib.auth import views as auth_views
 
-from ncs.registration.views import activate
-from ncs.registration.views import register
+from ncs.registration.views import activate, edit, register
 
 
 urlpatterns = patterns('',
@@ -51,4 +50,7 @@ urlpatterns = patterns('',
                            direct_to_template,
                            {'template': 'registration/registration_complete.html'},
                            name='registration_complete'),
+                       url(r'^settings/$',
+                           edit,
+                           name='edit'),
                        )
