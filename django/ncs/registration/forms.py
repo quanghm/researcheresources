@@ -10,7 +10,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
 
 from ncs.registration.models import RegistrationProfile
-from ncs.papershare.models import RESEARCH_FIELDS
+from ncs.papershare.models import RESEARCH_FIELDS, PaperShareProfile
 
 # I put this on all required fields, because it's easier to pick up
 # on them with CSS or JavaScript if they have a class of "required"
@@ -155,3 +155,85 @@ class RegistrationFormNoFreeEmail(RegistrationForm):
         if email_domain in self.bad_domains:
             raise forms.ValidationError(_(u'Registration using free email addresses is prohibited. Please supply a different email address.'))
         return self.cleaned_data['email']
+
+def createAccountSettingFormFromProfileId(userid):
+    profile = PaperShareProfile.objects.get(user=userid)
+    data = {'profileid' : profile.id,
+            'username' : profile.user.username,
+            'email' : profile.user.email,
+            'password1' : profile.user.password,
+            'password2' : profile.user.password,
+            'research_field' : profile.research_field,
+            'is_supplier' : profile.is_supplier}
+    return AccountSettingsForm(data)
+    
+class AccountSettingsForm(forms.Form):
+    """
+    """
+    profileid = forms.IntegerField(widget=forms.HiddenInput) 
+    username = forms.CharField(max_length=30,
+                               widget=forms.TextInput(attrs=attrs_dict),
+                               label=_(u'username'), help_text = "blah blah")
+    email = forms.EmailField(widget=forms.TextInput(attrs=dict(attrs_dict,
+                                                               maxlength=75)),
+                             label=_(u'email address'))
+    password1 = forms.CharField(widget=forms.PasswordInput(attrs=attrs_dict, render_value=True),
+                                label=_(u'password'))
+    password2 = forms.CharField(widget=forms.PasswordInput(attrs=attrs_dict, render_value=True),
+                                label=_(u'password (again)'))
+    research_field = forms.ChoiceField(choices=RESEARCH_FIELDS)
+    #is_supplier is boolean, but can be replaced by IntegerField sothat RadioSelect can be used 
+    is_supplier = forms.IntegerField(widget=forms.RadioSelect(choices=((1,"Yes"),(0,"No"))))
+    
+    
+    def clean_username(self):
+        """
+        Validate that the username is alphanumeric and is not already
+        in use.
+        
+        """
+        if not alnum_re.search(self.cleaned_data['username']):
+            raise forms.ValidationError(_(u'Usernames can only contain letters, numbers and underscores'))
+        
+        return self.cleaned_data['username']
+
+    def clean(self):
+        """
+        Verifiy that the values entered into the two password fields
+        match. Note that an error here will end up in
+        ``non_field_errors()`` because it doesn't apply to a single
+        field.
+        
+        """
+        if 'password1' in self.cleaned_data and 'password2' in self.cleaned_data:
+            if self.cleaned_data['password1'] != self.cleaned_data['password2']:
+                raise forms.ValidationError(_(u'You must type the same password each time'))
+        return self.cleaned_data
+    
+    def save(self, profile_callback=None):
+        """
+        Create the new ``User`` and ``RegistrationProfile``, and
+        returns the ``User``.
+        
+        This is essentially a light wrapper around
+        ``RegistrationProfile.objects.create_inactive_user()``,
+        feeding it the form data and a profile callback (see the
+        documentation on ``create_inactive_user()`` for details) if
+        supplied.
+        
+        """
+        profile = PaperShareProfile.objects.get(id=self.cleaned_data['profileid'])
+        if self.cleaned_data['username'] != profile.user.username:
+            profile.user.username = self.cleaned_data['username']
+        if self.cleaned_data['password1'] != profile.user.password:
+            profile.user.set_password(self.cleaned_data['password1'])
+        if self.cleaned_data['email'] != profile.user.email:
+            profile.user.email = self.cleaned_data['email']       
+        if self.cleaned_data['research_field'] != profile.research_field:
+            profile.research_field = self.cleaned_data['research_field']
+        if self.cleaned_data['is_supplier'] != profile.is_supplier:
+            profile.is_supplier = self.cleaned_data['is_supplier']
+        profile.user.save()
+        profile.save()
+
+        
