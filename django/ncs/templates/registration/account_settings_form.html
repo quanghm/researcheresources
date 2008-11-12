@@ -1,0 +1,98 @@
+{% extends "ncs/base.html" %}
+
+{% block title %}Change your account settings{% endblock %}
+
+{% block content %}
+  <h3>Change your account settings</h3>
+  <div align=center>
+  <form action="." method="post">
+    <table>
+    <tr>
+    <td>
+    </td>
+    <td>
+    {% if form.errors %}
+      <span class="error">Please correct the errors below.</span>
+    {% endif %}
+    </td>
+    </tr>
+    
+    <tr>
+    <td>
+    {{ form.profileid }}
+    <label for="id_username">Username:</label> 
+    </td>
+    <td>
+    {{ form.username }}
+    
+    {% if form.username.errors %}
+    	<span class="error">{{ form.username.errors|join:", " }}</span>
+    {% endif %}
+    </td> 
+	</tr>
+	<tr>
+	<td>
+    <label for="id_email">Email:</label> 
+    </td>
+    <td>
+    {{ form.email }}
+     
+    {% if form.email.errors %}
+    	<span class="error">{{ form.email.errors|join:", " }}</span>
+    {% endif %}
+    </td>
+    </tr>
+    <tr> 
+	<td>
+    <label for="id_password1">Password: </label>
+    </td>
+    <td>
+    {{ form.password1 }} 
+    {% if form.password1.errors %}
+      <span class="error">{{ form.password1.errors|join:", " }}</span>
+    {% endif %}
+    </td>
+	</tr>
+	<tr> 
+	<td>
+    <label for="id_password2">Confirm Password: </label>
+    </td>
+    <td>
+    {{ form.password2 }} 
+    {% if form.password2.errors %}
+      <span class="error">{{ form.password2.errors|join:", " }}</span>
+    {% endif %}
+    </td>
+	</tr>	
+    <tr>
+    <td>
+    <label for="id_research_field">Research Field:</label> 
+    </td>
+    <td>
+    {{ form.research_field }} 
+    {% if form.research_field.errors %}
+      <span class="error">Please select your field of study</span>
+    {% endif %}
+    </td>
+	</tr>
+	<tr> 
+	<td>   
+	<label for="id_is_supplier">Can you supply?</label>
+	</td>
+	<td>
+	{{ form.is_supplier }} 
+	</td>
+	</tr>
+    
+    <tr>
+    <td>
+    </td>
+    <td>
+    <input type="submit" value="Change settings" />
+    </td>
+    </tr>
+  </table>
+  </form>
+  </div>
+  <p> </p>
+{% endblock %}
