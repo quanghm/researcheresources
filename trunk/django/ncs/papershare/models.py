@@ -77,7 +77,7 @@ class PaperShareProfile(models.Model):
         return self.user.is_staff
     is_admin.short_description = 'Is Admin?'
 
-
+#TODO: what is it?
 def paper_share_profile_callback(user, research_field, is_supplier):
     print "--- HAHA"
     profile = PaperShareProfile(user=user, research_field = research_field, is_supplier = is_supplier)

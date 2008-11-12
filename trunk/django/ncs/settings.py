@@ -92,6 +92,8 @@ ACCOUNT_ACTIVATION_DAYS = 30
 
 #for smtplib 
 EMAIL_HOST = "smtp.comcast.net"
+EMAIL_HOST_USER="thefirstofnovember@comcast.net"
+EMAIL_HOST_PASSWORD="secretpassword"
 
 #for user profile
 #see http://www.b-list.org/weblog/2006/jun/06/django-tips-extending-user-model/
