@@ -11,7 +11,7 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 
-from ncs.registration.forms import RegistrationFormTermsOfService
+from ncs.registration.forms import RegistrationFormTermsOfService,AccountSettingsForm, createAccountSettingFormFromProfileId
 from ncs.registration.models import RegistrationProfile
 
 #for profile_callback
@@ -168,22 +168,21 @@ def register(request, success_url=None,
                               context_instance=context)
 
 @login_required
-def edit(request, form_class=RegistrationFormTermsOfService, profile_callback=paper_share_profile_callback,
-             template_name='registration/registration_form.html'):
+def edit(request, 
+         template_name='registration/account_settings_form.html'):
     """
     """
     if request.method == 'POST':
-        form = form_class(data=request.POST, files=request.FILES)
+        form = AccountSettingsForm(data=request.POST)
         if form.is_valid():
-            new_user = form.save(profile_callback=profile_callback)
+            new_user = form.save()
             # success_url needs to be dynamically generated here; setting a
             # a default value using reverse() will cause circular-import
             # problems with the default URLConf for this application, which
             # imports this file.
-            return HttpResponseRedirect(success_url or reverse('registration_complete'))
+            return HttpResponseRedirect(reverse('edit'))
     else:
-        form = form_for_instance(request.user)()
-        return HttpResponse(unicode(form))
+        form = createAccountSettingFormFromProfileId(request.user.id)        
     
     context = RequestContext(request)
     return render_to_response(template_name,
