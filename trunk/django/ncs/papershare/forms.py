@@ -2,7 +2,6 @@
 # -*- coding: UTF-8 -*-
 
 from django import forms
-from django.core.validators import alnum_re
 from django.contrib.auth.models import User
 from django.conf import settings
 from django.core.mail import mail_admins
