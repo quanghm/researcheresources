@@ -5,7 +5,6 @@ Forms and validation code for user registration.
 
 
 from django import forms
-from django.core.validators import alnum_re
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
 
@@ -18,6 +17,7 @@ from ncs.papershare.models import RESEARCH_FIELDS, PaperShareProfile
 # lands in trunk, this will no longer be necessary.
 attrs_dict = { 'class': 'required' }
 
+alnum_re = re.compile(r'^\w+$')
 
 class RegistrationForm(forms.Form):
     """
