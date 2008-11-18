@@ -40,6 +40,7 @@ REQUEST_STATUS_CHOICES = (
         (2, "re-assigned"),
         (3, "supplied"),
         (4, "thanked"),
+        (5, "failed"),
     )
 
 class Request(models.Model):

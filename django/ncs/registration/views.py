@@ -16,7 +16,6 @@ from ncs.registration.models import RegistrationProfile
 
 #for profile_callback
 from ncs.papershare.models import paper_share_profile_callback
-from django.forms import form_for_instance
 
 def activate(request, activation_key,
              template_name='registration/activate.html',
