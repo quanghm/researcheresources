@@ -2,6 +2,6 @@ Chào {{ request.supplier.username }},
 <p>
 Bạn đang có một yêu cầu cho bài báo <b>"{{ request.paper.title }}"</b> được gửi bởi {{ request.requester.username }}.
 <p>
-Bạn có thể <a href="http://{{site}}{% url ncs.papershare.views.detailRequest request.id %}">ấn vào đây </a> để cung cấp bài báo cho {{ request.requester.username }}.
+Bạn có thể <a href="http://{{site}}/papershare/details/{{request.id}}/">ấn vào đây </a> để cung cấp bài báo cho {{ request.requester.username }}.
 <p>
 Ban quản trị nghiêncúusinh.org.

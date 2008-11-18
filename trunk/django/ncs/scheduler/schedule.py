@@ -10,8 +10,20 @@ from ncs.papershare.models import REQUEST_STATUS_CHOICES
 from ncs.utils.sendmail import sendmailFromTemplate
 
 from datetime import datetime
+import re
+
+FAIL_LIMIT = 3
 
 def findSupplier(request):
+    if (request.previously_assigned  is not None and len(request.previously_assigned.split(";")) >= FAIL_LIMIT + 1):
+        print "Request %s (%s) is failed , last_assignment : %s" % (unicode(request), 
+                                                          request.date_requested, 
+                                                          request.previously_assigned)
+        request.status = REQUEST_STATUS_CHOICES[5][0] #"failed"
+        request.save();
+        #TODO : send email to requester
+        return
+    
     try:    
         supplierProfile = PaperShareProfile.objects.filter(is_supplier=True,research_field=request.paper.research_field).filter(~Q(user=request.requester)).order_by('last_assignment')[0]
     except IndexError:
@@ -31,9 +43,12 @@ def findSupplier(request):
     request.date_assigned = t
     if request.previously_assigned is None:
         request.status = REQUEST_STATUS_CHOICES[1][0] #"assigned"
+        request.previously_assigned = ";" + supplierProfile.user.username
     else:
         request.status = REQUEST_STATUS_CHOICES[2][0] #"re-assigned"
-    request.save()
+        #TODO : make sure username does not contain ";"
+        request.previously_assigned += ";" + supplierProfile.user.username
+    request.save()    
     sendReminderEmailToSupplier(request)
     print "Request %s (%s) is assigned to user %s(%s)" % (unicode(request), 
                                                           request.date_requested, 
@@ -46,13 +61,15 @@ def sendReminderEmailToSupplier(request):
     context = { 'request': request ,
                 'site' : current_site}
     subject = "%s wanted" % request.paper.title
+    
     sendmailFromTemplate(template_name = template_name,
                          toAddr = request.supplier.email, 
                          subject = subject, 
                          context = context)
 
 def main(argv):
+    print "Running request scheduler"
     requestQueue = Request.objects.filter(status__exact=0).order_by('date_requested')
     for request in requestQueue:
         findSupplier(request)
-    print "Running request scheduler"
+    

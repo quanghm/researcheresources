@@ -10,6 +10,7 @@ from django.contrib.auth.models import User
 
 from ncs.registration.models import RegistrationProfile
 from ncs.papershare.models import RESEARCH_FIELDS, PaperShareProfile
+import re
 
 # I put this on all required fields, because it's easier to pick up
 # on them with CSS or JavaScript if they have a class of "required"

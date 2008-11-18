@@ -147,21 +147,27 @@ def uploadPaper(request):
             else:
                 context.update({'form':form})
                 return render_to_response('papershare/upload_error.html',context)
-        else: #pass to other supplier
+        
+        elif request.POST.get("buttonPass") is not None: #pass to other supplier
             requestId = request.POST.get('request_id')
             if requestId is not None and requestId.isdigit():
                 paperRequest = Request.objects.get(id=int(requestId))
-                if paperRequest.previously_assigned is None:
-                    paperRequest.previously_assigned = paperRequest.supplier.id
-                else:
-                    paperRequest.previously_assigned = paperRequest.previously_assigned + ";%d" % paperRequest.supplier.id
                 paperRequest.supplier = None
                 paperRequest.status = 0 #pending. 
                 paperRequest.save()
                 message = u"Yêu cầu %d đã được chuyển cho người khác, tuy nhiên bạn vẫn có thể vào public pool để cung cấp nếu muốn" % paperRequest.id
                 context.update({'message' : message}) 
                 return render_to_response('ncs/simple_message.html', context)
-                                          
+        elif request.POST.get("buttonFail") is not None: #report fail by admin
+            requestId = request.POST.get('request_id')
+            if requestId is not None and requestId.isdigit():
+                paperRequest = Request.objects.get(id=int(requestId))
+                paperRequest.supplier = None
+                paperRequest.status = 5 #failed.
+                paperRequest.save()
+                message = u"Yêu cầu %d da duoc chuyen vao trash pool" % paperRequest.id
+                context.update({'message' : message}) 
+                return render_to_response('ncs/simple_message.html', context)
     return HttpResponseRedirect("/papershare/")
 
 def handle_uploaded_file(f):

@@ -60,8 +60,16 @@
 		     <input type="hidden" name="request_id" id="id_request_id" value="{{request.id}}"/>
 		     </td>
 		</tr>
-	</table>
+	</table>	
 	<input type="submit" name="buttonSupply" value="Gửi bài báo" />
-	<input type="submit" name="buttonPass" value="Chuyển cho người khác" />
-	</form>
+	{% ifequal user request.supplier %}
+		<input type="submit" name="buttonPass" value="Chuyển cho người khác" />
+	{% endifequal %}
+	
+	{% if user.is_staff %}
+		<input type="submit" name="buttonFail" value="Can not supply" />
+	{% endif %}
+	</form>	
+	
+	
 {% endblock %}

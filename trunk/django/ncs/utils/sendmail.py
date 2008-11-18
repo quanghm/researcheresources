@@ -1,6 +1,7 @@
 from django.http import HttpResponse
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
+
 from django.conf import settings
 
 from ncs.lib.stripogram import html2text
@@ -23,7 +24,8 @@ def sendmailFromTemplate(fromAddr=settings.DEFAULT_FROM_EMAIL,toAddr=None,subjec
     #try:
         if type(toAddr) != list and type(toAddr) != tuple:
             toAddr = [toAddr]
-        html_content = render_to_string(template_name, context)
+        
+        html_content = render_to_string(template_name, context)        
         text_content = htmlToText(html_content)
         #print "------- ", subject, text_content, fromAddr, toAddr
         msg = EmailMultiAlternatives(subject, text_content, fromAddr, toAddr)
