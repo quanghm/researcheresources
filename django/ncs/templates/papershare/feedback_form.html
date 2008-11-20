@@ -10,9 +10,12 @@
     {% if form.errors %}
       <span class="error">{{ form.errors }}</span>
     {% endif %}
-
-	  {{ form.as_ul}}
+		<table>
+		
+	  {{ form.as_table}}
+	  </table>
 	  <input type="submit" value="Gửi góp ý" />
+	  
 
   </form>
   </div>

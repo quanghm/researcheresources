@@ -96,24 +96,6 @@ class RegistrationForm(forms.Form):
         return new_user
 
 
-class RegistrationFormTermsOfService(RegistrationForm):
-    """
-    Subclass of ``RegistrationForm`` which adds a required checkbox
-    for agreeing to a site's Terms of Service.
-    
-    """
-    tos = forms.BooleanField(widget=forms.CheckboxInput(attrs=attrs_dict),
-                             label=_(u'I have read and agree to the Terms of Service'))
-    
-    def clean_tos(self):
-        """
-        Validate that the user accepted the Terms of Service.
-        
-        """
-        if self.cleaned_data.get('tos', False):
-            return self.cleaned_data['tos']
-        raise forms.ValidationError(_(u'You must agree to the terms to register'))
-
 
 class RegistrationFormUniqueEmail(RegistrationForm):
     """
@@ -130,6 +112,24 @@ class RegistrationFormUniqueEmail(RegistrationForm):
         if User.objects.filter(email__iexact=self.cleaned_data['email']):
             raise forms.ValidationError(_(u'This email address is already in use. Please supply a different email address.'))
         return self.cleaned_data['email']
+
+class RegistrationFormTermsOfService(RegistrationFormUniqueEmail):
+    """
+    Subclass of ``RegistrationForm`` which adds a required checkbox
+    for agreeing to a site's Terms of Service.
+    
+    """
+    tos = forms.BooleanField(widget=forms.CheckboxInput(attrs=attrs_dict),
+                             label=_(u'I have read and agree to the Terms of Service'))
+    
+    def clean_tos(self):
+        """
+        Validate that the user accepted the Terms of Service.
+        
+        """
+        if self.cleaned_data.get('tos', False):
+            return self.cleaned_data['tos']
+        raise forms.ValidationError(_(u'You must agree to the terms to register'))
 
 
 class RegistrationFormNoFreeEmail(RegistrationForm):

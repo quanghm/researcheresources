@@ -51,9 +51,9 @@ def mypage(request):
     return render_to_response('ncs/mypage.html', context)
 
 @login_required
-def requestPaper(request, form_class = PaperRequestForm):
+def requestPaper(request):
     if request.method == 'POST':
-        form = form_class(data=request.POST, files=request.FILES)
+        form = PaperRequestForm(data=request.POST, files=request.FILES)
         if form.is_valid():
             new_request = form.save()
             # success_url needs to be dynamically generated here; setting a
@@ -66,7 +66,7 @@ def requestPaper(request, form_class = PaperRequestForm):
                                       context)
                                       
     else:
-        form = form_class()
+        form = PaperRequestForm()
     
     context = RequestContext(request)
     context.update(get_my_stats(request.user))

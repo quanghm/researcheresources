@@ -9,7 +9,7 @@ from django.template.loader import render_to_string
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
 from django.contrib.sites.models import Site
-
+from ncs.utils.logger import getLogger
 
 SHA1_RE = re.compile('^[a-f0-9]{40}$')
 
@@ -98,14 +98,17 @@ class RegistrationManager(models.Manager):
                                         'username' : username})
             # Email subject *must not* contain newlines
             subject = ''.join(subject.splitlines())
+
             
             message = render_to_string('registration/activation_email.txt',
                                        { 'activation_key': registration_profile.activation_key,
                                          'expiration_days': settings.ACCOUNT_ACTIVATION_DAYS,
                                          'site': current_site,
                                          'username' :username })
-            
+            getLogger().info("Sending email to %s " % str((subject, message, settings.DEFAULT_FROM_EMAIL, new_user.email)) )
             send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [new_user.email])
+            getLogger().info("Email sent")
+            
         return new_user
     
     def create_profile(self, user):
