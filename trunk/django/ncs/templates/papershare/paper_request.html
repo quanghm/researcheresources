@@ -8,14 +8,16 @@
 		
 			<tr>
 		     <td><label for="id_link">Link</label></td>
-		     <td><input type="text" name="link" id="id_link" size="40"/>
+		     <td>
+		     {{ form.link }}		     
 		     <a href="#" onclick="alert('chức năng tự động điền form từ url hiện chưa hoạt động')">Auto-fill</a>
 		     </td>
 		    </tr>
 
 			<tr>
 		    <td><label for="id_title">Title</label></td>
-		    <td><input id="id_title" type="text" name="title" size="60">
+		    <td>
+		    {{ form.title }}
 		    {% if form.title.help_text %}  {{ form.title.help_text }}  {% endif %}
 		    {% if form.title.errors %}<span class="error">{{ form.title.errors }}</span>{% endif %}
 		    </td>
@@ -23,7 +25,9 @@
 
 			<tr>
 		    <td><label for="id_author">Author</label></td>
-		    <td><input id="id_author" type="text" name="author" size="60" />
+		    <td>
+		    {{ form.author }}
+		    
 		    {% if form.author.help_text %}  {{ form.author.help_text }}  {% endif %}
 		    {% if form.author.errors %}<span class="error">{{ form.author.errors }}</span>{% endif %}
 		    </td>
@@ -31,15 +35,17 @@
 
 			<tr>
 		    <td><label for="id_publisher">Publisher</label></td>
-		    <td><input id="id_publisher" type="text" name="publisher" size="60" />
+		    <td>
+		    {{ form.publisher }}
 		    {% if form.publisher.help_text %}  {{ form.publisher.help_text }}  {% endif %}
 		    {% if form.publisher.errors %}<span class="error">{{ form.publisher.errors }}</span>{% endif %}
 		    </td>
 			</tr>
 			
 			<tr>
-		     <td><label for="id_issue">Issue</label></td>
-		     <td><input type="text" name="issue" id="id_issue" />
+		    <td><label for="id_issue">Issue</label></td>
+		    <td>
+		    {{ form.issue }}
 		    {% if form.issue.help_text %}  {{ form.issue.help_text }}  {% endif %}
 		    {% if form.issue.errors %}<span class="error">{{ form.issue.errors }}</span>{% endif %}
 		    </td>
@@ -47,7 +53,8 @@
 			
 			<tr>
 		    <td><label for="id_year">Year</label></td>
-		    <td><input type="text" name="year" id="id_year" />
+		    <td>
+		   	{{ form.year }}
 		    {% if form.year.help_text %}  {{ form.year.help_text }}  {% endif %}
 		    {% if form.year.errors %}<span class="error">{{ form.year.errors }}</span>{% endif %}
 		    </td>
@@ -55,7 +62,8 @@
 			
 			<tr>
 		    <td><label for="id_page">Page</label></td>
-		    <td><input type="text" name="page" id="id_page" />
+		    <td>
+		    {{ form.page }}
 		    {% if form.page.help_text %}  {{ form.page.help_text }}  {% endif %}
 		    {% if form.page.errors %}<span class="error">{{ form.page.errors }}</span>{% endif %}
 		    </td>

@@ -15,10 +15,10 @@ class PaperRequestForm(forms.Form):
     """
     Form for requesting a paper.
     """
-    link = forms.URLField()
-    title = forms.CharField(max_length = 255 )
-    author = forms.CharField(max_length = 255)
-    publisher = forms.CharField(max_length = 255)
+    link = forms.URLField(widget=forms.TextInput(attrs={'size':'40'}))
+    title = forms.CharField(max_length = 255 , widget=forms.TextInput(attrs={'size':'60'}) )
+    author = forms.CharField(max_length = 255 , widget=forms.TextInput(attrs={'size':'60'}))
+    publisher = forms.CharField(max_length = 255, widget=forms.TextInput(attrs={'size':'60'}))
     year = forms.IntegerField()
     issue = forms.IntegerField(required = False)
     page = forms.IntegerField(required = False)
