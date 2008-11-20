@@ -70,6 +70,9 @@ def sendReminderEmailToSupplier(request):
 def main(argv):
     print "Running request scheduler"
     requestQueue = Request.objects.filter(status__exact=0).order_by('date_requested')
+    #requestQueue = Request.objects.all().order_by('date_requested')
     for request in requestQueue:
-        findSupplier(request)
+        if request.status == 0:
+            findSupplier(request)
+    del requestQueue
     
