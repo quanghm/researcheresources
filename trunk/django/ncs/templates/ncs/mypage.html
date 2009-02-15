@@ -14,13 +14,18 @@ ____________________________<br />
 <h4>Cặp của bạn</h4>
 <ul>
 <li>Bạn đang yêu cầu <a href="/papershare/my_requests/">{{ requested }} bài báo</a></li>
+{% if is_supplier %}
 <li>Bạn có <a href="/papershare/supply/">{{ to_serve }} yêu cầu </a>cần xử lý</li>
+{% endif %}
 </ul>
 <h4>Hành động</h4>
 <ul>
 <li><a href="/papershare/request/">Yêu cầu bài báo</a></li>
+{% if is_supplier %}
 <li><a href="/papershare/supply/">Xử lý yêu cầu</a></li>
 <li><a href="/papershare/public_pool/">Public Pool</a></li>
+<li><a href="/papershare/trash_pool/">Trash Pool</a></li>
+{% endif %}
 <li><a href="/accounts/settings/">Sửa thông tin cá nhân</a></li>
 <li><a href="/accounts/logout/">Khắc xuất</a></li>
 </ul>

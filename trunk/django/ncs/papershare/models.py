@@ -34,13 +34,22 @@ class Paper(models.Model):
     def __unicode__(self):
         return "%s" % self.title[:30]
     
+REQ_STA_PENDING = 0
+REQ_STA_ASSIGNED = 1
+REQ_STA_REASSIGNED = 2
+REQ_STA_SUPPLIED = 3
+REQ_STA_THANKED = 4
+REQ_STA_FAILED = 5
+REQ_STA_LASTCHANCE = 6
+
 REQUEST_STATUS_CHOICES = (
-        (0, "pending"),
-        (1, "assigned"),
-        (2, "re-assigned"),
-        (3, "supplied"),
-        (4, "thanked"),
-        (5, "failed"),
+        (REQ_STA_PENDING , "pending"),
+        (REQ_STA_ASSIGNED, "assigned"),
+        (REQ_STA_REASSIGNED, "re-assigned"),
+        (REQ_STA_SUPPLIED, "supplied"),
+        (REQ_STA_THANKED, "thanked"),
+        (REQ_STA_FAILED, "failed"),
+        (REQ_STA_LASTCHANCE, "last-chance"),
     )
 
 class Request(models.Model):
