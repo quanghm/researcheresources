@@ -108,7 +108,7 @@ def showPublicPool(request,page=1):
     try:
         my_research_field = User.objects.get(pk = request.user.id).get_profile().research_field
         queryset = Request.objects.filter(status__in = PUBLIC_POOL_ACCEPTED_STATUSES, paper__research_field__exact = my_research_field)
-    except DoesNotExist:
+    except User.DoesNotExist:
         queryset = Request.objects.filter(status__in = PUBLIC_POOL_ACCEPTED_STATUSES)
     
     extra_context = get_my_stats(request.user)
@@ -125,7 +125,7 @@ def showTrashPool(request,page=1):
     try:
         my_research_field = User.objects.get(pk = request.user.id).get_profile().research_field
         queryset = Request.objects.filter(status__in = TRASH_POOL_ACCEPTED_STATUSES, paper__research_field__exact = my_research_field)
-    except DoesNotExist:
+    except User.DoesNotExist:
         queryset = Request.objects.filter(status__in = TRASH_POOL_ACCEPTED_STATUSES)
     
     extra_context = get_my_stats(request.user)
