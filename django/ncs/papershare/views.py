@@ -8,10 +8,12 @@ from django.template import RequestContext
 from django.views.generic import list_detail
 from django.contrib.auth.decorators import login_required
 
-from models import Announcement, Request
+from models import Announcement, Request, PaperShareProfile
 from forms import PaperRequestForm, PaperUploadForm, FeedbackForm
 from ncs.settings import MEDIA_ROOT, MEDIA_URL
 from ncs.utils.sendmail import sendmailFromTemplate
+from ncs.communication.emails import sendReminderEmailToRequester
+from ncs.papershare.models import REQUEST_STATUS_CHOICES, REQ_STA_PENDING ,REQ_STA_ASSIGNED, REQ_STA_REASSIGNED, REQ_STA_SUPPLIED, REQ_STA_THANKED, REQ_STA_FAILED, REQ_STA_LASTCHANCE
 
 import datetime
 import os
@@ -35,8 +37,10 @@ def getCommonContext(request):
     return context
     
 def get_my_stats(user):
-    return {"requested" : Request.objects.filter(requester=user, status__lt=3).count(),
-            "to_serve" : Request.objects.filter(supplier=user, status__lt=3).count()}
+    return {"requested" : Request.objects.filter(requester=user, status__in = PUBLIC_POOL_ACCEPTED_STATUSES).count(),
+            "to_serve" : Request.objects.filter(supplier=user, status__in = PUBLIC_POOL_ACCEPTED_STATUSES).count(),
+            "is_supplier" : PaperShareProfile.objects.get(user=user).is_supplier
+            }
             
 def mypage(request):
     #check if user logged in
@@ -78,36 +82,56 @@ def requestPaper(request):
 def listRequests(request,page=1):
     if not request.user.is_authenticated():
         return HttpResponseRedirect("/papershare/")
-    queryset = Request.objects.filter(requester__exact=request.user, status__lt=3)
-    template_object_name = "request"
+    queryset = Request.objects.filter(requester__exact=request.user, status__in = PUBLIC_POOL_ACCEPTED_STATUSES)
     extra_context = get_my_stats(request.user)
     
     return list_detail.object_list(request, queryset=queryset, 
-                                   template_object_name = template_object_name , 
+                                   template_object_name = "request" , 
                                    extra_context = extra_context,
                                    paginate_by = 10,
                                    page = page)
 @login_required
 def listRequestsToSupply(request,page=1):
-    queryset = Request.objects.filter(supplier__exact=request.user, status__lt=3)
-    template_object_name = "request"
+    queryset = Request.objects.filter(supplier__exact=request.user, status__in = PUBLIC_POOL_ACCEPTED_STATUSES)
     extra_context = get_my_stats(request.user)
     
     return list_detail.object_list(request, queryset=queryset, 
-                                   template_object_name = template_object_name , 
+                                   template_object_name = "request" , 
                                    extra_context = extra_context,
                                    paginate_by = 10,
                                    page = page)
 
+PUBLIC_POOL_ACCEPTED_STATUSES = [REQ_STA_PENDING ,REQ_STA_ASSIGNED, REQ_STA_REASSIGNED, REQ_STA_LASTCHANCE]
+
 @login_required
 def showPublicPool(request,page=1):
-    my_research_field = User.objects.get(pk = request.user.id).get_profile().research_field
-    queryset = Request.objects.filter(status__lt=3, paper__research_field__exact = my_research_field)
-    template_object_name = "request"
+    try:
+        my_research_field = User.objects.get(pk = request.user.id).get_profile().research_field
+        queryset = Request.objects.filter(status__in = PUBLIC_POOL_ACCEPTED_STATUSES, paper__research_field__exact = my_research_field)
+    except DoesNotExist:
+        queryset = Request.objects.filter(status__in = PUBLIC_POOL_ACCEPTED_STATUSES)
+    
     extra_context = get_my_stats(request.user)
     
     return list_detail.object_list(request, queryset=queryset, 
-                                   template_object_name = template_object_name , 
+                                   template_object_name = "request" , 
+                                   extra_context = extra_context,
+                                   paginate_by = 10,
+                                   page = page)
+
+TRASH_POOL_ACCEPTED_STATUSES = [REQ_STA_FAILED]
+@login_required
+def showTrashPool(request,page=1):
+    try:
+        my_research_field = User.objects.get(pk = request.user.id).get_profile().research_field
+        queryset = Request.objects.filter(status__in = TRASH_POOL_ACCEPTED_STATUSES, paper__research_field__exact = my_research_field)
+    except DoesNotExist:
+        queryset = Request.objects.filter(status__in = TRASH_POOL_ACCEPTED_STATUSES)
+    
+    extra_context = get_my_stats(request.user)
+    
+    return list_detail.object_list(request, queryset=queryset, 
+                                   template_object_name = "request" , 
                                    extra_context = extra_context,
                                    paginate_by = 10,
                                    page = page)
@@ -116,13 +140,12 @@ def showPublicPool(request,page=1):
 @login_required    
 def detailRequest(request, object_id):
     queryset = Request.objects.all()
-    template_object_name = "request"
     extra_context = get_my_stats(request.user)
     extra_context.update({'form': PaperUploadForm()})
     return list_detail.object_detail(request, object_id=object_id, 
                                      queryset=queryset, 
                                      template_name = "papershare/request_detail.html", 
-                                     template_object_name = template_object_name , 
+                                     template_object_name = "request" , 
                                      extra_context = extra_context )
 
 @login_required
@@ -163,8 +186,9 @@ def uploadPaper(request):
             if requestId is not None and requestId.isdigit():
                 paperRequest = Request.objects.get(id=int(requestId))
                 paperRequest.supplier = None
-                paperRequest.status = 5 #failed.
+                paperRequest.status = REQ_STA_FAILED #failed.
                 paperRequest.save()
+                sendReminderEmailToRequester(paperRequest)
                 message = u"Yêu cầu %d da duoc chuyen vao trash pool" % paperRequest.id
                 context.update({'message' : message}) 
                 return render_to_response('ncs/simple_message.html', context)

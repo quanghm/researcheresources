@@ -63,7 +63,11 @@
 	</table>	
 	<input type="submit" name="buttonSupply" value="Gửi bài báo" />
 	{% ifequal user request.supplier %}
+		{% ifequal request.status 6 %}
+		<input type="submit" name="buttonFail" value="Báo cáo thất bại" />
+		{% else %}
 		<input type="submit" name="buttonPass" value="Chuyển cho người khác" />
+		{% endifequal %}
 	{% endifequal %}
 	
 	{% if user.is_staff %}

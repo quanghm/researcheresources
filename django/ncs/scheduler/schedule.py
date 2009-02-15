@@ -6,8 +6,8 @@ from django.contrib.sites.models import Site
 from django.db.models import Q
 
 from ncs.papershare.models import PaperShareProfile
-from ncs.papershare.models import REQUEST_STATUS_CHOICES
-from ncs.utils.sendmail import sendmailFromTemplate
+from ncs.papershare.models import REQUEST_STATUS_CHOICES, REQ_STA_PENDING ,REQ_STA_ASSIGNED, REQ_STA_REASSIGNED, REQ_STA_SUPPLIED, REQ_STA_THANKED, REQ_STA_FAILED, REQ_STA_LASTCHANCE
+from ncs.communication.emails import sendReminderEmailToSupplier, sendReminderEmailToRequester
 
 from datetime import datetime
 import re
@@ -15,13 +15,14 @@ import re
 FAIL_LIMIT = 3
 
 def findSupplier(request):
-    if (request.previously_assigned  is not None and len(request.previously_assigned.split(";")) >= FAIL_LIMIT + 1):
+    numberOfAssignments = len(request.previously_assigned.split(";")) - 1
+    if (request.previously_assigned  is not None and numberOfAssignments >= FAIL_LIMIT ):
         print "Request %s (%s) is failed , last_assignment : %s" % (unicode(request), 
                                                           request.date_requested, 
                                                           request.previously_assigned)
         request.status = REQUEST_STATUS_CHOICES[5][0] #"failed"
         request.save();
-        #TODO : send email to requester
+        sendReminderEmailToRequester(request)
         return
     
     try:    
@@ -42,30 +43,24 @@ def findSupplier(request):
      
     request.date_assigned = t
     if request.previously_assigned is None:
-        request.status = REQUEST_STATUS_CHOICES[1][0] #"assigned"
-        request.previously_assigned = ";" + supplierProfile.user.username
+        request.status = REQ_STA_ASSIGNED 
+    elif numberOfAssignments == FAIL_LIMIT - 1:
+        request.status = REQ_STA_LASTCHANCE #"last-chance"
     else:
-        request.status = REQUEST_STATUS_CHOICES[2][0] #"re-assigned"
-        #TODO : make sure username does not contain ";"
-        request.previously_assigned += ";" + supplierProfile.user.username
-    request.save()    
+        request.status = REQ_STA_REASSIGNED #"re-assigned"
+        
+    #TODO : make sure username does not contain ";"
+    if request.previously_assigned is None : request.previously_assigned = ""
+    request.previously_assigned += ";" + supplierProfile.user.username
+    
+    request.save()
     sendReminderEmailToSupplier(request)
     print "Request %s (%s) is assigned to user %s(%s)" % (unicode(request), 
                                                           request.date_requested, 
                                                           unicode(supplierProfile.user),
                                                           last_assignment)
 
-def sendReminderEmailToSupplier(request):
-    current_site = Site.objects.get_current()
-    template_name = 'papershare/supplier_email.txt'
-    context = { 'request': request ,
-                'site' : current_site}
-    subject = "%s wanted" % request.paper.title
-    
-    sendmailFromTemplate(template_name = template_name,
-                         toAddr = request.supplier.email, 
-                         subject = subject, 
-                         context = context)
+
 
 def main(argv):
     print "Running request scheduler"
