@@ -9,7 +9,7 @@ from django.views.generic import list_detail
 from django.contrib.auth.decorators import login_required
 
 from models import Announcement, Request, PaperShareProfile
-from forms import PaperRequestForm, PaperUploadForm, FeedbackForm
+from forms import PaperRequestForm, PaperUploadForm, FeedbackForm, ContactUserForm
 from ncs.settings import MEDIA_ROOT, MEDIA_URL
 from ncs.utils.sendmail import sendmailFromTemplate
 from ncs.communication.emails import sendReminderEmailToRequester
@@ -220,6 +220,23 @@ def feedback(request):
     return render_to_response("papershare/feedback_form.html",
                               { 'form': form }
                               )
+@login_required
+def contact(request, toUserId):
+    if request.method == 'POST' :
+        form = ContactUserForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            context = getCommonContext(request)
+            context.update({'message' : 'Your message has been sent'})
+            return render_to_response('ncs/simple_message.html', context)
+    else:        
+        form = ContactUserForm()
+        form.setInitial(request.user, User.objects.get(id=toUserId))
+    return render_to_response("papershare/contact_form.html",
+                              { 'form': form }
+                              )
+    
+    
 def static(request, template = None):
     if template is not None:
         return render_to_response(template)
