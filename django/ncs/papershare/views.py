@@ -162,6 +162,21 @@ def uploadPaper(request):
                 paperRequest = Request.objects.get(id=form.cleaned_data['request_id'])
                 context.update({'uploaded_url' : uploaded_url,
                                 'request' : paperRequest})
+                
+                if paperRequest.supplier is None :
+                    paperRequest.supplier = request.user
+                    context.update({'realSupplier' : request.user})
+                elif paperRequest.supplier.id != request.user.id:
+                    print "Process for other supplier ", paperRequest.supplier
+                    context.update({'realSupplier' : request.user})
+                    sendmailFromTemplate(toAddr=paperRequest.supplier.email,
+                                     subject=u"Some one has provided a paper request that was assigned to you",
+                                     template_name="papershare/request_processed_email.html",
+                                     context=context)
+                    paperRequest.supplier = request.user
+                
+                
+                
                 sendmailFromTemplate(toAddr=paperRequest.requester.email,
                                      subject=u"Good news ! your paper request has been processed",
                                      template_name="papershare/request_processed_email.html",
