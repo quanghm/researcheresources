@@ -13,9 +13,13 @@ RESEARCH_FIELDS = (
         ('BIO', 'Biology'),
         ('CHEM', 'Chemistry'),
         ('CS', 'Computer Science'),
+        ('CEE', 'Civil and Environmental Engineering'),
+        ('ECON', 'Economics'),
         ('EE', 'Electrical Engineering'),
+        ('ENG', 'Engineering - Other'),
         ('ME', 'Mechanical Engineering'),
         ('MATH', 'Mathematics'),
+        ('MSE', 'Material Science and Engineering'),
         ('PHYS', 'Physics'),
         ('NONE', 'None of the above'),
     )
@@ -123,4 +127,21 @@ class PaperAdmin(admin.ModelAdmin):
     ]
 
 admin.site.register(Paper,PaperAdmin)
+
+class TblUser(models.Model):
+    id = models.IntegerField(db_column='ID') # Field name made lowercase.
+    username = models.CharField(max_length=45, primary_key=True)
+    password = models.CharField(max_length=765)
+    email = models.CharField(max_length=150)
+    field = models.CharField(max_length=150)
+    join_date = models.DateField()
+    supplier = models.CharField(max_length=1)
+    admin = models.CharField(max_length=1)
+    user_level = models.IntegerField()
+    request_number = models.IntegerField()
+    request_handle_number = models.IntegerField()
+    request_pending_number = models.IntegerField()
+    last_assigned_request = models.DateField()
+    class Meta:
+        db_table = u'tbl_user'
 
