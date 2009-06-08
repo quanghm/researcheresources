@@ -1,0 +1,13 @@
+Chào {{ request.requester.username }},
+<p>
+{% ifequal request.status 5 %}
+Yêu cầu cho bài báo <b>"{{ request.paper.title }}"</b> của bạn đã bị thất bại và chuyển vào Trash Pool
+{% else %}
+Yêu cầu cho bài báo <b>"{{ request.paper.title }}"</b> của bạn đã được cập nhật.
+{% endifequal %}
+
+<p>
+Bạn có thể <a href="http://{{site}}/papershare/details/{{request.id}}/">ấn vào đây </a> để xem chi tiết .
+
+<p>
+Ban quản trị nghiêncúusinh.org.

@@ -7,7 +7,7 @@ ADMINS = (
     ('Cuong', 'kimcuong@gmail.com'),
 )
 
-DEFAULT_FROM_EMAIL = 'admin@nghiencuusinh.org'
+DEFAULT_FROM_EMAIL = '"nghiencuusinh.org"<admin@nghiencuusinh.org>'
 
 MANAGERS = ADMINS
 

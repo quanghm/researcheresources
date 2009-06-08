@@ -22,8 +22,10 @@
 	        {% for request in request_list %}
 	        	<tr class="{% cycle odd,even %}" >
 		            {# <td align='right'>{{ forloop.counter }}</td> #}
-					<td><a href="/papershare/details/{{ request.id }}">{{ request.paper.title }}</a>
-					(<a target="_blank" href="{{request.paper.link}}">go</a>)</td>
+					<td>
+					(><a target="_blank" href="{{request.paper.link}}">link</a><)
+					<a href="/papershare/details/{{ request.id }}">{{ request.paper.title }}</a>
+					</td>
 					
 					<td>{{request.paper.author}}</td>
 					<td>{{request.paper.publisher}}</td>

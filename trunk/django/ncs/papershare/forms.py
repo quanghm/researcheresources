@@ -4,7 +4,6 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.conf import settings
-from django.core.mail import mail_admins
 
 from models import Paper, Request, RESEARCH_FIELDS, REQUEST_STATUS_CHOICES
 from datetime import datetime
@@ -110,4 +109,26 @@ class FeedbackForm(forms.Form):
         print len(getChoiceValue(FEEDBACK_TYPE_CHOICES, type))
         subject = "[%s] from '%s'" % (getChoiceValue(FEEDBACK_TYPE_CHOICES, type), email)
         mail_admins(subject, content, fail_silently=False)
+
+class ContactUserForm(forms.Form):
+    email  = forms.EmailField(required=False)
+    to = forms.CharField(max_length=20)
+    subject = forms.CharField(max_length=50)
+    toEmail = forms.CharField(max_length=50, widget=forms.widgets.HiddenInput)
+    content  = forms.CharField(widget=forms.Textarea)
+    
+    def setInitial(self, fromUser, toUser):
+        self.initial={"email":fromUser.email,"to":toUser.username, "toEmail" : toUser.email}        
         
+    def save(self):
+        "save contact forms"
+        fromEmail = self.cleaned_data['email']
+        toEmail = self.cleaned_data['toEmail']
+        subject = self.cleaned_data['subject']
+        content = self.cleaned_data['content']
+        getLogger().info("Got contact from %s, to = %s, content : %s" % (`fromEmail`, `toEmail`, `content`) )                
+        from django.core.mail import send_mail
+        send_mail(subject, content, fromEmail, [toEmail])
+    
+        
+                

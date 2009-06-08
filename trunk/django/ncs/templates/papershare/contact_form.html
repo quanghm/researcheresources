@@ -1,0 +1,23 @@
+{% extends "ncs/base.html" %}
+
+{% block title %}Gửi tin nhắn cho đồng nghiệp{% endblock %}
+
+{% block content %}
+  <h3>Liên hệ</h3>
+  <div align=center>
+  <form action="." method="post">
+
+    {% if form.errors %}
+      <span class="error">{{ form.errors }}</span>
+    {% endif %}
+		<table>
+		
+	  {{ form.as_table}}
+	  </table>
+	  <input type="submit" value="Gửi" />
+	  
+
+  </form>
+  </div>
+  <p> </p>
+{% endblock %}
