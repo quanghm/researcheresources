@@ -1,12 +1,22 @@
 {% extends "ncs/mypage.html" %}
 
+{% block extrahead %}
+<meta http-equiv="REFRESH" content="3;url=/papershare/">
+{% endblock %}
+
 {% if request.user.is_authenticated %}
 	{% block main %}
 	    <p> {{ message }}
+	    <p>
+		You will be redirected to the homepage in 3 seconds...
+	    
 	{% endblock %}
 {% else %}
 	{% block content %}
 	    <p> {{ message }}
+	    <p>
+		You will be redirected to the homepage in 3 seconds...
 	{% endblock %}
 {% endif %}
+
 

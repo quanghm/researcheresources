@@ -106,8 +106,9 @@ PUBLIC_POOL_ACCEPTED_STATUSES = [REQ_STA_PENDING ,REQ_STA_ASSIGNED, REQ_STA_REAS
 @login_required
 def showPublicPool(request,page=1):
     try:
-        my_research_field = User.objects.get(pk = request.user.id).get_profile().research_field
-        queryset = Request.objects.filter(status__in = PUBLIC_POOL_ACCEPTED_STATUSES, paper__research_field__exact = my_research_field)
+        #my_research_field = User.objects.get(pk = request.user.id).get_profile().research_field
+        #queryset = Request.objects.filter(status__in = PUBLIC_POOL_ACCEPTED_STATUSES, paper__research_field__exact = my_research_field)
+        queryset = Request.objects.filter(status__in = PUBLIC_POOL_ACCEPTED_STATUSES)
     except User.DoesNotExist:
         queryset = Request.objects.filter(status__in = PUBLIC_POOL_ACCEPTED_STATUSES)
     
