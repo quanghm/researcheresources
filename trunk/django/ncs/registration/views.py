@@ -179,7 +179,11 @@ def edit(request,
             # a default value using reverse() will cause circular-import
             # problems with the default URLConf for this application, which
             # imports this file.
-            return HttpResponseRedirect(reverse('edit'))
+            message = u"Your settings have been saved";
+            context = RequestContext(request)
+            context.update({'message' : message}) 
+            return render_to_response('ncs/simple_message.html', context)            
+            
     else:
         form = createAccountSettingFormFromProfileId(request.user.id)        
     

@@ -27,7 +27,7 @@ def findSupplier(request):
     
     try:    
         supplierProfile = PaperShareProfile.objects.filter(is_supplier=True,research_field=request.paper.research_field).filter(~Q(user=request.requester)).order_by('last_assignment')[0]
-    except IndexError:
+    except IndexError, django.db.models.base.DoesNotExist:
         print "!!!!! Field %s doesn't have any supplier [%s]" % (request.paper.research_field, request)
         return
     

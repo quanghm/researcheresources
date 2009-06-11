@@ -5,9 +5,11 @@
   <div align=center>
 	<form method="post" action="">
 		<table>
-		
 			<tr>
-		     <td><label for="id_link">Link</label></td>
+		    <b>Bold</b> field are <span style="color:#C80000;font-weight:bold">required</span>. 
+		    </tr>
+			<tr>
+		     <td><label for="id_link"><b>Link</b></label></td>
 		     <td>
 		     {{ form.link }}		     
 		     <a href="#" onclick="alert('chức năng tự động điền form từ url hiện chưa hoạt động')">Auto-fill</a>
@@ -15,7 +17,7 @@
 		    </tr>
 
 			<tr>
-		    <td><label for="id_title">Title</label></td>
+		    <td><label for="id_title"><b>Title</b></label></td>
 		    <td>
 		    {{ form.title }}
 		    {% if form.title.help_text %}  {{ form.title.help_text }}  {% endif %}
@@ -24,7 +26,7 @@
 		    </tr>
 
 			<tr>
-		    <td><label for="id_author">Author</label></td>
+		    <td><label for="id_author"><b>Author</b></label></td>
 		    <td>
 		    {{ form.author }}
 		    
@@ -34,7 +36,7 @@
 		    </tr>
 
 			<tr>
-		    <td><label for="id_publisher">Publisher</label></td>
+		    <td><label for="id_publisher"><b>Publisher</b></label></td>
 		    <td>
 		    {{ form.publisher }}
 		    {% if form.publisher.help_text %}  {{ form.publisher.help_text }}  {% endif %}
@@ -52,7 +54,7 @@
 			</tr>
 			
 			<tr>
-		    <td><label for="id_year">Year</label></td>
+		    <td><label for="id_year"><b>Year</b></label></td>
 		    <td>
 		   	{{ form.year }}
 		    {% if form.year.help_text %}  {{ form.year.help_text }}  {% endif %}
@@ -70,10 +72,11 @@
 		    </tr>
 		    
 		    <tr>
-		    <td><label for="id_research_field">Research field</label></td>
+		    <td><label for="id_research_field"><b>Research field</b></label></td>
 		    <td>{{ form.research_field }}
 		    </td>
 		    </tr>
+		    
 		    
 		    <tr>
 			    <td></td>
