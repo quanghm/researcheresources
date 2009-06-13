@@ -213,7 +213,8 @@ def uploadPaper(request):
 def handle_uploaded_file(f):
     #see tempfile note
     #http://utcc.utoronto.ca/~cks/space/blog/python/UsingTempfile
-    fd , fileName = mkstemp(f.name,"uploaded/",MEDIA_ROOT)
+    stdizedFileName = re.sub("[\s]","_",f.name)
+    fd , fileName = mkstemp(stdizedFileName,"uploaded/",MEDIA_ROOT)
     
     destination = os.fdopen(fd, "w+b")
     for chunk in f.chunks():
