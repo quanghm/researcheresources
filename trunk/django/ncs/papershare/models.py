@@ -101,7 +101,7 @@ admin.site.register(Announcement)
 
 class ProfileAdmin(admin.ModelAdmin):
     list_display = ('user', 'research_field','is_supplier')
-    list_filter = ('is_supplier',)
+    list_filter = ('is_supplier','research_field')
     search_fields = ['user__username',]
     
 admin.site.register(PaperShareProfile,ProfileAdmin)
@@ -128,6 +128,7 @@ class PaperAdmin(admin.ModelAdmin):
 
 admin.site.register(Paper,PaperAdmin)
 
+#This is to migrate old nghiencuusinh data to new
 class TblUser(models.Model):
     id = models.IntegerField(db_column='ID') # Field name made lowercase.
     username = models.CharField(max_length=45, primary_key=True)
