@@ -5,5 +5,5 @@ http://{{ site }}{% url registration_activate activation_key %}
 
 Chào mừng bạn gia nhập cộng đồng nghiêncưusinh của chúng ta!
 
-nghiêncứusinh.org
+-- Ban quản trị nghiencuusinh.org --
 
