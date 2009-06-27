@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-06-22 00:42-0500\n"
+"POT-Creation-Date: 2009-06-27 16:40-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,75 +18,76 @@ msgstr ""
 
 #: .\papershare\forms.py:35 .\registration\forms.py:64
 msgid "This username is already taken. Please choose another."
-msgstr ""
+msgstr "Bí danh này đã được sử dụng. Bạn hãy chọn một bí danh khác"
 
 #: .\registration\forms.py:40 .\registration\forms.py:178
 msgid "username"
-msgstr ""
+msgstr "bí danh"
 
 #: .\registration\forms.py:43 .\registration\forms.py:181
 msgid "email address"
-msgstr ""
+msgstr "địa chỉ email"
 
 #: .\registration\forms.py:45 .\registration\forms.py:183
 msgid "password"
-msgstr ""
+msgstr "mật khẩu"
 
 #: .\registration\forms.py:47 .\registration\forms.py:185
 msgid "password (again)"
-msgstr ""
+msgstr "mật khẩu (điền lại)"
 
 #: .\registration\forms.py:59 .\registration\forms.py:198
 msgid "Usernames can only contain letters, numbers and underscores"
-msgstr ""
+msgstr "Bí danh chỉ bao gồm các chữ cái, các chữ số và dấu gạch dưới"
 
 #: .\registration\forms.py:76 .\registration\forms.py:212
 msgid "You must type the same password each time"
-msgstr ""
+msgstr "Bạn phải gõ cùng một mật khẩu cho mỗi lần"
 
 #: .\registration\forms.py:114
 msgid ""
 "This email address is already in use. Please supply a different email "
 "address."
 msgstr ""
+"Địa chỉ email này đã được sử dụng. Bạn hãy cung cấp một địa chỉ email khác"
 
 #: .\registration\forms.py:124
 msgid "I have read and agree to the Terms of Service"
-msgstr ""
+msgstr "Tôi đã đọc và đồng ý với những quy định của nghiencuusinh.org"
 
 #: .\registration\forms.py:133
 msgid "You must agree to the terms to register"
-msgstr ""
+msgstr "Bạn phải đồng ý với những quy định này để tiếp tục việc đăng ký"
 
 #: .\registration\forms.py:158
 msgid ""
 "Registration using free email addresses is prohibited. Please supply a "
 "different email address."
-msgstr ""
+msgstr "Hãy cung cấp một địa chỉ email khác"
 
 #: .\registration\models.py:196
 msgid "user"
-msgstr ""
+msgstr "Bí danh"
 
 #: .\registration\models.py:197
 msgid "activation key"
-msgstr ""
+msgstr "Mã số kích hoạt"
 
 #: .\registration\models.py:202
 msgid "registration profile"
-msgstr ""
+msgstr "Thông tin đăng ký"
 
 #: .\registration\models.py:203
 msgid "registration profiles"
-msgstr ""
+msgstr "Các thông tin đăng ký"
 
 #: .\templates\404.html.py:4 .\templates\404.html.py:8
 msgid "Page not found"
-msgstr ""
+msgstr "Website không tìm thấy"
 
 #: .\templates\404.html.py:10
 msgid "We're sorry, but the requested page could not be found."
-msgstr ""
+msgstr "Xin lỗi bạn. Chúng tôi không tìm thấy website mà bạn đã yêu cầu"
 
 #: .\templates\500.html.py:4 .\templates\admin_doc\bookmarklets.html.py:3
 #: .\templates\registration\password_change_done.html.py:4
@@ -94,25 +95,27 @@ msgstr ""
 #: .\templates\registration\password_reset_done.html.py:4
 #: .\templates\registration\password_reset_form.html.py:4
 msgid "Home"
-msgstr ""
+msgstr "Trang chủ"
 
 #: .\templates\500.html.py:4
 msgid "Server error"
-msgstr ""
+msgstr "Máy chủ bị lỗi"
 
 #: .\templates\500.html.py:6
 msgid "Server error (500)"
-msgstr ""
+msgstr "Máy chủ bị lỗi (500)"
 
 #: .\templates\500.html.py:9
 msgid "Server Error <em>(500)</em>"
-msgstr ""
+msgstr "Máy chủ bị lỗi (500)"
 
 #: .\templates\500.html.py:10
 msgid ""
 "There's been an error. It's been reported to the site administrators via e-"
 "mail and should be fixed shortly. Thanks for your patience."
 msgstr ""
+"Phát hiện thấy lỗi! Lỗi này đã được báo cáo tới Ban quản trị và sẽ được sửa "
+"nhanh chóng. Cảm ơn sự kiên nhẫn của bạn"
 
 #: .\templates\admin\base_site.html.py:4
 msgid "nghiencuusinh.org site admin"
@@ -181,107 +184,112 @@ msgstr ""
 
 #: .\templates\admin_doc\bookmarklets.html.py:28
 msgid "As above, but opens the admin page in a new window."
-msgstr ""
+msgstr "Như phía trên nhưng mở trang quản trị ở một cửa sổ mới"
 
 #: .\templates\registration\login.html.py:12
+#: .\templates\registration\registration_form.html.py:23
 msgid "Username:"
-msgstr ""
+msgstr "Bí danh:"
 
 #: .\templates\registration\login.html.py:15
+#: .\templates\registration\registration_form.html.py:47
 msgid "Password:"
-msgstr ""
+msgstr "Mật khẩu"
 
 #: .\templates\registration\login.html.py:19
 msgid ""
 "Have you <a href=\"/accounts/password_reset/\">forgotten your password</a>?"
-msgstr ""
+msgstr "<a href=\"/accounts/password_reset/\">Quên mật khẩu</a>?"
 
 #: .\templates\registration\login.html.py:22
 msgid "Log in"
-msgstr ""
+msgstr "Khắc nhập"
 
 #: .\templates\registration\password_change_done.html.py:3
 #: .\templates\registration\password_change_form.html.py:3
 msgid "Change password"
-msgstr ""
+msgstr "Thay đổi mật khẩu"
 
 #: .\templates\registration\password_change_done.html.py:3
 #: .\templates\registration\password_change_form.html.py:3
 msgid "Log out"
-msgstr ""
+msgstr "Khắc xuất"
 
 #: .\templates\registration\password_change_done.html.py:4
 #: .\templates\registration\password_change_form.html.py:4
 #: .\templates\registration\password_change_form.html.py:6
 #: .\templates\registration\password_change_form.html.py:10
 msgid "Password change"
-msgstr ""
+msgstr "Thay đổi mật khẩu"
 
 #: .\templates\registration\password_change_done.html.py:6
 #: .\templates\registration\password_change_done.html.py:10
 msgid "Password change successful"
-msgstr ""
+msgstr "Việc thay đổi mật khẩu của bạn đã thành công"
 
 #: .\templates\registration\password_change_done.html.py:12
 msgid "Your password was changed."
-msgstr ""
+msgstr "Mật khẩu của bạn đã được thay đổi"
 
 #: .\templates\registration\password_change_form.html.py:12
 msgid ""
 "Please enter your old password, for security's sake, and then enter your new "
 "password twice so we can verify you typed it in correctly."
 msgstr ""
+"Để tránh trường hợp mạo danh, xin bạn hãy điền mật khẩu cũ và sau đó điền "
+"mật khẩu mới hai lần"
 
 #: .\templates\registration\password_change_form.html.py:17
 msgid "Old password:"
-msgstr ""
+msgstr "Mật khẩu cũ:"
 
 #: .\templates\registration\password_change_form.html.py:19
 msgid "New password:"
-msgstr ""
+msgstr "Mật khẩu mới:"
 
 #: .\templates\registration\password_change_form.html.py:21
 msgid "Confirm password:"
-msgstr ""
+msgstr "Xác nhận lại mật khẩu mới:"
 
 #: .\templates\registration\password_change_form.html.py:23
 msgid "Change my password"
-msgstr ""
+msgstr "Thay đổi mật khẩu"
 
 #: .\templates\registration\password_reset_done.html.py:4
 #: .\templates\registration\password_reset_form.html.py:4
 #: .\templates\registration\password_reset_form.html.py:6
 #: .\templates\registration\password_reset_form.html.py:10
 msgid "Password reset"
-msgstr ""
+msgstr "Xác lập lại mật khẩu"
 
 #: .\templates\registration\password_reset_done.html.py:6
 #: .\templates\registration\password_reset_done.html.py:10
 msgid "Password reset successful"
-msgstr ""
+msgstr "Việc xác lập lại mật khẩu của bạn đã thành công"
 
 #: .\templates\registration\password_reset_done.html.py:12
 msgid ""
 "We've e-mailed a new password to the e-mail address you submitted. You "
 "should be receiving it shortly."
 msgstr ""
+"Chúng tôi vừa gửi một email tới địa chỉ email mà bạn cung cấp. Bạn sẽ nhanh "
+"chóng nhận được email này"
 
 #: .\templates\registration\password_reset_email.html.py:2
 msgid "You're receiving this e-mail because you requested a password reset"
-msgstr ""
+msgstr "Bạn nhận được email này vì bạn đã yêu cầu xác lập lại mật khẩu"
 
 #: .\templates\registration\password_reset_email.html.py:3
-#, python-format
 msgid "for your user account at %(site_name)s"
-msgstr ""
+msgstr "cho tài khoản của bạn tại nghiencuusinh.org"
 
 #: .\templates\registration\password_reset_email.html.py:5
 msgid "Please go to the following page and choose a new password:"
-msgstr ""
+msgstr "Hãy vào trang tiếp theo và chọn một mật khẩu mới"
 
 #: .\templates\registration\password_reset_email.html.py:9
 msgid "Your username, in case you've forgotten:"
-msgstr "Tên của bạn, nếu bạn quên:"
+msgstr "Bí danh của bạn (trong trường hợp bạn đã quên nó:"
 
 #: .\templates\registration\password_reset_email.html.py:11
 msgid "Thanks for using our site!"
@@ -296,14 +304,58 @@ msgid ""
 "Forgotten your password? Enter your e-mail address below, and we'll reset "
 "your password and e-mail the new one to you."
 msgstr ""
+"Bạn đã quên mật khẩu của mình? Hãy điền địa chỉ email của bạn vào phía dưới "
+"và chúng tôi sẽ cung cấp mật khẩu mới cho bạn và gửi nó tới địa chỉ email "
+"của bạn"
 
 #: .\templates\registration\password_reset_form.html.py:16
 msgid "E-mail address:"
-msgstr ""
+msgstr "Địa chỉ email:"
 
 #: .\templates\registration\password_reset_form.html.py:16
 msgid "Reset my password"
+msgstr "Xác lập lại mật khẩu của tôi"
+
+#: .\templates\registration\registration_form.html.py:4
+msgid "Create an account"
+msgstr "Tạo tài khoản"
+
+#: .\templates\registration\registration_form.html.py:16
+msgid "Please correct the errors below."
+msgstr "Xin vui lòng sửa chữa lỗi dưới đây"
+
+#: .\templates\registration\registration_form.html.py:35
+msgid "Email:"
 msgstr ""
 
-#~ msgid "The nghiencuusinh.net admin"
-#~ msgstr "-- Ban quản trị nghiencuusinh.net --"
+#: .\templates\registration\registration_form.html.py:58
+msgid "Password (again)"
+msgstr "Mật khẩu (điền lại)"
+
+#: .\templates\registration\registration_form.html.py:69
+msgid "Research Field:"
+msgstr "Ngành học"
+
+#: .\templates\registration\registration_form.html.py:74
+msgid "Please select your field of study"
+msgstr "Bạn hãy chọn ngành học"
+
+#: .\templates\registration\registration_form.html.py:80
+msgid "Can you supply?"
+msgstr "Bạn có muốn cung cấp bài báo?"
+
+#: .\templates\registration\registration_form.html.py:89
+msgid "term_of_service"
+msgstr "Điều kiện sử dụng dịch vụ"
+
+#: .\templates\registration\registration_form.html.py:122
+msgid "I accept"
+msgstr "Tôi đồng ý"
+
+#: .\templates\registration\registration_form.html.py:125
+msgid "You must accept the term"
+msgstr "Bạn phải đồng ý với những quy định này để tiếp tục việc đăng ký"
+
+#: .\templates\registration\registration_form.html.py:133
+msgid "Create the account"
+msgstr "Tạo tài khoản"
