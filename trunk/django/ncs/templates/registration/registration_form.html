@@ -1,9 +1,10 @@
 {% extends "ncs/base.html" %}
+{% load i18n %}
 
-{% block title %}Create an account{% endblock %}
+{% block title %}{% trans 'Create an account' %}{% endblock %}
 
 {% block content %}
-  <h3>Create an account</h3>
+  <h3>{% trans 'Create an account' %}</h3>
   <div align=center>
   <form action="." method="post">
     <table>
@@ -12,14 +13,14 @@
     </td>
     <td>
     {% if form.errors %}
-      <span class="error">Please correct the errors below.</span>
+      <span class="error">{% trans 'Please correct the errors below.' %}</span>
     {% endif %}
     </td>
     </tr>
     
     <tr>
     <td>
-    <label for="id_username">Username:</label> 
+    <label for="id_username">{% trans 'Username:' %}</label> 
     </td>
     <td>
     {{ form.username }}
@@ -31,7 +32,7 @@
 	</tr>
 	<tr>
 	<td>
-    <label for="id_email">Email:</label> 
+    <label for="id_email">{% trans 'Email:' %}</label> 
     </td>
     <td>
     {{ form.email }}
@@ -43,7 +44,7 @@
     </tr>
     <tr> 
 	<td>
-    <label for="id_password1">Password: </label>
+    <label for="id_password1">{% trans 'Password:' %} </label>
     </td>
     <td>
     {{ form.password1 }} 
@@ -54,7 +55,7 @@
 	</tr>
 	<tr>
 	<td>
-    <label for="id_password2">Password (again):</label> 
+    <label for="id_password2">{% trans 'Password (again)' %}</label> 
     </td>
     <td>
     {{ form.password2 }} 
@@ -65,18 +66,18 @@
     </tr>
     <tr>
     <td>
-    <label for="id_research_field">Research Field:</label> 
+    <label for="id_research_field">{% trans 'Research Field:' %}</label> 
     </td>
     <td>
     {{ form.research_field }} 
     {% if form.research_field.errors %}
-      <span class="error">Please select your field of study</span>
+      <span class="error">{% trans 'Please select your field of study' %}</span>
     {% endif %}
     </td>
 	</tr>
 	<tr> 
 	<td>   
-	<label for="id_is_supplier">Can you supply?</label>
+	<label for="id_is_supplier">{% trans 'Can you supply?' %}</label>
 	</td>
 	<td>
 	<label for="id_is_supplier_0"><input type="radio" id="id_is_supplier_0" value="1" name="is_supplier" onChange="alert('Người cung cấp sẽ giúp các user khác lấy tài liệu khi được yêu cầu.\r\nNếu bạn chỉ đơn thuần cần tài liệu, bạn nên chọn KHÔNG.')"/> Yes</label></li>
@@ -85,7 +86,7 @@
 	</tr>
 	<tr>
 	<td>
-	Term of Service
+	{% trans 'term_of_service' %}
 	</td>
 	<td>
 	<textarea name="txtTermOfUse" rows="10" cols="60" readonly="readonly">
@@ -118,10 +119,10 @@ Quyền lợi và trách nhiệm của người cung cấp:
     <td>
     </td>
 	<td>
-	<label for="id_tos">I accept</label> 
+	<label for="id_tos">{% trans 'I accept' %}</label> 
 	{{ form.tos }} 
     {% if form.tos.errors %}
-      <span class="error">You must accept the term</span>
+      <span class="error">{% trans 'You must accept the term' %}</span>
     {% endif %}
     </td>
     </tr>
@@ -129,7 +130,7 @@ Quyền lợi và trách nhiệm của người cung cấp:
     <td>
     </td>
     <td>
-    <input type="submit" value="Create the account" />
+    <input type="submit" value="{% trans 'Create the account' %}" />
     </td>
     </tr>
   </table>
