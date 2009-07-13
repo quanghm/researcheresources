@@ -252,6 +252,32 @@ def contact(request, toUserId):
     return render_to_response("papershare/contact_form.html",
                               { 'form': form }
                               )
+
+@login_required
+def contactPaper(request, requestId):
+    if request.method == 'POST' :
+        form = ContactUserForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            context = getCommonContext(request)
+            context.update({'message' : 'Your message has been sent'})
+            return render_to_response('ncs/simple_message.html', context)
+    else:        
+        paperRequest = Request.objects.get(id=requestId)
+       
+        subject = u"Bài báo của bạn " + paperRequest.paper.title 
+        content = u"Chào bạn " + paperRequest.requester.username + u",\n" \
+                + u"Đây là bài báo mà tôi tìm được giúp bạn \n" \
+                + u"Thân, \n" \
+                + request.user.username 
+                
+        form = ContactUserForm()
+        form.setInitial(request.user, 
+                        paperRequest.requester,
+                        subject, content)
+    return render_to_response("papershare/contact_form.html",
+                              { 'form': form }
+                              )
     
     
 def static(request, template = None):
