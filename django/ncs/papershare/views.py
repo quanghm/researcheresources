@@ -265,7 +265,7 @@ def contactPaper(request, requestId):
     else:        
         paperRequest = Request.objects.get(id=requestId)
        
-        subject = u"Bài báo của bạn " + paperRequest.paper.title 
+        subject = u"Bài báo của bạn :" + paperRequest.paper.title 
         content = u"Chào bạn " + paperRequest.requester.username + u",\n" \
                 + u"Đây là bài báo mà tôi tìm được giúp bạn \n" \
                 + u"Thân, \n" \
