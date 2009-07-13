@@ -111,14 +111,17 @@ class FeedbackForm(forms.Form):
         mail_admins(subject, content, fail_silently=False)
 
 class ContactUserForm(forms.Form):
-    email  = forms.EmailField(required=False)
-    to = forms.CharField(max_length=20)
+    email  = forms.EmailField(required=False)    
     subject = forms.CharField(max_length=50)
-    toEmail = forms.CharField(max_length=50, widget=forms.widgets.HiddenInput)
+    toEmail = forms.CharField(max_length=50)
+    #toEmail = forms.CharField(max_length=50, widget=forms.widgets.HiddenInput)
     content  = forms.CharField(widget=forms.Textarea)
     
-    def setInitial(self, fromUser, toUser):
-        self.initial={"email":fromUser.email,"to":toUser.username, "toEmail" : toUser.email}        
+    def setInitial(self, fromUser, toUser, subject="", content=""):
+        self.initial={"email":fromUser.email,                       
+                      "toEmail" : toUser.email,
+                      "subject": subject,
+                      "content" : content}        
         
     def save(self):
         "save contact forms"

@@ -10,10 +10,14 @@
     {% if form.errors %}
       <span class="error">{{ form.errors }}</span>
     {% endif %}
-		<table>
+	<table>
 		
-	  {{ form.as_table}}
-	  </table>
+	  	<tr><td><label for="id_email">From:</label></td><td>{{form.email}}</td></tr>
+		<tr><td><label for="id_to">To:</label></td><td>{{form.toEmail}}</td></tr>
+		<tr><td><label for="id_subject">Subject:</label></td><td>{{form.subject}}</td></tr>
+		<tr><td><label for="id_content">Content:</label></td><td>{{form.content}}</td></tr>
+	  
+	</table>
 	  <input type="submit" value="Gửi" />
 	  
 

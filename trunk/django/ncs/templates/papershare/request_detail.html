@@ -13,8 +13,7 @@
 		<tr>
 		     <td>Người yêu cầu</td>
 		     <td>
-		     {{request.requester}}
-		     (<a target="blank" href="/papershare/contact/{{ request.requester_id }}/">Liên hệ</a>)
+		     <a target="blank" href="/papershare/contact/{{ request.requester_id }}/">{{request.requester}}</a>
 		     </td>
 		</tr>
 		<tr>
@@ -60,8 +59,16 @@
 		     <input type="hidden" name="request_id" id="id_request_id" value="{{request.id}}"/>
 		     </td>
 		</tr>
+		<tr>
+	    	<td></td>
+	     	<td>
+	   		<a href="mailto:{{request.requester.email}}">Liên hệ bằng Outlook</a> <br>	     	
+	   		<a href="/papershare/contactPaper/{{request.id}}/">Liên hệ bằng Yahoo/Gmail...</a>
+	     	</td>
+		</tr>
 	</table>	
 	<input type="submit" name="buttonSupply" value="Gửi bài báo" />
+	
 	{% ifequal user request.supplier %}
 		{% ifequal request.status 6 %}
 		<input type="submit" name="buttonFail" value="Báo cáo thất bại" />
