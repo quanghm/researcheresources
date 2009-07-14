@@ -22,12 +22,14 @@
 	<div id="nav">
 		<ul>
 			<li><a class="menu" href="/papershare/">Trang chủ</a></li>
+			{% if not user %}
 			<li><a class="menu"  href="/accounts/register/">Đăng ký thành viên</a></li>
+			{% endif %}
 			<li><a class="menu"  href="http://nghiencuusinh.blogspot.com/">Blog</a></li>
 			<!-- <li><a class="menu"  href="/smf/">Forum</a></li>  -->
 			<li><a class="menu" href="/papershare/feedback/">Góp ý</a></li>
 			<li><a class="menu" href="/papershare/aboutus/">Về chúng tôi</a></li>
-			<li><a class="menu" href="/static/faq.html">FAQ</a></li>
+			<li><a class="menu" href="/static/FAQ.html">FAQ</a></li>
 		</ul>
 	</div>
 <div id="content">
