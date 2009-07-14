@@ -13,15 +13,15 @@ RESEARCH_FIELDS = (
         ('BIO', 'Biology'),
         ('CHEM', 'Chemistry'),
         ('CS', 'Computer Science'),
-        ('CEE', 'Civil and Environmental Engineering'),
-        ('ECON', 'Economics'),
+        #('CEE', 'Civil and Environmental Engineering'),
+        #('ECON', 'Economics'),
         ('EE', 'Electrical Engineering'),
-        ('ENG', 'Engineering - Other'),
-        ('ME', 'Mechanical Engineering'),
+        #('ENG', 'Engineering - Other'),
+        #('ME', 'Mechanical Engineering'),
         ('MATH', 'Mathematics'),
-        ('MSE', 'Material Science and Engineering'),
+        #('MSE', 'Material Science and Engineering'),
         ('PHYS', 'Physics'),
-        ('NONE', 'None of the above'),
+        #('NONE', 'None of the above'),
     )
 
 class Paper(models.Model):
