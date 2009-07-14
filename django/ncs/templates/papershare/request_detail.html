@@ -13,7 +13,7 @@
 		<tr>
 		     <td>Người yêu cầu</td>
 		     <td>
-		     <a target="blank" href="/papershare/contact/{{ request.requester_id }}/">{{request.requester}}</a>
+		     <a target="blank" href="/papershare/contactPaper/{{request.id}}/">{{request.requester}}</a>
 		     </td>
 		</tr>
 		<tr>
@@ -59,6 +59,7 @@
 		     <input type="hidden" name="request_id" id="id_request_id" value="{{request.id}}"/>
 		     </td>
 		</tr>
+		<!-- 
 		<tr>
 	    	<td></td>
 	     	<td>
@@ -66,6 +67,7 @@
 	   		<a href="/papershare/contactPaper/{{request.id}}/">Liên hệ bằng Yahoo/Gmail...</a>
 	     	</td>
 		</tr>
+		 -->
 	</table>	
 	<input type="submit" name="buttonSupply" value="Gửi bài báo" />
 	
