@@ -2,6 +2,7 @@ from django.db import models
 from django.db import models
 from django.contrib.auth.models import User
 from django.contrib import admin
+import datetime
 
 class Announcement(models.Model):
     content = models.TextField()
@@ -100,9 +101,13 @@ def paper_share_profile_callback(user, research_field, is_supplier):
 admin.site.register(Announcement)
 
 class ProfileAdmin(admin.ModelAdmin):
-    list_display = ('user', 'research_field','is_supplier')
+    list_display = ('user', 'research_field','is_supplier','daysSinceLastLogin')
     list_filter = ('is_supplier','research_field')
     search_fields = ['user__username',]
+    def daysSinceLastLogin(self, obj):
+        return (datetime.datetime.now() - obj.user.last_login ).days
+    daysSinceLastLogin.short_description = 'Days since last login'
+    daysSinceLastLogin.admin_order_field = 'user__last_login'
     
 admin.site.register(PaperShareProfile,ProfileAdmin)
 
