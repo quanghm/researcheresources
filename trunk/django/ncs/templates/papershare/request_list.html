@@ -10,12 +10,19 @@
 	    	{% if has_next %}<span class="next"><a href="{{ next }}" title="Next Page">Next &raquo</a></span>{% else %}<span class="next-na">Next &raquo</span>{% endif %}
 	    {% endif %}
 	    <h2>Danh sách các yêu cầu</h2>
+	    Theo ngành : <a href="/papershare/public_pool/BIO/">Biology</a> &nbsp
+	    <a href="/papershare/public_pool/CHEM/">Chemistry</a> &nbsp
+	    <a href="/papershare/public_pool/CS/">Computer Science</a> &nbsp
+	    <a href="/papershare/public_pool/EE/">Electrical Engineering</a> &nbsp
+	    <a href="/papershare/public_pool/MATH/">Mathematics</a> 
+	    <a href="/papershare/public_pool/PHYS/">Physics</a> &nbsp
+	    <a href="/papershare/public_pool/">All</a> <p>
 	    <table align='center' width='100%'>
 			<tr>
 				{# <th>STT</th> #}
 				<th>Tên bài báo</th>
 				<th>Tác giả</th>
-				<th>Tạp chí</th>
+				<th>Yêu cầu từ</th>
 		
 			</tr>
 			
@@ -27,8 +34,8 @@
 					<a href="/papershare/details/{{ request.id }}">{{ request.paper.title }}</a>
 					</td>
 					
-					<td>{{request.paper.author}}</td>
-					<td>{{request.paper.publisher}}</td>
+					<td align='center'>{{request.paper.author}}</td>
+					<td align='center'>{{request.date_requested|timesince}} ago</td>
 					
 				</tr>        
 			{% endfor %}
