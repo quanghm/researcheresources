@@ -104,11 +104,14 @@ def listRequestsToSupply(request,page=1):
 PUBLIC_POOL_ACCEPTED_STATUSES = [REQ_STA_PENDING ,REQ_STA_ASSIGNED, REQ_STA_REASSIGNED, REQ_STA_LASTCHANCE]
 
 @login_required
-def showPublicPool(request,page=1):
+def showPublicPool(request,field=None, page=1):
     try:
         #my_research_field = User.objects.get(pk = request.user.id).get_profile().research_field
         #queryset = Request.objects.filter(status__in = PUBLIC_POOL_ACCEPTED_STATUSES, paper__research_field__exact = my_research_field)
-        queryset = Request.objects.filter(status__in = PUBLIC_POOL_ACCEPTED_STATUSES)
+        if field is None:
+            queryset = Request.objects.filter(status__in = PUBLIC_POOL_ACCEPTED_STATUSES).order_by('date_requested')
+        else:
+            queryset = Request.objects.filter(status__in = PUBLIC_POOL_ACCEPTED_STATUSES, paper__research_field__exact = field).order_by('date_requested')
     except User.DoesNotExist:
         queryset = Request.objects.filter(status__in = PUBLIC_POOL_ACCEPTED_STATUSES)
     
