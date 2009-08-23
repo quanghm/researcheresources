@@ -133,6 +133,14 @@ class PaperAdmin(admin.ModelAdmin):
 
 admin.site.register(Paper,PaperAdmin)
 
+class UserAdmin(admin.ModelAdmin):
+    list_display = ('username', 'first_name', 'last_name', 'email','is_staff','last_login','date_joined')
+    list_filter = ('is_staff',)
+#    date_hierarchy = 'date_requested'
+    search_fields = ['username','email','first_name','last_name']
+
+#admin.site.register(User,UserAdmin)
+
 #This is to migrate old nghiencuusinh data to new
 class TblUser(models.Model):
     id = models.IntegerField(db_column='ID') # Field name made lowercase.
