@@ -11,10 +11,10 @@ urlpatterns = patterns('',
     # (r'^ncs/', include('ncs.foo.urls')),
 
     # Uncomment the next line to enable admin documentation:
-    (r'^admin/doc/', include('django.contrib.admindocs.urls')),
+    (r'^papershare/admin/doc/', include('django.contrib.admindocs.urls')),
     # Uncomment the next line for to enable the admin:
-    (r'^admin/(.*)', admin.site.root),
-    (r'^accounts/', include('ncs.registration.urls')),
+    (r'^papershare/admin/(.*)', admin.site.root),
+    (r'^papershare/accounts/', include('ncs.registration.urls')),
     (r'^papershare/', include('ncs.papershare.urls')),
     (r'^testing/', include('ncs.testing.urls')),
     #see how to deal with static files

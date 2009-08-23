@@ -108,6 +108,7 @@ class FeedbackForm(forms.Form):
         getLogger().info("Got feedback from %s, type = %s, content : %s" % (`email`, `type`, `content`) )
         print len(getChoiceValue(FEEDBACK_TYPE_CHOICES, type))
         subject = "[%s] from '%s'" % (getChoiceValue(FEEDBACK_TYPE_CHOICES, type), email)
+        from django.core.mail import mail_admins
         mail_admins(subject, content, fail_silently=False)
 
 class ContactUserForm(forms.Form):
