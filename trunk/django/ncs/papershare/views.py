@@ -10,7 +10,7 @@ from django.contrib.auth.decorators import login_required
 
 from models import Announcement, Request, PaperShareProfile
 from forms import PaperRequestForm, PaperUploadForm, FeedbackForm, ContactUserForm
-from ncs.settings import MEDIA_ROOT, MEDIA_URL
+from ncs.settings import SHARE_DIR_ROOT, SHARE_DIR_URL
 from ncs.utils.sendmail import sendmailFromTemplate
 from ncs.communication.emails import sendReminderEmailToRequester
 from ncs.papershare.models import REQUEST_STATUS_CHOICES, REQ_STA_PENDING ,REQ_STA_ASSIGNED, REQ_STA_REASSIGNED, REQ_STA_SUPPLIED, REQ_STA_THANKED, REQ_STA_FAILED, REQ_STA_LASTCHANCE
@@ -217,15 +217,15 @@ def handle_uploaded_file(f):
     #see tempfile note
     #http://utcc.utoronto.ca/~cks/space/blog/python/UsingTempfile
     stdizedFileName = re.sub("[\s]","_",f.name)
-    fd , fileName = mkstemp(stdizedFileName,"uploaded/",MEDIA_ROOT)
+    fd , fileName = mkstemp(stdizedFileName,"uploaded/",SHARE_DIR_ROOT)
     
     destination = os.fdopen(fd, "w+b")
     for chunk in f.chunks():
         destination.write(chunk)
     destination.close()
-    relFileName = fileName[len(MEDIA_ROOT)+1:]
+    relFileName = fileName[len(SHARE_DIR_ROOT)+1:]
     relFileName = re.sub("\\\\", "/", relFileName)
-    return MEDIA_URL + relFileName
+    return SHARE_DIR_URL + relFileName
 
 def feedback(request):
     if request.method == 'POST' :
