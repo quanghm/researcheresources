@@ -22,7 +22,11 @@ DATABASE_PORT = ''             # Set to empty string for default. Not used with 
 # Example: "/home/media/media.lawrence.com/"
 # make sure you create a folder "uploaded" and make it world-read-writable for uploaded files
 MEDIA_ROOT = 'C:/Users/KimCuong/Documents/Work/nghiencuusinh.org/trunk/django/ncs/media'
-FILE_UPLOAD_TEMP_DIR = MEDIA_ROOT + '/uploaded'
+SHARE_DIR_URL = 'http://nghiencuusinh.net/static/'
+SHARE_DIR_ROOT = '/production/nghiencuusinh.org/share'
+LOG_FILE = SHARE_DIR_ROOT + "/_ncs_logs/django.log"
+
+FILE_UPLOAD_TEMP_DIR = SHARE_DIR_ROOT + '/uploaded'
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash if there is a path component (optional in other cases).
