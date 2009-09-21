@@ -147,7 +147,7 @@ class LazySupplierForm(forms.Form):
     from_email = forms.CharField(max_length=50)
     content = forms.CharField(widget=forms.Textarea)
     #disable = forms.ChoiceField(choices = REQUEST_STATUS_CHOICES)
-    disable = forms.BooleanField()
+    disable = forms.BooleanField(required=False)
 
     def setInitial(self, supplier, admin, subject="", content=""):
         """ Thiet lap cac gia tri ban dau """

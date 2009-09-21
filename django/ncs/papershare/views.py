@@ -37,11 +37,14 @@ def getCommonContext(request):
     return context
     
 def get_my_stats(user):
+    try:
+        user_supplier = PaperShareProfile.objects.get(user=user).is_supplier
+    except PaperShareProfile.DoesNotExist:
+        user_supplier = None
     return {"requested" : Request.objects.filter(requester=user, status__in = PUBLIC_POOL_ACCEPTED_STATUSES).count(),
             "to_serve" : Request.objects.filter(supplier=user, status__in = PUBLIC_POOL_ACCEPTED_STATUSES).count(),
-            "is_supplier" : PaperShareProfile.objects.get(user=user).is_supplier
-            }
-            
+            "is_supplier" : user_supplier
+        }
 def mypage(request):
     #check if user logged in
     if not request.user.is_authenticated():
