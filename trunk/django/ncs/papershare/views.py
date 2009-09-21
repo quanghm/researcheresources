@@ -10,7 +10,7 @@ from django.contrib.auth.decorators import login_required
 
 from models import Announcement, Request, PaperShareProfile
 from forms import PaperRequestForm, PaperUploadForm, FeedbackForm, ContactUserForm
-#from ncs.settings import SHARE_DIR_ROOT, SHARE_DIR_URL
+from ncs.settings import SHARE_DIR_ROOT, SHARE_DIR_URL
 from ncs.utils.sendmail import sendmailFromTemplate
 from ncs.communication.emails import sendReminderEmailToRequester
 from ncs.papershare.models import REQUEST_STATUS_CHOICES, REQ_STA_PENDING ,REQ_STA_ASSIGNED, REQ_STA_REASSIGNED, REQ_STA_SUPPLIED, REQ_STA_THANKED, REQ_STA_FAILED, REQ_STA_LASTCHANCE
