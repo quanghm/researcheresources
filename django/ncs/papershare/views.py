@@ -10,7 +10,7 @@ from django.contrib.auth.decorators import login_required
 
 from models import Announcement, Request, PaperShareProfile
 from forms import PaperRequestForm, PaperUploadForm, FeedbackForm, ContactUserForm
-from ncs.settings import SHARE_DIR_ROOT, SHARE_DIR_URL
+#from ncs.settings import SHARE_DIR_ROOT, SHARE_DIR_URL
 from ncs.utils.sendmail import sendmailFromTemplate
 from ncs.communication.emails import sendReminderEmailToRequester
 from ncs.papershare.models import REQUEST_STATUS_CHOICES, REQ_STA_PENDING ,REQ_STA_ASSIGNED, REQ_STA_REASSIGNED, REQ_STA_SUPPLIED, REQ_STA_THANKED, REQ_STA_FAILED, REQ_STA_LASTCHANCE
@@ -286,3 +286,28 @@ def contactPaper(request, requestId):
 def static(request, template = None):
     if template is not None:
         return render_to_response(template)
+
+@login_required
+def lazysupplier(request, sid):
+    """
+    Le Dinh Thuong
+    navaroiss@gmail.com
+    """
+    if request.user.is_staff:
+        from ncs.papershare.forms import LazySupplierForm
+        supplier = User.objects.get(id=int(sid))
+        admin = request.user
+
+        if request.method == "POST":
+            form = LazySupplierForm(request.POST)
+            if form.is_valid():
+                form.alertSupplier(supplier)
+                pass
+        else:
+            form = LazySupplierForm()
+            form.setInitial(supplier, admin)
+
+        return render_to_response("papershare/lazy_supplier.html", {"form":form})
+    else:
+        return render_to_response("404.html")
+    

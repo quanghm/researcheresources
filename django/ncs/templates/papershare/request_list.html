@@ -23,7 +23,9 @@
 				<th>Tên bài báo</th>
 				<th>Tác giả</th>
 				<th>Yêu cầu từ</th>
-		
+                                {% if user.is_staff %}
+                                <th>Supplier</th>
+                                {% endif %}
 			</tr>
 			
 	        {% for request in request_list %}
@@ -36,7 +38,9 @@
 					
 					<td align='center'>{{request.paper.author}}</td>
 					<td align='center'>{{request.date_requested|timesince}} ago</td>
-					
+                                        {% if user.is_staff %}
+                                        <td><a href="/papershare/lazy-supplier/{{ request.supplier.id }}">{{ request.supplier.username }}</a></td>
+                                        {% endif %}
 				</tr>        
 			{% endfor %}
 			</table> 
