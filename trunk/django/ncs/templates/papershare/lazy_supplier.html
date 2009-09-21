@@ -7,10 +7,10 @@
 {% if form.errors %}
     <span class="error">{{ form.errors }}</span>
 {% else %}
-    {% if request.POST %}
-    <span class="success">Email da duoc goi toi supplier</span>
+    {% ifequal request.method "POST" %}
+    <span class="success">Đã thực hiện thành công.</span>
     <p><a href="/parpeshare/">Click vao day de tro ve trang chu.<a></p>
-    {% endif %}
+    {% endifequal %}
 {% endif %}
     
 <form action="." method="post" name="lazy-supplier">

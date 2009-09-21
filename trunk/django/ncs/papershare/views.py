@@ -307,7 +307,7 @@ def lazysupplier(request, sid):
             form = LazySupplierForm()
             form.setInitial(supplier, admin)
 
-        return render_to_response("papershare/lazy_supplier.html", {"form":form})
+        return render_to_response("papershare/lazy_supplier.html", {"form":form, "request":request})
     else:
         return render_to_response("404.html")
     
