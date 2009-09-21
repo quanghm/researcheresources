@@ -26,4 +26,5 @@ urlpatterns = patterns('',
     (r'^contactPaper/(?P<requestId>\d+)/$', "ncs.papershare.views.contactPaper"),
     (r'^aboutus/$', "ncs.papershare.views.static", { 'template' : 'ncs/about.html'} ),
 #    (r'^faq/$', "ncs.papershare.views.static", { 'template' : 'ncs/FAQ.html'} ),
+    (r'^lazy-supplier/(?P<sid>\d+)/$', "ncs.papershare.views.lazysupplier"),
 )
