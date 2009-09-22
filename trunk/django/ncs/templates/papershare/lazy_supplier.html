@@ -1,25 +1,27 @@
 {% extends "papershare/feedback_form.html" %}
 
-{% block title %} Nhac nho supplier luoi bien {% endblock %}
+{% block title %} Nhac nho supplier luoi bieng {% endblock %}
 
 {% block content %}
 
-{% if form.errors %}
-    <span class="error">{{ form.errors }}</span>
-{% else %}
-    {% ifequal request.method "POST" %}
-    <span class="success">Đã thực hiện thành công.</span>
-    <p><a href="/parpeshare/">Click vao day de tro ve trang chu.<a></p>
-    {% endifequal %}
+{% if not form.errors %}
+{% ifequal request.method "POST" %}
+<span class="success">Đã thực hiện thành công.</span>
+<p><a href="/papershare/">Click vao day de tro ve trang chu.<a></p>
+{% endifequal %}
 {% endif %}
-    
 <form action="." method="post" name="lazy-supplier">
-    <table>
-        {{ form.as_table }}
+<table>
+        <tbody>
+<tr><th><label for="id_supplier_email">Supplier:</label></th><td><input type="text" id="id_supplier_email" value="{{supplier_email}}" name="supplier_email"/></td></tr>
+<tr><th><label for="id_subject">Subject:</label></th><td>{% if form.subject.errors %}<span class="error">{{ form.subject.errors }}</span>{% endif %}<input type="text" maxlength="50" name="subject" id="id_subject"/></td></tr>
+<tr><th><label for="id_from_email">From:</label></th><td><input type="text" maxlength="50" value="{{request.user.email}}" name="from_email" id="id_from_email"/></td></tr>
+<tr><th><label for="id_content">Content:</label></th><td>{% if form.content.errors %}<span class="error">{{ form.content.errors }}</span>{% endif %}<textarea name="content" cols="40" rows="10" id="id_content"></textarea></td></tr>
+<tr><th><label for="id_disable">Disable:</label></th><td><input type="checkbox" id="id_disable" name="disable"/></td></tr>
         <tr>
-            <td><input type="submit" name="sm" value="Send"></td>
+            <td><input type="submit" value="Send" name="sm"/></td>
         </tr>
-    </table>
+    </tbody></table>
 </form>
 
 {% endblock content %}
