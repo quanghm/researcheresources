@@ -184,7 +184,7 @@ def uploadPaper(request):
                 
                 
                 
-                sendmailFromTemplate(toAddr=paperRequest.requester.email,
+                sendmailFromTemplate(fromAddr=request.user.email, toAddr=paperRequest.requester.email,
                                      subject=u"Good news ! your paper request has been processed",
                                      template_name="papershare/request_processed_email.html",
                                      context=context)            
