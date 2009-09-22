@@ -172,7 +172,7 @@ class LazySupplierForm(forms.Form):
         from_email = self.cleaned_data['from_email']
         supplier_email = self.cleaned_data['supplier_email']
         disable = (self.cleaned_data['disable'])
-        #send_mail(subject, content, from_email, [supplier_email])
+        send_mail(subject, content, from_email, [supplier_email])
 
         if disable is not None:
             """ Disable supplier """
