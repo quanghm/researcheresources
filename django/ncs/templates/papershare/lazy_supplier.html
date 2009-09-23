@@ -5,17 +5,34 @@
 {% block content %}
 
 {% if not form.errors %}
-{% ifequal request.method "POST" %}
-<span class="success">Đã thực hiện thành công.</span>
-<p><a href="/papershare/">Click vao day de tro ve trang chu.<a></p>
-{% endifequal %}
+    {% ifequal request.method "POST" %}
+    <span class="success">Đã thực hiện thành công.</span>
+    <p><a href="/papershare/">Click vao day de tro ve trang chu.<a></p>
+    {% endifequal %}
 {% endif %}
+<table>
+    <tr>
+        <td>
+            Ten truy cap: {{supplier.username}}
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Lan dang nhap gan day: {{supplier.last_login}}
+        </td>
+    </tr>
+    <tr>
+        <td>
+            So bai bao cung cap: {{number_supply}}
+        </td>
+    </tr>
+</table>
 <form action="." method="post" name="lazy-supplier">
 <table>
         <tbody>
-<tr><th><label for="id_supplier_email">Supplier:</label></th><td><input type="text" id="id_supplier_email" value="{{supplier_email}}" name="supplier_email"/></td></tr>
+<tr><th><label for="id_supplier_email">Supplier:</label></th><td><input type="text" id="id_supplier_email" value="{{supplier.email}}" name="supplier_email"/></td></tr>
 <tr><th><label for="id_subject">Subject:</label></th><td>{% if form.subject.errors %}<span class="error">{{ form.subject.errors }}</span>{% endif %}<input type="text" maxlength="50" name="subject" id="id_subject"/></td></tr>
-<tr><th><label for="id_from_email">From:</label></th><td><input type="text" maxlength="50" value="{{request.user.email}}" name="from_email" id="id_from_email"/></td></tr>
+<tr><th><label for="id_from_email">From:</label></th><td><input type="text" maxlength="50" value="{{user.email}}" name="from_email" id="id_from_email"/></td></tr>
 <tr><th><label for="id_content">Content:</label></th><td>{% if form.content.errors %}<span class="error">{{ form.content.errors }}</span>{% endif %}<textarea name="content" cols="40" rows="10" id="id_content"></textarea></td></tr>
 <tr><th><label for="id_disable">Disable:</label></th><td><input type="checkbox" id="id_disable" name="disable"/></td></tr>
         <tr>
