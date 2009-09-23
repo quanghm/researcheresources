@@ -301,18 +301,19 @@ def lazysupplier(request, sid):
         supplier = User.objects.get(id=int(sid))
         admin = request.user
 
-        if request.method == "POST":
-            form = LazySupplierForm(request.POST)
-            if form.is_valid():
-                form.alertSupplier(supplier)
-        else:
-            form = LazySupplierForm()
-            form.setInitial(supplier, admin)
-
         context = getCommonContext(request)
         context.update({"supplier":supplier})
         context.update({"form":form})
         context.update({"number_supply":Request.objects.filter(supplier=supplier.id).count()})
+
+        if request.method == "POST":
+            form = LazySupplierForm(request.POST)
+            if form.is_valid():
+                form.alertSupplier(supplier)
+            return render_to_response("papershare/lazy_supplier_complete.html", context)
+        else:
+            form = LazySupplierForm()
+            form.setInitial(supplier, admin)
         return render_to_response("papershare/lazy_supplier.html", context)
     else:
         return render_to_response("404.html")
