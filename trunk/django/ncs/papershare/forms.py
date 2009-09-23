@@ -146,7 +146,6 @@ class LazySupplierForm(forms.Form):
     subject = forms.CharField(max_length=50)
     from_email = forms.CharField(max_length=50)
     content = forms.CharField(widget=forms.Textarea)
-    #disable = forms.ChoiceField(choices = REQUEST_STATUS_CHOICES)
     disable = forms.BooleanField(required=False)
 
     def setInitial(self, supplier, admin, subject="", content=""):
@@ -165,22 +164,27 @@ class LazySupplierForm(forms.Form):
         - Chuyen cac request cho mot suppplier khac.
         """
         from django.core.mail import send_mail
-        from ncs.papershare.models import PaperShareProfile, REQ_STA_PENDING
+        from ncs.papershare.models import PaperShareProfile, REQ_STA_ASSIGNED, REQ_STA_FAILED, REQ_STA_LASTCHANCE
+        from django.db.models import Q
         
         subject = self.cleaned_data['subject']
         content = self.cleaned_data['content']
         from_email = self.cleaned_data['from_email']
         supplier_email = self.cleaned_data['supplier_email']
-        disable = (self.cleaned_data['disable'])
+        disable = self.cleaned_data['disable']
         send_mail(subject, content, from_email, [supplier_email])
 
-        if disable is not None:
+        if disable is True:
             """ Disable supplier """
             supplier_disable = PaperShareProfile.objects.get(user=supplier)
             supplier_disable.is_supplier = 0
             supplier_disable.save()
 
-            """ Chuyen cac request sang trang thai peding de asign cho supplier khac """
-            for request in Request.objects.filter(supplier=supplier.id):
-                request.status = 0
-                request.save() 
+            """
+            Chuyen cac request da giao cho nguoi nay sang trang thai peding de asign cho supplier khac.
+            Ngoai tru nhung request nao da duoc supplied, re-assigned va thanked.
+            """
+            Request.objects.filter(
+                Q(supplier=supplier.id),
+                Q(status__in=[REQ_STA_ASSIGNED, REQ_STA_FAILED, REQ_STA_LASTCHANCE])
+            ).update(status=0)
