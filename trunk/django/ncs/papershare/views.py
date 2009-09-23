@@ -303,13 +303,13 @@ def lazysupplier(request, sid):
 
         context = getCommonContext(request)
         context.update({"supplier":supplier})
-        context.update({"form":form})
         context.update({"number_supply":Request.objects.filter(supplier=supplier.id).count()})
 
         if request.method == "POST":
             form = LazySupplierForm(request.POST)
             if form.is_valid():
                 form.alertSupplier(supplier)
+            context.update({"form":form})
             return render_to_response("papershare/lazy_supplier_complete.html", context)
         else:
             form = LazySupplierForm()
