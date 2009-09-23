@@ -4,26 +4,25 @@
 
 {% block content %}
 
-{% if not form.errors %}
-    {% ifequal request.method "POST" %}
-    <span class="success">Đã thực hiện thành công.</span>
-    <p><a href="/papershare/">Click vao day de tro ve trang chu.<a></p>
-    {% endifequal %}
-{% endif %}
 <table>
     <tr>
         <td>
-            Ten truy cap: {{supplier.username}}
+            Tên truy cập: {{supplier.username}}
         </td>
     </tr>
     <tr>
         <td>
-            Lan dang nhap gan day: {{supplier.last_login}}
+            Lần đăng nhập gần đây: {{supplier.last_login}}
         </td>
     </tr>
     <tr>
         <td>
-            So bai bao cung cap: {{number_supply}}
+            Số bài báo đã cung cấp: {{number_supplied}}
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Số bài báo đang chờ: {{number_wait_supply}}
         </td>
     </tr>
 </table>

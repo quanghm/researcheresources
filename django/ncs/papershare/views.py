@@ -298,19 +298,29 @@ def lazysupplier(request, sid):
     """
     if request.user.is_staff:
         from ncs.papershare.forms import LazySupplierForm
+        from django.db.models import Q
         supplier = User.objects.get(id=int(sid))
         admin = request.user
 
         context = getCommonContext(request)
         context.update({"supplier":supplier})
-        context.update({"number_supply":Request.objects.filter(supplier=supplier.id).count()})
+        context.update({"number_supplied":Request.objects.filter(
+            Q(supplier=supplier.id),
+            Q(status__in = [REQ_STA_SUPPLIED, REQ_STA_THANKED])).count()
+        })
+        context.update({"number_wait_supply":Request.objects.filter(
+            Q(supplier=supplier.id),
+            Q(status=REQ_STA_PENDING)).count()
+        })
 
         if request.method == "POST":
             form = LazySupplierForm(request.POST)
+            context.update({"form":form})
             if form.is_valid():
                 form.alertSupplier(supplier)
-            context.update({"form":form})
-            return render_to_response("papershare/lazy_supplier_complete.html", context)
+                return render_to_response("papershare/lazy_supplier_complete.html", context)
+            else:
+                return render_to_response("papershare/lazy_supplier.html", context)
         else:
             form = LazySupplierForm()
             form.setInitial(supplier, admin)
