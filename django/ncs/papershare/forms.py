@@ -164,7 +164,7 @@ class LazySupplierForm(forms.Form):
         - Chuyen cac request cho mot suppplier khac.
         """
         from django.core.mail import send_mail
-        from ncs.papershare.models import PaperShareProfile, REQ_STA_ASSIGNED, REQ_STA_FAILED, REQ_STA_LASTCHANCE
+        from ncs.papershare.models import PaperShareProfile, REQ_STA_ASSIGNED, REQ_STA_REASSIGNED , REQ_STA_LASTCHANCE
         from django.db.models import Q
         
         subject = self.cleaned_data['subject']
@@ -186,5 +186,5 @@ class LazySupplierForm(forms.Form):
             """
             Request.objects.filter(
                 Q(supplier=supplier.id),
-                Q(status__in=[REQ_STA_ASSIGNED, REQ_STA_FAILED, REQ_STA_LASTCHANCE])
+                Q(status__in=[REQ_STA_ASSIGNED, REQ_STA_REASSIGNED, REQ_STA_LASTCHANCE])
             ).update(status=0)
