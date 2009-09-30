@@ -310,7 +310,7 @@ def lazysupplier(request, sid):
         })
         context.update({"number_wait_supply":Request.objects.filter(
             Q(supplier=supplier.id),
-            Q(status=REQ_STA_PENDING)).count()
+            Q(status__in=[REQ_STA_PENDING, REQ_STA_ASSIGNED, REQ_STA_REASSIGNED, REQ_STA_LASTCHANCE])).count()
         })
 
         if request.method == "POST":
