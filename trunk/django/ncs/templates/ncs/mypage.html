@@ -36,4 +36,22 @@ ____________________________<br />
 </ul>
 <p>
 {% endif %}
+
+{% if top_supplier %}
+<h4>Top 10 Supplier</h4>
+<table>
+{% for username, id, total in top_supplier %}
+    <tr><td>{{username}}</td><td>{{total}}</td></tr>
+{% endfor %}
+</table>
+{% endif %}
+{% if top_requester %}
+<h4>Top 10 Requester</h4>
+<table>
+{% for username, id, total in top_requester %}
+    <tr><td>{{username}}</td><td>{{total}}</td></tr>
+{% endfor %}
+</table>
+{% endif %}
+{{request.get_host}}
 {% endblock %}
