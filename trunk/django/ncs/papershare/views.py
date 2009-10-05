@@ -55,6 +55,39 @@ def mypage(request):
     context.update({
             "announcements" : announcements
             }).update(get_my_stats(request.user.id))
+
+    """
+    Danh sách:
+    - Top 10 supplier, dựa vào số lượng bài cung cấp.
+    - Top 10 requester, dựa vào số lần gửi yêu cầu.
+    """
+    from django.db import connection
+    cursor = connection.cursor()
+    top_number = 10
+    
+    cursor.execute("""
+        select u.username, u.id, count(r.supplier_id) as `total` from papershare_request r inner join auth_user u
+        on u.id = r.supplier_id
+        where r.status in (%d, %d)
+        group by r.supplier_id
+        order by total DESC
+        limit 0,%d
+    """ % (REQ_STA_SUPPLIED, REQ_STA_THANKED, top_number))
+    top_supplier = cursor.fetchall()
+    
+    cursor.execute("""
+        SELECT u.username, u.id, count(p.requester_id) as `total` FROM papershare_request p
+        left join auth_user u on u.id=p.requester_id
+        group by p.requester_id
+        order by `total` DESC
+        LIMIT 0,%d
+    """ % (top_number))
+    top_requester = cursor.fetchall()
+    
+    context.update({
+        "top_supplier": top_supplier,
+        "top_requester": top_requester,
+    })
     return render_to_response('ncs/mypage.html', context)
 
 @login_required
@@ -214,6 +247,41 @@ def uploadPaper(request):
                 message = u"Yêu cầu %d da duoc chuyen vao trash pool" % paperRequest.id
                 context.update({'message' : message}) 
                 return render_to_response('ncs/simple_message.html', context)
+        elif request.POST.get("buttonAssign") is not None:
+            """
+            Khi admin chuyen bai bao cho mot thanh vien khac thi:
+            - Neu user dc chuyen toi chua la supplier thi set thanh supplier va thong bao cho user biet.
+            - Thong bao cho supplier cu cua bai bao do duoc biet.
+            """
+            if request.POST['username'] != "":
+
+                user_name   = request.POST['username']
+                request_id = request.POST['request_id']
+                user_obj = User.objects.get(username=user_name)
+                if user_obj is not None:
+                    request_obj = Request.objects.get(pk=request_id)
+                    
+                    from django.core.mail import send_mail
+                    from django.conf import settings
+                    full_path="http://"+request.get_host()+request.get_full_path()
+                    send_mail("Ban nhan duoc email tu nghiencuusinh.org",
+                                "Co mot bai bao vua duoc chuyen sang cho ban"
+                                +"Click vao day de xem chi tiet "+ full_path,
+                                settings.DEFAULT_FROM_EMAIL,
+                                user.email)
+                    send_mail("Ban nhan duoc email tu nghiencuusinh.org",
+                                "Bai bao "+request_obj.paper.title+" vua duoc chuyen sang cho thanh vien "+user_obj.email
+                                +"Click vao day de xem chi tiet"+ full_path,
+                                settings.DEFAULT_FROM_EMAIL,
+                                request_obj.supplier.email)
+                    
+                    u_profile=PaperShareProfile.objects.get(user=user_obj)
+                    if u_profile.is_supplier is not True:
+                        u_profile.is_supplier=True
+                        u_profile.save()
+                    return render_to_response("ncs/simple_message.html", {"message":"Bài báo đã được chuyển cho các thành viên liên quan."})
+                else:
+                    return render_to_response("ncs/simple_message.html", {"message":"Không tìm thấy thành viên "+user_name})
     return HttpResponseRedirect("/papershare/")
 
 def handle_uploaded_file(f):
@@ -327,4 +395,3 @@ def lazysupplier(request, sid):
         return render_to_response("papershare/lazy_supplier.html", context)
     else:
         return render_to_response("404.html")
-    
