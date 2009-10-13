@@ -40,16 +40,16 @@ ____________________________<br />
 {% if top_supplier %}
 <h4>Top 10 Supplier</h4>
 <table>
-{% for username, id, total in top_supplier %}
-    <tr><td>{{username}}</td><td>{{total}}</td></tr>
+{% for item in top_supplier %}
+    <tr><td>{{item.user_name}}</td><td>{{item.total}}</td></tr>
 {% endfor %}
 </table>
 {% endif %}
 {% if top_requester %}
 <h4>Top 10 Requester</h4>
 <table>
-{% for username, id, total in top_requester %}
-    <tr><td>{{username}}</td><td>{{total}}</td></tr>
+{% for item in top_requester %}
+   <tr><td>{{item.user_name}}</td><td>{{item.total}}</td></tr>
 {% endfor %}
 </table>
 {% endif %}

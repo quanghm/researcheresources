@@ -23,7 +23,7 @@ class PaperRequestForm(forms.Form):
     page = forms.IntegerField(required = False)
     research_field = forms.ChoiceField(choices = RESEARCH_FIELDS)
     requester = forms.IntegerField() #this is the hidden field in the form
-    
+
     def clean_requester(self):
         """
         Validate that the requester id is actually a valid user by
@@ -34,13 +34,13 @@ class PaperRequestForm(forms.Form):
         except User.DoesNotExist:
             raise forms.ValidationError(_(u'This username is already taken. Please choose another.'))
         return user
-        
+
 
 
     def save(self):
         """
         Create a new paper object
-        Create a new request object with requester = "the created paper" 
+        Create a new request object with requester = "the created paper"
         """
         paper = Paper.objects.create(link=self.cleaned_data['link'],
                                     title=self.cleaned_data['title'],
@@ -50,18 +50,18 @@ class PaperRequestForm(forms.Form):
                                     issue = self.cleaned_data['issue'],
                                     page = self.cleaned_data['page'],
                                     research_field = self.cleaned_data['research_field'])
-        request = Request.objects.create(paper = paper, 
+        request = Request.objects.create(paper = paper,
                                          date_requested = datetime.now(),
                                          requester = self.cleaned_data['requester'],
                                          status = 0
                                          )
         return request
-    
-        
+
+
 class PaperUploadForm(forms.Form):
     file  = forms.FileField()
     request_id  = forms.IntegerField()
-    
+
     def clean_file(self):
         fileName = self.cleaned_data['file'].name
         pos = fileName.rfind(".")
@@ -69,25 +69,25 @@ class PaperUploadForm(forms.Form):
             return fileName
         else:
             raise forms.ValidationError('Only pdf,ps,doc file accepted')
-    
+
     def clean_request_id(self):
         if Request.objects.get(id=self.cleaned_data['request_id']) is None:
             raise forms.ValidationError('Request id is invalid')
         else:
             return self.cleaned_data['request_id']
-    
+
     def save(self, uploaded_url = None):
         "save uploaded file for request_id"
         if uploaded_url is None:
             return
-        
+
         request = Request.objects.get(id=self.cleaned_data['request_id'])
         request.paper.local_link = uploaded_url
         request.status = REQUEST_STATUS_CHOICES[3][0]
         request.paper.save()
         request.save()
-        
-        
+
+
 FEEDBACK_TYPE_CHOICES = (
         (3,u"Góp ý cho admin"),
         (1,u"Tôi gặp sự cố kỹ thuật"),
@@ -99,7 +99,7 @@ class FeedbackForm(forms.Form):
     email  = forms.EmailField(required=False)
     type = forms.ChoiceField(choices = FEEDBACK_TYPE_CHOICES)
     content  = forms.CharField(widget=forms.Textarea)
-    
+
     def save(self):
         "save feedback forms"
         email = self.cleaned_data['email']
@@ -112,30 +112,30 @@ class FeedbackForm(forms.Form):
         mail_admins(subject, content, fail_silently=False)
 
 class ContactUserForm(forms.Form):
-    email  = forms.EmailField(required=False)    
+    email  = forms.EmailField(required=False)
     subject = forms.CharField(max_length=50)
     toEmail = forms.CharField(max_length=50)
     #toEmail = forms.CharField(max_length=50, widget=forms.widgets.HiddenInput)
     content  = forms.CharField(widget=forms.Textarea)
-    
+
     def setInitial(self, fromUser, toUser, subject="", content=""):
-        self.initial={"email":fromUser.email,                       
+        self.initial={"email":fromUser.email,
                       "toEmail" : toUser.email,
                       "subject": subject,
-                      "content" : content}        
-        
+                      "content" : content}
+
     def save(self):
         "save contact forms"
         fromEmail = self.cleaned_data['email']
         toEmail = self.cleaned_data['toEmail']
         subject = self.cleaned_data['subject']
         content = self.cleaned_data['content']
-        getLogger().info("Got contact from %s, to = %s, content : %s" % (`fromEmail`, `toEmail`, `content`) )                
+        getLogger().info("Got contact from %s, to = %s, content : %s" % (`fromEmail`, `toEmail`, `content`) )
         from django.core.mail import send_mail
         send_mail(subject, content, fromEmail, [toEmail])
-    
-        
-                
+
+
+
 
 class LazySupplierForm(forms.Form):
     """
@@ -166,7 +166,7 @@ class LazySupplierForm(forms.Form):
         from django.core.mail import send_mail
         from ncs.papershare.models import PaperShareProfile, REQ_STA_ASSIGNED, REQ_STA_REASSIGNED , REQ_STA_LASTCHANCE
         from django.db.models import Q
-        
+
         subject = self.cleaned_data['subject']
         content = self.cleaned_data['content']
         from_email = self.cleaned_data['from_email']
