@@ -20,7 +20,6 @@ import os
 import re
 from tempfile import mkstemp
 
-
 def homepage(request):
     #if user is logged in, redirect to mypage
     if request.user.is_authenticated():
@@ -44,7 +43,7 @@ def get_my_stats(user):
     return {"requested" : Request.objects.filter(requester=user, status__in = PUBLIC_POOL_ACCEPTED_STATUSES).count(),
             "to_serve" : Request.objects.filter(supplier=user, status__in = PUBLIC_POOL_ACCEPTED_STATUSES).count(),
             "is_supplier" : user_supplier
-        }
+    }
 def mypage(request):
     #check if user logged in
     if not request.user.is_authenticated():
@@ -60,29 +59,29 @@ def mypage(request):
     Danh sách:
     - Top 10 supplier, dựa vào số lượng bài cung cấp.
     - Top 10 requester, dựa vào số lần gửi yêu cầu.
-    """
+    
     from django.db import connection
     cursor = connection.cursor()
     top_number = 10
-    
-    cursor.execute("""
-        select u.username, u.id, count(r.supplier_id) as `total` from papershare_request r inner join auth_user u
-        on u.id = r.supplier_id
-        where r.status in (%d, %d)
-        group by r.supplier_id
-        order by total DESC
-        limit 0,%d
-    """ % (REQ_STA_SUPPLIED, REQ_STA_THANKED, top_number))
+    cursor.execute("select u.username, u.id, count(r.supplier_id) as `total` from papershare_request r inner join auth_user u on u.id = r.supplier_id where r.status in (%d, %d) group by r.supplier_id order by total DESC limit 0,%d " % (REQ_STA_SUPPLIED, REQ_STA_THANKED, top_number))
     top_supplier = cursor.fetchall()
-    
-    cursor.execute("""
-        SELECT u.username, u.id, count(p.requester_id) as `total` FROM papershare_request p
-        left join auth_user u on u.id=p.requester_id
-        group by p.requester_id
-        order by `total` DESC
-        LIMIT 0,%d
-    """ % (top_number))
+    cursor.execute("SELECT u.username, u.id, count(p.requester_id) as `total` FROM papershare_request p left join auth_user u on u.id=p.requester_id group by p.requester_id order by `total` DESC LIMIT 0,%d " % (top_number))
     top_requester = cursor.fetchall()
+    
+    """
+
+    from django.db.models import Count
+    suppliers = Request.objects.filter(status__in=[REQ_STA_SUPPLIED, REQ_STA_THANKED]).values('supplier').annotate(total=Count('supplier')).order_by('-total')[0:10]
+    top_supplier=[]
+    for i in suppliers:
+        u=User.objects.get(pk=i['supplier'])
+        top_supplier.append({'user_name':u.username,'user_id':u.pk, 'total':i['total']})
+    
+    requesters = Request.objects.values('requester').annotate(total=Count('requester')).order_by('-total')[0:10]
+    top_requester=[]
+    for i in requesters:
+        u=User.objects.get(pk=i['requester'])
+        top_requester.append({'user_name':u.username,'user_id':u.pk, 'total':i['total']})
     
     context.update({
         "top_supplier": top_supplier,
@@ -104,7 +103,6 @@ def requestPaper(request):
             context.update({ "request" : new_request })
             return render_to_response("papershare/paper_request_complete.html", 
                                       context)
-                                      
     else:
         form = PaperRequestForm()
     
