@@ -143,9 +143,9 @@ def showPublicPool(request,field=None, page=1):
         #my_research_field = User.objects.get(pk = request.user.id).get_profile().research_field
         #queryset = Request.objects.filter(status__in = PUBLIC_POOL_ACCEPTED_STATUSES, paper__research_field__exact = my_research_field)
         if field is None:
-            queryset = Request.objects.filter(status__in = PUBLIC_POOL_ACCEPTED_STATUSES).order_by('-date_requested')
+            queryset = Request.objects.filter(status__in = PUBLIC_POOL_ACCEPTED_STATUSES).order_by('date_requested')
         else:
-            queryset = Request.objects.filter(status__in = PUBLIC_POOL_ACCEPTED_STATUSES, paper__research_field__exact = field).order_by('-date_requested')
+            queryset = Request.objects.filter(status__in = PUBLIC_POOL_ACCEPTED_STATUSES, paper__research_field__exact = field).order_by('date_requested')
     except User.DoesNotExist:
         queryset = Request.objects.filter(status__in = PUBLIC_POOL_ACCEPTED_STATUSES)
     
