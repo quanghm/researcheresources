@@ -266,12 +266,12 @@ def uploadPaper(request):
                                 "Co mot bai bao vua duoc chuyen sang cho ban"
                                 +"Click vao day de xem chi tiet "+ full_path,
                                 settings.DEFAULT_FROM_EMAIL,
-                                user_obj.email)
+                                (user_obj.email))
                     send_mail("Ban nhan duoc email tu nghiencuusinh.org",
                                 "Bai bao "+request_obj.paper.title+" vua duoc chuyen sang cho thanh vien "+user_obj.email
                                 +"Click vao day de xem chi tiet"+ full_path,
                                 settings.DEFAULT_FROM_EMAIL,
-                                request_obj.supplier.email)
+                                (request_obj.supplier.email))
                     
                     u_profile=PaperShareProfile.objects.get(user=user_obj)
                     if u_profile.is_supplier is not True:
