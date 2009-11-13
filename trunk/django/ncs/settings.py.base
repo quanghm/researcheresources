@@ -1,5 +1,6 @@
 # Django settings for ncs project.
-#
+# Vi co gi ma khong commit duoc? Dien cai dau!
+
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
