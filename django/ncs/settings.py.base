@@ -1,5 +1,5 @@
 # Django settings for ncs project.
-
+#
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
