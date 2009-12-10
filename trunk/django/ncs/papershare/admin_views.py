@@ -1,8 +1,7 @@
 #-*-coding:UTF-8-*-
-from django.contrib.admin.views.main import ChangeList
-
 import re, datetime
 
+from django.template import Context, Template
 from django.shortcuts import render_to_response, redirect
 from django.contrib.auth.models import User
 from django.contrib.admin.views.decorators import staff_member_required
@@ -137,7 +136,7 @@ def supplier_change_form(request, supplier_id):
     mail_content = Announcement.objects.filter(type='EM')
     for item in mail_content:
         pass 
-    default_mail_content = ''
+    default_mail_content = content = ''
     disable = False
     supplier_disable = PaperShareProfile.objects.get(user=supplier_id)
     
@@ -147,7 +146,12 @@ def supplier_change_form(request, supplier_id):
     if request.method == 'POST':
         announcement_id = int(request.POST['announcement_id'])
         default_mail_content = Announcement.objects.get(pk=announcement_id).content
-        content = default_mail_content + request.POST['content']
+        t = Template(default_mail_content)
+        c = Context({"num_exp_paper": 1})
+        try: 
+            content = t.render(c) + request.POST['content'] + '<br/>BQT.'
+        except:
+            content = t.render(c) + '<br/>BQT.'
         
         sendmailFromHtml(settings.DEFAULT_FROM_EMAIL ,supplier_disable.user.email, _('Bạn nhận được 1 email từ nghiencuusinh.org'),content)
         
@@ -158,5 +162,5 @@ def supplier_change_form(request, supplier_id):
         if disable:
             disable_supplier([supplier_id])
     vars_assign = {'mail_content':mail_content,
-                   'method':disable}
+                   'method':content}
     return render_to_response(template_name, vars_assign, RequestContext(request))

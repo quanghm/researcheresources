@@ -9,6 +9,8 @@ from django.contrib import admin
 from django.utils.translation import ugettext, ugettext_lazy as _
 from django.shortcuts import render_to_response
 
+def strip_html_tags(text):
+    return re.sub(r'<[^>]*?>', '', text)
 
 ################################################
 # Thu vien javascript, css chung cho papershare 
@@ -35,12 +37,11 @@ class Announcement(models.Model):
     date = models.DateField()
     type = models.CharField(max_length=4, choices = ANNOUN_TYPES, default='AN')
     def __unicode__(self):
-        return "Announcement : %s" % self.content[:45]
+        return "Announcement : %s" % strip_html_tags(self.content)[:45]
 
 class AnnouncementAdmin(admin.ModelAdmin):
     def clean_content(self):
-        p = re.compile(r'<.*?>')
-        return p.sub('', self.content)[:45]
+        return strip_html_tags(self.content)[:45]
 
     list_display = (clean_content, 'type', 'date')
     list_filter = ('type', 'date')
