@@ -101,3 +101,7 @@ span.error, dd.error , p.error {
 }
 */
 -->
+
+.help{
+	cursor: help;
+}

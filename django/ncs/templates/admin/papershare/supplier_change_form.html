@@ -36,7 +36,7 @@
 	              <label class="required" for="id_type">Mail:</label>
 	              <select id="id_type" name="announcement_id">
 	                {% for mail in mail_content %}
-					<option value="{{mail.id}}">{{mail.content|striptags|truncatewords:20}}...</option>
+					<option value="{{mail.id}}">{{mail.content|striptags|truncatewords:20|safe}}...</option>
 					{% endfor %}
 					</select>
 	      </div>
