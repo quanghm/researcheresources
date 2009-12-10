@@ -139,6 +139,7 @@ def supplier_change_form(request, supplier_id):
     default_mail_content = content = ''
     disable = False
     supplier_disable = PaperShareProfile.objects.get(user=supplier_id)
+    a2 = 0
     
     if supplier_disable.is_supplier == 0:
         return redirect('/papershare/admin/papershare/supplier')
@@ -147,7 +148,20 @@ def supplier_change_form(request, supplier_id):
         announcement_id = int(request.POST['announcement_id'])
         default_mail_content = Announcement.objects.get(pk=announcement_id).content
         t = Template(default_mail_content)
-        c = Context({"num_exp_paper": 1})
+        a2 = 0
+        try:
+            disable = request.POST['disable']
+        except:
+            disable = False
+        if disable == True:
+            disable_supplier([supplier_id])
+        else:
+            for raw in Request.objects.filter(Q(supplier=supplier_id)):
+                if raw.date_supplied=='':
+                    if (datetime.datetime.now()-raw.date_assigned).days > 2:
+                        a2 = a2+1
+            
+        c = Context({"num_exp_paper": a2})
         try: 
             content = t.render(c) + request.POST['content'] + '<br/>BQT.'
         except:
@@ -155,12 +169,6 @@ def supplier_change_form(request, supplier_id):
         
         sendmailFromHtml(settings.DEFAULT_FROM_EMAIL ,supplier_disable.user.email, _('Bạn nhận được 1 email từ nghiencuusinh.org'),content)
         
-        try:
-            disable = request.POST['disable']
-        except:
-            disable = False
-        if disable:
-            disable_supplier([supplier_id])
     vars_assign = {'mail_content':mail_content,
-                   'method':content}
+                   'content':content}
     return render_to_response(template_name, vars_assign, RequestContext(request))

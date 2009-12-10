@@ -54,6 +54,14 @@
 	              <input type="checkbox" name="disable" id="id_disable"/>
 	      </div>
       </div>
+      {% if content %}
+      <div class="form-row type  ">
+	      <div>
+	              <label class="required" for="id_disable">Email đã được gửi đi:</label>
+			      <textarea class="vLargeTextField" name="content" cols="40" rows="10" id="id_content">{{content|safe}}</textarea>
+	      </div>
+      </div>
+      {% endif %}
 </fieldset>
 <div class="submit-row">
 <input type="submit" name="_save" class="default" value="Send"/>
