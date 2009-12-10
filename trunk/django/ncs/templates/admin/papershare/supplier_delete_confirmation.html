@@ -1,0 +1,32 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+
+{% block title %}Disable supplier(s){% endblock %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+     <a href="../../../">Home</a> &rsaquo;
+     <a href="../../">Papershare</a> &rsaquo; 
+     <a href="../">Supplier</a> &rsaquo;
+     Disable
+</div>
+{% endblock %}
+
+{% block content %}
+    <h1>Are you sure?</h1>
+    <p>Are you sure you want to disable the selected supplier objects?:</p>
+	{% for item in supplier %}
+	    <ul>	<li>Paper share profile: Profile for <a href="{{item.user.id}}/">{{item.user.username}}</a></li></ul>
+	{% endfor %}		    
+    
+    <form action="" method="post">
+	    <div>
+			{% for item in supplier %}
+			<input name="_selected_action" value="{{item.user.id}}" type="hidden">
+			{% endfor %}		    
+		    <input name="action" value="delete_selected" type="hidden">
+		    <input name="post" value="yes" type="hidden">
+		    <input value="Yes, I'm sure" type="submit">
+	    </div>
+    </form>
+{% endblock %}

@@ -9,6 +9,7 @@ URLConf to include this URLConf for any URL beginning with
 
 from django.conf.urls.defaults import *
 from models import Paper, Request
+from django.views.generic.simple import redirect_to
 
 urlpatterns = patterns('',
     (r'^$', "ncs.papershare.views.homepage"),
@@ -27,4 +28,8 @@ urlpatterns = patterns('',
     (r'^aboutus/$', "ncs.papershare.views.static", { 'template' : 'ncs/about.html'} ),
 #    (r'^faq/$', "ncs.papershare.views.static", { 'template' : 'ncs/FAQ.html'} ),
     (r'^lazy-supplier/(?P<sid>\d+)/$', "ncs.papershare.views.lazysupplier"),
+    
+    (r'^admin/papershare/supplier/$', 'ncs.papershare.admin_views.supplier_change_list'),
+    (r'^admin/papershare/supplier/(?P<supplier_id>[0-9]+)/$', 'ncs.papershare.admin_views.supplier_change_form'),
+    (r'^admin/papershare/supplier/add/$', redirect_to, {'url':'/papershare/admin/papershare/papershareprofile/'}),
 )

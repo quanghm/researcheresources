@@ -1,0 +1,63 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_modify adminmedia %}
+
+{% block title %} Alert/Disable {% endblock %}
+{% block extrahead %}{{ block.super }}
+<script type="text/javascript" src="../../../jsi18n/"></script>
+<script type="text/javascript" src="/media/js/tiny_mce/tiny_mce.js"></script>
+<script type="text/javascript" src="/media/js/tiny_mce/textarea.js"></script>
+{{ media }}
+{% endblock %}
+
+{% block extrastyle %}{{ block.super }}<link rel="stylesheet" type="text/css" href="{% admin_media_prefix %}css/forms.css" />{% endblock %}
+
+{% block coltype %}colM{% endblock %}
+
+{% block bodyclass %}change-form{% endblock %}
+
+  {% block breadcrumbs %}
+    <div class="breadcrumbs">
+      <a href="../../../">Home</a>
+       &rsaquo; 
+       <a href="../../">Papershare</a>
+      &rsaquo; 
+      Supplier manager
+    </div>
+  {% endblock %}
+
+{% block content %}
+<div id="content-main">
+<form id="announcement_form" method="post" action="" enctype="multipart/form-data">
+<div>
+  <fieldset class="module aligned ">
+
+	<div class="form-row type  ">
+	      <div>
+	              <label class="required" for="id_type">Mail:</label>
+	              <select id="id_type" name="announcement_id">
+	                {% for mail in mail_content %}
+					<option value="{{mail.id}}">{{mail.content|striptags|truncatewords:20}}...</option>
+					{% endfor %}
+					</select>
+	      </div>
+	</div>
+      <div class="form-row content  ">
+	      <div>
+	              <label class="required" for="id_content">Content:</label>
+	              <textarea class="vLargeTextField" name="content" cols="40" rows="10" id="id_content"></textarea>
+	              
+	      </div>
+      </div>
+      <div class="form-row type  ">
+	      <div>
+	              <label class="required" for="id_disable">Disable:</label>
+	              <input type="checkbox" name="disable" id="id_disable"/>
+	      </div>
+      </div>
+</fieldset>
+<div class="submit-row">
+<input type="submit" name="_save" class="default" value="Send"/>
+</div>
+</div>
+</form></div>
+{% endblock %}

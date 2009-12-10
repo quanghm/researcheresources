@@ -1,12 +1,17 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 
+from datetime import datetime
+
 from django import forms
 from django.contrib.auth.models import User
 from django.conf import settings
+from django.utils.translation import ugettext, ugettext_lazy as _
+from django.core.mail import send_mail
+from django.db.models import Q
 
-from models import Paper, Request, RESEARCH_FIELDS, REQUEST_STATUS_CHOICES
-from datetime import datetime
+from ncs.papershare.models import PaperShareProfile, REQ_STA_ASSIGNED, REQ_STA_REASSIGNED , REQ_STA_LASTCHANCE
+from ncs.papershare.models import Paper, Request, RESEARCH_FIELDS, REQUEST_STATUS_CHOICES
 from ncs.utils.logger import getLogger
 from ncs.utils.misc import getChoiceValue
 
@@ -34,7 +39,6 @@ class PaperRequestForm(forms.Form):
         except User.DoesNotExist:
             raise forms.ValidationError(_(u'This username is already taken. Please choose another.'))
         return user
-
 
 
     def save(self):
@@ -68,11 +72,11 @@ class PaperUploadForm(forms.Form):
         if pos != -1 and fileName[pos+1:].lower() in ["pdf","ps","doc"]:
             return fileName
         else:
-            raise forms.ValidationError('Only pdf,ps,doc file accepted')
+            raise forms.ValidationError(_('Only pdf,ps,doc file accepted'))
 
     def clean_request_id(self):
         if Request.objects.get(id=self.cleaned_data['request_id']) is None:
-            raise forms.ValidationError('Request id is invalid')
+            raise forms.ValidationError(_('Request id is invalid'))
         else:
             return self.cleaned_data['request_id']
 
@@ -89,10 +93,10 @@ class PaperUploadForm(forms.Form):
 
 
 FEEDBACK_TYPE_CHOICES = (
-        (3,u"Góp ý cho admin"),
-        (1,u"Tôi gặp sự cố kỹ thuật"),
-        (2,u"Tôi gặp khó khăn khi sử dụng website"),
-        (4,u"Các góp ý khác"),
+        (3,_(u"Góp ý cho admin")),
+        (1,_(u"Tôi gặp sự cố kỹ thuật")),
+        (2,_(u"Tôi gặp khó khăn khi sử dụng website")),
+        (4,_(u"Các góp ý khác")),
     )
 
 class FeedbackForm(forms.Form):
@@ -134,9 +138,6 @@ class ContactUserForm(forms.Form):
         from django.core.mail import send_mail
         send_mail(subject, content, fromEmail, [toEmail])
 
-
-
-
 class LazySupplierForm(forms.Form):
     """
     Le Dinh Thuong
@@ -163,10 +164,6 @@ class LazySupplierForm(forms.Form):
         - Disable supplier.
         - Chuyen cac request cho mot suppplier khac.
         """
-        from django.core.mail import send_mail
-        from ncs.papershare.models import PaperShareProfile, REQ_STA_ASSIGNED, REQ_STA_REASSIGNED , REQ_STA_LASTCHANCE
-        from django.db.models import Q
-
         subject = self.cleaned_data['subject']
         content = self.cleaned_data['content']
         from_email = self.cleaned_data['from_email']

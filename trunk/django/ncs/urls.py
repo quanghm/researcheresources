@@ -10,15 +10,20 @@ urlpatterns = patterns('',
     # Example:
     # (r'^ncs/', include('ncs.foo.urls')),
 
-    # Uncomment the next line to enable admin documentation:
-    (r'^papershare/admin/doc/', include('django.contrib.admindocs.urls')),
-    # Uncomment the next line for to enable the admin:
-    (r'^papershare/admin/(.*)', admin.site.root),
     (r'^papershare/accounts/', include('ncs.registration.urls')),
     (r'^papershare/', include('ncs.papershare.urls')),
-    (r'^testing/', include('ncs.testing.urls')),
     #see how to deal with static files
     #http://oebfare.com/blog/2007/dec/31/django-and-static-files/
     (r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
 
+    # Uncomment the next line to enable admin documentation:
+    (r'^papershare/admin/doc/', include('django.contrib.admindocs.urls')),
+    # Uncomment the next line for to enable the admin:
+    (r'^papershare/admin/(.*)', admin.site.root),
 )
+
+if settings.DEBUG is True:
+    urlpatterns += patterns('',
+        (r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT, 'show_indexes':True}),
+    )
+    
