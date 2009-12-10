@@ -1,0 +1,164 @@
+{% extends "admin/base_site.html" %}
+{% load adminmedia %}
+{% block title %} Select supplier to view {% endblock %}
+{% block extrastyle %}
+<link rel="stylesheet" type="text/css" href="{% admin_media_prefix %}css/changelists.css" />
+<style>#changelist table thead th:first-child {width: inherit}</style>
+<script type="text/javascript" src="{% admin_media_prefix %}js/core.js"></script>
+<script type="text/javascript" src="{% admin_media_prefix %}js/admin/RelatedObjectLookups.js"></script>
+<script type="text/javascript" src="{% admin_media_prefix %}js/getElementsBySelector.js"></script>
+<script type="text/javascript" src="{% admin_media_prefix %}js/actions.js"></script>
+<!--[if lte IE 7]><link rel="stylesheet" type="text/css" href="{% admin_media_prefix %}css/ie.css" /><![endif]-->
+{% endblock %}
+
+{% block bodyclass %}change-list{% endblock %}
+
+{% block coltype %}flex{% endblock %}
+
+{% if not is_popup %}
+  {% block breadcrumbs %}
+    <div class="breadcrumbs">
+      <a href="../../">Home</a>
+       &rsaquo; 
+       <a href="../">Papershare</a>
+      &rsaquo; 
+      Supplier manager
+    </div>
+  {% endblock %}
+{% endif %}
+
+{% block content %}
+<h1>Select supplier to change</h1>
+<div id="content-main">
+        <ul class="object-tools">
+          <li>
+            <a href="/papershare/admin/papershare/papershareprofile/add" class="addlink">
+              Add supplier
+            </a>
+          </li>
+        </ul>
+    <div class="module filtered" id="changelist">
+          <div id="changelist-filter">
+            <h2>Filter</h2>
+<h3> By research_field </h3>
+<ul>
+    <li class="selected">
+    <a href="?">All</a></li>
+	{% for item_key,item_value in filters %}
+    <li>
+    <a href="?research_field__exact={{item_key}}">{{item_value}}</a>
+    </li>
+	{% endfor %}
+</ul>
+          </div>
+        
+      <form action="" method="post">
+      <div style="display: none;"></div>
+      
+	<div class="actions">
+	    <label>Action: <select name="action">
+		<option value="" selected="selected">---------</option>
+		<option value="delete_selected">Disable selected supplier</option>
+		</select></label>
+	    <button type="submit" class="button" title="Run the selected action" name="index" value="0">Go</button>
+	</div>
+
+	<table cellspacing="0">
+		<thead>
+			<tr>
+				<th><input style="display: inline;" id="action-toggle" type="checkbox"></th>
+				<th>Username</th>
+				<th>Research field</th>
+				<th>Last login</th>
+				<th>Date join</th>
+				<th title="Tổng số bài báo được giao">A</th>
+				<th title="Số bài báo cung cấp trễ">B</th>
+				<th title="Số bài chuyển trễ">C</th>
+				<th title="Số bài báo hiện đang trễ / Số ngày trễ">D</th>
+				<th title="Số bài báo được cung cấp bởi thành viên khác">E</th>
+				<th title="Số bài báo đã cung cấp">F</th>
+				<th title="Số bài báo hiện đang chờ">G</th>
+				<th title="Số bài báo đã chuyển cho người khác">H</th>
+			</tr>
+		</thead>
+	<tbody>
+	
+	{% for item in supplier_list %}
+	<tr class="{% cycle 'row1' 'row2' %}">
+		<td>
+			<input class="action-select" value="{{item.user.id}}" name="_selected_action" type="checkbox"></td>
+		<td>
+			<a href="{{item.user.id}}/">{{item.user.username}}</a></td>
+		<td>
+			{{item.research_field}}</td>
+		<td>
+			{{item.user.last_login}} day(s) ago</td>
+		<td>
+			{{item.user.date_joined|date}}</td>
+		<td title="Tổng số bài báo được giao: {{item.paper_supply}}">
+			{{item.paper_supply}}</td>
+		<td title="Số bài báo cung cấp trễ: {{item.late_supply}}">
+			{{item.late_supply}}</td>
+		<td title="Số bài chuyển trễ: {{item.paper_late_passed}}">
+			{{item.paper_late_passed}}</td>
+		<td title="Số bài báo hiện đang trễ: {{item.paper_late_now}} {% ifnotequal item.days_late 0 %} / {{item.days_late}} day(s) {% endifnotequal %}">
+			{{item.paper_late_now}} {% ifnotequal item.days_late 0 %} / {{item.days_late}} day(s) {% endifnotequal %}</td>
+		<td title="Số bài báo được cung cấp bởi thành viên khác: {{item.paper_someone_supplied}}">
+			{{item.paper_someone_supplied}}</td>
+		<td title="Số bài báo đã cung cấp: {{item.paper_supplied}}">
+			{{item.paper_supplied}}</td>
+		<td title="Số bài báo hiện đang chờ: {{item.paper_waiting}}">
+			{{item.paper_waiting}}</td>
+		<td title="Số bài báo đã chuyển cho người khác: {{item.paper_passed}}">
+			{{item.paper_passed}}</td>
+		</tr>
+	{% endfor %}
+	
+	</tbody>
+	</table>
+
+
+<p class="paginator">
+{% ifnotequal paging.count 0 %}
+	{% for item in pages %}
+		{% ifequal item current_page %}
+			{% ifnotequal paging.num_pages 1 %}
+				<span class="this-page">{{item}}</span>
+			{% endifnotequal %} 	
+		{% else %}
+			<a href="{% if request.research_field__exact %}?{{request_query}}&{% else %}?{% endif %}p={{item}}">{{item}}</a>
+		{% endifequal %}
+	{% endfor %}
+	{{paging.count}} items
+{% endifnotequal %} 
+</p>
+   </form>
+    </div>
+  <table width="100%" id="#ct">
+  	<tr>
+  		<td align="left">A: Tổng số bài báo được giao</td>
+  	</tr>
+  	<tr>
+  		<td  align="left">B: Số bài báo cung cấp trễ</td>
+  	</tr>
+  	<tr>
+  		<td  align="left">C: Số bài chuyển trễ</td>
+  	</tr>
+  	<tr>
+  		<td  align="left">D: Số bài báo hiện đang trễ / Số ngày trễ</td>
+  	</tr>
+  	<tr>
+  		<td  align="left">E: Số bài báo được cung cấp bởi thành viên khác</td>
+  	</tr>
+  	<tr>
+  		<td  align="left">F: Số bài báo đã cung cấp</td>
+  	</tr>
+  	<tr>
+  		<td  align="left">G: Số bài báo hiện đang chờ</td>
+  	</tr>
+  	<tr>
+  		<td  align="left">H: Số bài báo đã chuyển cho người khác</td>
+  	</tr>
+  </table>
+    
+{% endblock %}

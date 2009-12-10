@@ -1,31 +1,38 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 
+import datetime,os,re
+from tempfile import mkstemp
+
 from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.models import User
 from django.template import RequestContext
 from django.views.generic import list_detail
 from django.contrib.auth.decorators import login_required
+from django.core.mail import send_mail
+from django.conf import settings
+from django.db.models import Count
+from django.db.models import Q
+from django.utils.translation import ugettext, ugettext_lazy as _
 
-from models import Announcement, Request, PaperShareProfile
-from forms import PaperRequestForm, PaperUploadForm, FeedbackForm, ContactUserForm
+from ncs.papershare.models import Announcement, Request, PaperShareProfile, \
+REQ_STA_PENDING ,REQ_STA_ASSIGNED, REQ_STA_REASSIGNED, \
+REQ_STA_SUPPLIED, REQ_STA_THANKED, REQ_STA_FAILED, REQ_STA_LASTCHANCE
+from ncs.papershare.forms import LazySupplierForm, PaperRequestForm, \
+PaperUploadForm, FeedbackForm, ContactUserForm
+
 from ncs.settings import SHARE_DIR_ROOT, SHARE_DIR_URL
 from ncs.utils.sendmail import sendmailFromTemplate
-from ncs.communication.emails import sendReminderEmailToRequester
-from ncs.papershare.models import REQUEST_STATUS_CHOICES, REQ_STA_PENDING ,REQ_STA_ASSIGNED, REQ_STA_REASSIGNED, REQ_STA_SUPPLIED, REQ_STA_THANKED, REQ_STA_FAILED, REQ_STA_LASTCHANCE
+from ncs.communication.emails import sendReminderEmailToRequester 
 
-import datetime
-import os
-import re
-from tempfile import mkstemp
 
 def homepage(request):
     #if user is logged in, redirect to mypage
     if request.user.is_authenticated():
         return HttpResponseRedirect("/papershare/mine/")
     
-    announcements = Announcement.objects.order_by('-date')
+    announcements = Announcement.objects.filter(type='AN').order_by('-date')
     context = {"announcements" : announcements}
     return render_to_response('ncs/homepage.html', context)
 
@@ -49,7 +56,7 @@ def mypage(request):
     if not request.user.is_authenticated():
         return HttpResponseRedirect("/papershare/")
     
-    announcements = Announcement.objects.order_by('-date')
+    announcements = Announcement.objects.filter(type='AN').order_by('-date')
     context = RequestContext(request)
     context.update({
             "announcements" : announcements
@@ -59,7 +66,6 @@ def mypage(request):
     Danh sách:
     - Top 10 supplier, dựa vào số lượng bài cung cấp.
     - Top 10 requester, dựa vào số lần gửi yêu cầu.
-    
     from django.db import connection
     cursor = connection.cursor()
     top_number = 10
@@ -67,10 +73,8 @@ def mypage(request):
     top_supplier = cursor.fetchall()
     cursor.execute("SELECT u.username, u.id, count(p.requester_id) as `total` FROM papershare_request p left join auth_user u on u.id=p.requester_id group by p.requester_id order by `total` DESC LIMIT 0,%d " % (top_number))
     top_requester = cursor.fetchall()
-    
     """
 
-    from django.db.models import Count
     suppliers = Request.objects.filter(status__in=[REQ_STA_SUPPLIED, REQ_STA_THANKED]).values('supplier').annotate(total=Count('supplier')).order_by('-total')[0:10]
     top_supplier=[]
     for i in suppliers:
@@ -202,21 +206,29 @@ def uploadPaper(request):
                                 'request' : paperRequest})
                 
                 if paperRequest.supplier is None :
+                    """
+                    Neu nhu bai bao chua duoc assign cho 1 supplier thi set supplier do chinh la user hien tai.
+                    """
                     paperRequest.supplier = request.user
                     context.update({'realSupplier' : request.user})
+                    
                 elif paperRequest.supplier.id != request.user.id:
-                    print "Process for other supplier ", paperRequest.supplier
+                    """
+                    Process for other supplier ", paperRequest.supplier
+                    Neu nguoi cung cap bai bao khong phai la nguoi duoc assign thi tinh diem cho nguoi da cung cap.
+                    """
                     context.update({'realSupplier' : request.user})
                     sendmailFromTemplate(toAddr=paperRequest.supplier.email,
-                                     subject=u"Some one has provided a paper request that was assigned to you",
+                                     subject=_(u"Some one has provided a paper request that was assigned to you"),
                                      template_name="papershare/request_processed_email.html",
                                      context=context)
                     paperRequest.supplier = request.user
-                
-                
+                    paperRequest.previously_assigned += ';%s' % (request.user.username) 
+                paperRequest.date_supplied = datetime.datetime.now()
+                paperRequest.save()
                 
                 sendmailFromTemplate(fromAddr=request.user.email, toAddr=paperRequest.requester.email,
-                                     subject=u"Good news ! your paper request has been processed",
+                                     subject=_(u"Good news ! your paper request has been processed"),
                                      template_name="papershare/request_processed_email.html",
                                      context=context)            
                 return render_to_response('papershare/upload_complete.html',context)
@@ -230,8 +242,9 @@ def uploadPaper(request):
                 paperRequest = Request.objects.get(id=int(requestId))
                 paperRequest.supplier = None
                 paperRequest.status = 0 #pending. 
+                paperRequest.date_assigned = datetime.datetime.now()
                 paperRequest.save()
-                message = u"Yêu cầu %d đã được chuyển cho người khác, tuy nhiên bạn vẫn có thể vào public pool để cung cấp nếu muốn" % paperRequest.id
+                message = _(u"Yêu cầu %d đã được chuyển cho người khác, tuy nhiên bạn vẫn có thể vào public pool để cung cấp nếu muốn" % paperRequest.id)
                 context.update({'message' : message}) 
                 return render_to_response('ncs/simple_message.html', context)
         elif request.POST.get("buttonFail") is not None: #report fail by admin
@@ -242,7 +255,7 @@ def uploadPaper(request):
                 paperRequest.status = REQ_STA_FAILED #failed.
                 paperRequest.save()
                 sendReminderEmailToRequester(paperRequest)
-                message = u"Yêu cầu %d da duoc chuyen vao trash pool" % paperRequest.id
+                message = _(u"Yêu cầu %d da duoc chuyen vao trash pool" % paperRequest.id)
                 context.update({'message' : message}) 
                 return render_to_response('ncs/simple_message.html', context)
         elif request.POST.get("buttonAssign") is not None:
@@ -251,25 +264,24 @@ def uploadPaper(request):
             - Neu user dc chuyen toi chua la supplier thi set thanh supplier va thong bao cho user biet.
             - Thong bao cho supplier cu cua bai bao do duoc biet.
             """
+            
             if request.POST['username'] != "":
-
                 user_name   = request.POST['username']
                 request_id = request.POST['request_id']
                 user_obj = User.objects.get(username=user_name)
                 if user_obj is not None:
                     request_obj = Request.objects.get(pk=request_id)
+                    request_obj.date_passed = datetime.datetime.now()
+                    request_obj.save()
                     
-                    from django.core.mail import send_mail
-                    from django.conf import settings
                     full_path="http://"+request.get_host()+request.get_full_path()
-                    send_mail("Ban nhan duoc email tu nghiencuusinh.org",
-                                "Co mot bai bao vua duoc chuyen sang cho ban"
-                                +"Click vao day de xem chi tiet "+ full_path,
+                    send_mail(_("Ban nhan duoc email tu nghiencuusinh.org"),
+                                _("Co mot bai bao vua duoc chuyen sang cho ban. Click vao day de xem chi tiet ")
+                                +full_path,
                                 settings.DEFAULT_FROM_EMAIL,
                                 [user_obj.email])
-                    send_mail("Ban nhan duoc email tu nghiencuusinh.org",
-                                "Bai bao "+request_obj.paper.title+" vua duoc chuyen sang cho thanh vien "+user_obj.email
-                                +"Click vao day de xem chi tiet"+ full_path,
+                    send_mail(_("Ban nhan duoc email tu nghiencuusinh.org"),
+                                _("Bai bao "+request_obj.paper.title+" vua duoc chuyen sang cho thanh vien "+user_obj.email+". Click vao day de xem chi tiet ")+ full_path,
                                 settings.DEFAULT_FROM_EMAIL,
                                 [request_obj.supplier.email])
                     
@@ -277,9 +289,9 @@ def uploadPaper(request):
                     if u_profile.is_supplier is not True:
                         u_profile.is_supplier=True
                         u_profile.save()
-                    return render_to_response("ncs/simple_message.html", {"message":"Bài báo đã được chuyển cho các thành viên liên quan."})
+                    return render_to_response("ncs/simple_message.html", {"message":_("Bài báo đã được chuyển cho các thành viên liên quan.")})
                 else:
-                    return render_to_response("ncs/simple_message.html", {"message":"Không tìm thấy thành viên "+user_name})
+                    return render_to_response("ncs/simple_message.html", {"message":_("Không tìm thấy thành viên ")+user_name})
     return HttpResponseRedirect("/papershare/")
 
 def handle_uploaded_file(f):
@@ -302,13 +314,12 @@ def feedback(request):
         if form.is_valid():
             form.save()
             context = getCommonContext(request)
-            context.update({'message' : 'Cám ơn bạn đã góp ý cho chúng tôi.'})
+            context.update({'message' : _('Cám ơn bạn đã góp ý cho chúng tôi.')})
             return render_to_response('ncs/simple_message.html', context)
     else:
         form = FeedbackForm()
     return render_to_response("papershare/feedback_form.html",
-                              { 'form': form }
-                              )
+                              { 'form': form })
 @login_required
 def contact(request, toUserId):
     if request.method == 'POST' :
@@ -316,14 +327,13 @@ def contact(request, toUserId):
         if form.is_valid():
             form.save()
             context = getCommonContext(request)
-            context.update({'message' : 'Your message has been sent'})
+            context.update({'message' : _('Your message has been sent')})
             return render_to_response('ncs/simple_message.html', context)
     else:        
         form = ContactUserForm()
         form.setInitial(request.user, User.objects.get(id=toUserId))
     return render_to_response("papershare/contact_form.html",
-                              { 'form': form }
-                              )
+                              { 'form': form })
 
 @login_required
 def contactPaper(request, requestId):
@@ -332,15 +342,15 @@ def contactPaper(request, requestId):
         if form.is_valid():
             form.save()
             context = getCommonContext(request)
-            context.update({'message' : 'Your message has been sent'})
+            context.update({'message' : _('Your message has been sent')})
             return render_to_response('ncs/simple_message.html', context)
     else:        
         paperRequest = Request.objects.get(id=requestId)
        
-        subject = u"Bài báo của bạn :" + paperRequest.paper.title 
-        content = u"Chào bạn " + paperRequest.requester.username + u",\n" \
-                + u"Đây là bài báo mà tôi tìm được giúp bạn \n" \
-                + u"Thân, \n" \
+        subject = _(u"Bài báo của bạn :" + paperRequest.paper.title) 
+        content = _(u"Chào bạn " + paperRequest.requester.username + u",\n") \
+                + _(u"Đây là bài báo mà tôi tìm được giúp bạn \n") \
+                + _(u"Thân, \n") \
                 + request.user.username 
                 
         form = ContactUserForm()
@@ -348,10 +358,8 @@ def contactPaper(request, requestId):
                         paperRequest.requester,
                         subject, content)
     return render_to_response("papershare/contact_form.html",
-                              { 'form': form }
-                              )
-    
-    
+                              { 'form': form })
+
 def static(request, template = None):
     if template is not None:
         return render_to_response(template)
@@ -359,12 +367,12 @@ def static(request, template = None):
 @login_required
 def lazysupplier(request, sid):
     """
-    Le Dinh Thuong
-    navaroiss@gmail.com
+    Xử lý supplier lười biếng theo 2 phương thức:
+    - Nhắc nhỏ supplier.
+    - Disable.
+    Chỉ cho phép staff vào trang này.
     """
     if request.user.is_staff:
-        from ncs.papershare.forms import LazySupplierForm
-        from django.db.models import Q
         supplier = User.objects.get(id=int(sid))
         admin = request.user
 
