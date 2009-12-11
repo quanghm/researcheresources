@@ -19,6 +19,8 @@ jsloading = ('/media/js/tiny_mce/tiny_mce.js', '/media/js/tiny_mce/textarea.js')
 ################################################
 # Supplier
 class Supplier(models.Model):
+    def get_absolute_url(self):
+        return 'hehe'
     class Meta:
         verbose_name_plural = 'Supplier manager'
 admin.site.register(Supplier)
