@@ -1,12 +1,13 @@
 #-*-coding:UTF-8-*-
-import re, datetime
+from django.db.models.base import get_absolute_url
+import re, datetime, operator
 
 from django.template import Context, Template
 from django.shortcuts import render_to_response, redirect
 from django.contrib.auth.models import User
 from django.contrib.admin.views.decorators import staff_member_required
 from django.template import RequestContext
-from django.core.paginator import Paginator
+from django.core.paginator import Paginator, EmptyPage, InvalidPage
 from django.conf import settings
 from django.db.models import Q
 from django.utils.datastructures import MultiValueDictKeyError
@@ -17,14 +18,14 @@ from ncs.papershare.models import Announcement, Request, PaperShareProfile, \
 REQ_STA_PENDING ,REQ_STA_ASSIGNED, REQ_STA_REASSIGNED, \
 REQ_STA_SUPPLIED, REQ_STA_THANKED, REQ_STA_FAILED, REQ_STA_LASTCHANCE
 
-from ncs.papershare.models import PaperShareProfile, RESEARCH_FIELDS
+from ncs.papershare.models import PaperShareProfile, RESEARCH_FIELDS, Supplier
 
 def disable_supplier(supplier_id):
     """ Disable supplier """
     PaperShareProfile.objects.filter(Q(user__in=supplier_id)).update(is_supplier=0)
     """
-    Chuyen cac request da giao cho nguoi nay sang trang thai peding de asign cho supplier khac.
-    Ngoai tru nhung request nao da duoc supplied, re-assigned va thanked.
+    Chuyển các request đã giao cho người này sang trạng thái pending để assign cho supplier khác, 
+    ngoại trừ những request nào có status supplied, re-assigned và thanked
     """
     Request.objects.filter(
         Q(supplier=supplier_id),
@@ -33,11 +34,14 @@ def disable_supplier(supplier_id):
 
  
 def reinitialize(object_list):
+    """
+    Xây dựng lại cấu trúc dữ liệu
+    """
     i = 0
     result = []
     for item in object_list:
         if item.user.username != '':
-            a3 = str(Request.objects.filter(supplier=item.user.id).count())
+            a3 = (Request.objects.filter(supplier=item.user.id).count())
             SUPPLIED_STATUS = [REQ_STA_SUPPLIED, REQ_STA_THANKED]
             BAD_STATUS = [REQ_STA_PENDING, REQ_STA_ASSIGNED, REQ_STA_REASSIGNED, REQ_STA_LASTCHANCE]
             m =re.compile(';%s' % item.user.username)
@@ -56,22 +60,24 @@ def reinitialize(object_list):
             a7 = str(Request.objects.filter( Q(supplier=item.user.id),\
                                              Q(status__in=[REQ_STA_PENDING, REQ_STA_ASSIGNED,\
                                                             REQ_STA_REASSIGNED, REQ_STA_LASTCHANCE])).count())
-            a1, a2, a4, a8, days_late = 0,0,0,0,0
+            a1, a2, a4, a8 = 0,0,0,0
             for raw in Request.objects.filter(Q(supplier=item.user.id)):
+                days_late = 0
                 if raw.date_supplied:
                     if (raw.date_supplied-raw.date_assigned).days > 2:
                         a4 = a4+1
                 else:
                     if (datetime.datetime.now()-raw.date_assigned).days > 2:
                         a2 = a2+1
-                        days_late = days_late + (datetime.datetime.now()-raw.date_assigned).days
+                        if (datetime.datetime.now()-raw.date_assigned).days>days_late:
+                            days_late = (datetime.datetime.now()-raw.date_assigned).days
                 if raw.date_passed:
                     if (raw.date_passed-raw.date_assigned).days > 2:
                         a1 = a1+1                
                     a8 = a8 + 1
             i = i + 1
             research_name = filter(lambda x: x[0]==item.research_field, RESEARCH_FIELDS)
-            item.user.last_login = (datetime.datetime.today() - item.user.last_login).days 
+            item.user.last_login = (datetime.datetime.today() - item.user.last_login).days
             result.append({
                            'paper_late_passed':a1,# so bai bao chuyen tre
                            'paper_late_now':a2,#so bai bao hien dang tre
@@ -82,17 +88,27 @@ def reinitialize(object_list):
                            'paper_supplied':a6,#so bai bao da cung cap
                            'paper_waiting':a7,# so bai bao dang cho
                            'paper_passed':a8, #so bai bao da chuyen
-                           'user':item.user,
-                           'research_field':research_name[0][1] 
+                           'paper_help_supplied':max(0,int(a3)-int(a5)),
+                           'username':item.user.username,
+                           'userid':item.user.id,
+                           'last_login':item.user.last_login,
+                           'date_joined':item.user.date_joined,
+                           'research_field':research_name[0][1],
                            })
     return result
 
 def supplier_change_list(request):
+    """
+    Hiển thị danh sách các supplier cùng các thông tin kèm theo.
+    """
     template_name= 'admin/papershare/supplier_change_list.html'
     item_per_page = 100
     current_page = 1
 
     if request.POST.get('action', '') == 'delete_selected':
+        """
+        Xử lý các supplier bị disable
+        """
         template_name= 'admin/papershare/supplier_delete_confirmation.html'
         if request.POST.get('post', '') == 'yes':
             try:
@@ -107,26 +123,44 @@ def supplier_change_list(request):
     current_page = int(request.GET.get('p', 1))
     research_field_exact = request.GET.get('research_field__exact', '')
     
-    request_query = ''
-    for request_query in request.GET:
-        request_query = request_query + '=' + request.GET[request_query] 
+    request_query = '?'
+    for key,value in request.GET.iteritems():
+        if key != 'p':
+            request_query = request_query + key + '=' + value + '&' 
        
     supplier_list = PaperShareProfile.objects.filter(
                     Q(is_supplier=1),
                     Q(research_field__contains=research_field_exact))
     
     paging = Paginator(supplier_list, item_per_page)
-    p = paging.page(current_page)
+    try:
+        p = paging.page(current_page)
+    except InvalidPage, EmptyPage:
+        return redirect('/papershare/admin/papershare/supplier/')
     
+    """ 
+    Danh sách các phân trang
+    """
     pages = [n for n in range(current_page-5,current_page+5+1) if n>=1 and n<=paging.num_pages]
     
     supplier_list = reinitialize(p.object_list)
+    sort_type = request.GET.get('sort', 'asc')
+    b_reverse = False
+    if sort_type == 'desc':
+        sort_type = 'asc'
+        b_reverse = True
+    elif sort_type == 'asc':
+        sort_type = 'desc'
+    field = request.GET.get('field', '')
+    if field != '':
+        supplier_list = sorted(supplier_list, key=operator.itemgetter(field),reverse = b_reverse)
     vars_assign = {'supplier_list': supplier_list,
                     'filters': RESEARCH_FIELDS,
                     'pages': pages,
                     'current_page':current_page,
                     'request_query':request_query,
                     'request':dict(request.GET),
+                    'sort_type':sort_type,
                     'paging': paging}
     
     return render_to_response(template_name, vars_assign, RequestContext(request))

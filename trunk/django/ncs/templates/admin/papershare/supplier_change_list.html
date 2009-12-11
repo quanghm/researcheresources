@@ -67,18 +67,16 @@
 		<thead>
 			<tr>
 				<th><input style="display: inline;" id="action-toggle" type="checkbox"></th>
-				<th>Username</th>
+				<th><a href="?field=username&sort={{sort_type}}">Username</a></th>
 				<th>Research field</th>
-				<th>Last login</th>
-				<th>Date join</th>
-				<th title="Tổng số bài báo được giao">A</th>
-				<th title="Số bài báo cung cấp trễ">B</th>
-				<th title="Số bài chuyển trễ">C</th>
-				<th title="Số bài báo hiện đang trễ / Số ngày trễ">D</th>
-				<th title="Số bài báo được cung cấp bởi thành viên khác">E</th>
-				<th title="Số bài báo đã cung cấp">F</th>
-				<th title="Số bài báo hiện đang chờ">G</th>
-				<th title="Số bài báo đã chuyển cho người khác">H</th>
+				<th><a href="?field=last_login&sort={{sort_type}}">Last login</a></th>
+				<th><a href="?field=date_joined&sort={{sort_type}}">Date join</a></th>
+				<th title="Tổng số bài báo được giao"><a href="?field=paper_supply&sort={{sort_type}}">A</a></th>
+				<th title="Cung cấp/ trễ"><a href="?field=paper_supplied&sort={{sort_type}}">B</a></th>
+				<th title="Chuyển/ trễ"><a href="?field=paper_passed&sort={{sort_type}}">C</a></th>
+				<th title="Chờ/ ngày"><a href="?field=paper_waiting&sort={{sort_type}}">D</a></th>
+				<th title="Được giúp"><a href="?field=paper_someone_supplied&sort={{sort_type}}">E</a></th>
+				<th title="Giúp"><a href="?field=paper_help_supplied&sort={{sort_type}}">F</a></th>
 			</tr>
 		</thead>
 	<tbody>
@@ -86,31 +84,27 @@
 	{% for item in supplier_list %}
 	<tr class="{% cycle 'row1' 'row2' %}">
 		<td>
-			<input class="action-select" value="{{item.user.id}}" name="_selected_action" type="checkbox"></td>
+			<input class="action-select" value="{{item.userid}}" name="_selected_action" type="checkbox"></td>
 		<td>
-			<a href="{{item.user.id}}/">{{item.user.username}}</a></td>
+			<a href="{{item.user.id}}/">{{item.username}}</a></td>
 		<td>
 			{{item.research_field}}</td>
 		<td>
-			{{item.user.last_login}} day(s) ago</td>
+			{{item.last_login}} day(s) ago</td>
 		<td>
-			{{item.user.date_joined|date}}</td>
+			{{item.date_joined|date}}</td>
 		<td title="Tổng số bài báo được giao: {{item.paper_supply}}">
 			{{item.paper_supply}}</td>
-		<td title="Số bài báo cung cấp trễ: {{item.late_supply}}">
-			{{item.late_supply}}</td>
-		<td title="Số bài chuyển trễ: {{item.paper_late_passed}}">
-			{{item.paper_late_passed}}</td>
-		<td title="Số bài báo hiện đang trễ: {{item.paper_late_now}} {% ifnotequal item.days_late 0 %} / {{item.days_late}} day(s) {% endifnotequal %}">
-			{{item.paper_late_now}} {% ifnotequal item.days_late 0 %} / {{item.days_late}} day(s) {% endifnotequal %}</td>
+		<td title="Số bài báo đã cung cấp: {{item.paper_supplied}}/Số bài báo cung cấp trễ: {{item.late_supply}}">
+			{{item.paper_supplied}}/{{item.late_supply}}</td>
+		<td title="Số bài báo đã chuyển cho người khác: {{item.paper_passed}}/Số bài chuyển trễ: {{item.paper_late_passed}}">
+			{{item.paper_passed}}/{{item.paper_late_passed}}</td>
+		<td title="Số bài báo hiện đang chờ: {{item.paper_waiting}}/Số ngày chờ lâu nhất: {% ifnotequal item.days_late 0 %} / {{item.days_late}} day(s) {% endifnotequal %}">
+			{{item.paper_waiting}}{% ifnotequal item.days_late 0 %} / {{item.days_late}} day(s) {% endifnotequal %}</td>
 		<td title="Số bài báo được cung cấp bởi thành viên khác: {{item.paper_someone_supplied}}">
 			{{item.paper_someone_supplied}}</td>
-		<td title="Số bài báo đã cung cấp: {{item.paper_supplied}}">
-			{{item.paper_supplied}}</td>
-		<td title="Số bài báo hiện đang chờ: {{item.paper_waiting}}">
-			{{item.paper_waiting}}</td>
-		<td title="Số bài báo đã chuyển cho người khác: {{item.paper_passed}}">
-			{{item.paper_passed}}</td>
+		<td title="Số bài báo giúp các supplier khác: {{item.paper_help_supplied}}">
+			{{item.paper_help_supplied}}</td>
 		</tr>
 	{% endfor %}
 	
@@ -126,7 +120,7 @@
 				<span class="this-page">{{item}}</span>
 			{% endifnotequal %} 	
 		{% else %}
-			<a href="{% if request.research_field__exact %}?{{request_query}}&{% else %}?{% endif %}p={{item}}">{{item}}</a>
+			<a href="{{request_query}}p={{item}}">{{item}}</a>
 		{% endifequal %}
 	{% endfor %}
 	{{paging.count}} items
@@ -136,28 +130,22 @@
     </div>
   <table width="100%" id="#ct">
   	<tr>
-  		<td align="left">A: Tổng số bài báo được giao</td>
+  		<td align="left">A: Tổng giao (tức là tổng số bài được giao/phân công)</td>
   	</tr>
   	<tr>
-  		<td  align="left">B: Số bài báo cung cấp trễ</td>
+  		<td  align="left">B: Cung cấp/ trễ (tổng số bài đã cung cấp/ số bài cung cấp trễ)</td>
   	</tr>
   	<tr>
-  		<td  align="left">C: Số bài chuyển trễ</td>
+  		<td  align="left">C: Chuyển/ trễ (tổng số bài đã chuyển/ số bài chuyển trễ)</td>
   	</tr>
   	<tr>
-  		<td  align="left">D: Số bài báo hiện đang trễ / Số ngày trễ</td>
+  		<td  align="left">D: Chờ/ ngày (tổng số bài đang chờ/ số ngày chờ lâu nhất (vd, có 3 bài đang chờ với số ngày chờ là 5, 2, 1 thì "ngày" = 5)</td>
   	</tr>
   	<tr>
-  		<td  align="left">E: Số bài báo được cung cấp bởi thành viên khác</td>
+  		<td  align="left">E: Được giúp (tổng số bài được các supp khác cung cấp/ xử lý giúp)</td>
   	</tr>
   	<tr>
-  		<td  align="left">F: Số bài báo đã cung cấp</td>
-  	</tr>
-  	<tr>
-  		<td  align="left">G: Số bài báo hiện đang chờ</td>
-  	</tr>
-  	<tr>
-  		<td  align="left">H: Số bài báo đã chuyển cho người khác</td>
+  		<td  align="left">F: Giúp (tổng số bài cung cấp/ xử lý giúp các supp khác)</td>
   	</tr>
   </table>
     
