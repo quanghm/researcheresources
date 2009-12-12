@@ -1,5 +1,5 @@
 {% extends "admin/base_site.html" %}
-{% load adminmedia %}
+{% load adminmedia admin_supplier_url %}
 {% block title %} Select supplier to view {% endblock %}
 {% block extrastyle %}
 <link rel="stylesheet" type="text/css" href="{% admin_media_prefix %}css/changelists.css" />
@@ -28,6 +28,7 @@
 {% endif %}
 
 {% block content %}
+
 <h1>Select supplier to change</h1>
 <div id="content-main">
         <ul class="object-tools">
@@ -42,11 +43,12 @@
             <h2>Filter</h2>
 <h3> By research_field </h3>
 <ul>
-    <li class="selected">
+    <li {% if not request.research_field__exact %}class='selected'{% endif %}>
     <a href="?">All</a></li>
 	{% for item_key,item_value in filters %}
-    <li>
-    <a href="?research_field__exact={{item_key}}">{{item_value}}</a>
+    <li {% ifequal request.research_field__exact item_key %}class='selected'{% endifequal %}>
+    <a href="{% custom_request request_query research_field__exact item_key %}research_field__exact={{item_key}}">
+    {{item_value}}</a>
     </li>
 	{% endfor %}
 </ul>
@@ -67,16 +69,16 @@
 		<thead>
 			<tr>
 				<th><input style="display: inline;" id="action-toggle" type="checkbox"></th>
-				<th><a href="?field=username&sort={{sort_type}}">Username</a></th>
+				<th><a href="{% custom_request request_query field username %}field=username&sort={{sort_type}}">Username</a></th>
 				<th>Research field</th>
-				<th><a href="?field=last_login&sort={{sort_type}}">Last login</a></th>
-				<th><a href="?field=date_joined&sort={{sort_type}}">Date join</a></th>
-				<th title="Tổng số bài báo được giao"><a href="?field=paper_supply&sort={{sort_type}}">A</a></th>
-				<th title="Cung cấp/ trễ"><a href="?field=paper_supplied&sort={{sort_type}}">B</a></th>
-				<th title="Chuyển/ trễ"><a href="?field=paper_passed&sort={{sort_type}}">C</a></th>
-				<th title="Chờ/ ngày"><a href="?field=paper_waiting&sort={{sort_type}}">D</a></th>
-				<th title="Được giúp"><a href="?field=paper_someone_supplied&sort={{sort_type}}">E</a></th>
-				<th title="Giúp"><a href="?field=paper_help_supplied&sort={{sort_type}}">F</a></th>
+				<th><a href="{% custom_request request_query field last_login %}field=last_login&sort={{sort_type}}">Last login</a></th>
+				<th><a href="{% custom_request request_query field date_joined %}field=date_joined&sort={{sort_type}}">Date join</a></th>
+				<th title="Tổng số bài báo được giao"><a href="{% custom_request request_query field paper_supply %}field=paper_supply&sort={{sort_type}}">A</a></th>
+				<th title="Cung cấp/ trễ"><a href="{% custom_request request_query field paper_supplied %}field=paper_supplied&sort={{sort_type}}">B</a></th>
+				<th title="Chuyển/ trễ"><a href="{% custom_request request_query field paper_passed %}field=paper_passed&sort={{sort_type}}">C</a></th>
+				<th title="Chờ/ ngày"><a href="{% custom_request request_query field paper_waiting %}field=paper_waiting&sort={{sort_type}}">D</a></th>
+				<th title="Được giúp"><a href="{% custom_request request_query field paper_someone_supplied %}field=paper_someone_supplied&sort={{sort_type}}">E</a></th>
+				<th title="Giúp"><a href="{% custom_request request_query field paper_help_supplied %}field=paper_help_supplied&sort={{sort_type}}">F</a></th>
 			</tr>
 		</thead>
 	<tbody>
@@ -120,7 +122,7 @@
 				<span class="this-page">{{item}}</span>
 			{% endifnotequal %} 	
 		{% else %}
-			<a href="{{request_query}}p={{item}}">{{item}}</a>
+			<a href="{% custom_request request_query p item %}p={{item}}">{{item}}</a>
 		{% endifequal %}
 	{% endfor %}
 	{{paging.count}} items
