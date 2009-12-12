@@ -98,8 +98,9 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.admin',
-    
+
     'ncs.papershare',
+    'ncs.papershare.templatetags.admin_supplier_url',
     'ncs.registration',
 )
 

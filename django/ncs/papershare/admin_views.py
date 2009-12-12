@@ -123,11 +123,6 @@ def supplier_change_list(request):
     current_page = int(request.GET.get('p', 1))
     research_field_exact = request.GET.get('research_field__exact', '')
     
-    request_query = '?'
-    for key,value in request.GET.iteritems():
-        if key != 'p':
-            request_query = request_query + key + '=' + value + '&' 
-       
     supplier_list = PaperShareProfile.objects.filter(
                     Q(is_supplier=1),
                     Q(research_field__contains=research_field_exact))
@@ -154,12 +149,15 @@ def supplier_change_list(request):
     field = request.GET.get('field', '')
     if field != '':
         supplier_list = sorted(supplier_list, key=operator.itemgetter(field),reverse = b_reverse)
+    request_query = '?'
+    for key,value in request.GET.iteritems():
+        request_query = request_query + '%s=%s&'%(key,value)
     vars_assign = {'supplier_list': supplier_list,
                     'filters': RESEARCH_FIELDS,
                     'pages': pages,
                     'current_page':current_page,
                     'request_query':request_query,
-                    'request':dict(request.GET),
+                    'request':request.GET,
                     'sort_type':sort_type,
                     'paging': paging}
     
