@@ -1,5 +1,4 @@
 #-*-coding:UTF-8-*-
-from django.db.models.base import get_absolute_url
 import re, datetime, operator
 
 from django.template import Context, Template
@@ -69,8 +68,9 @@ def reinitialize(object_list):
                 else:
                     if (datetime.datetime.now()-raw.date_assigned).days > 2:
                         a2 = a2+1
-                        if (datetime.datetime.now()-raw.date_assigned).days>days_late:
-                            days_late = (datetime.datetime.now()-raw.date_assigned).days
+                        if int(a7)>0:
+                            if (datetime.datetime.now()-raw.date_assigned).days>days_late:
+                                days_late = (datetime.datetime.now()-raw.date_assigned).days
                 if raw.date_passed:
                     if (raw.date_passed-raw.date_assigned).days > 2:
                         a1 = a1+1                
@@ -116,8 +116,8 @@ def supplier_change_list(request):
             except:
                 return redirect('/papershare/admin/papershare/supplier/')
         vars_assign = {
-                       'supplier':PaperShareProfile.objects.filter(user__in=request.POST.getlist('_selected_action')) 
-                       }
+            'supplier':PaperShareProfile.objects.filter(user__in=request.POST.getlist('_selected_action')) 
+        }
         return render_to_response(template_name, vars_assign, RequestContext(request))
 
     current_page = int(request.GET.get('p', 1))
@@ -131,7 +131,8 @@ def supplier_change_list(request):
     try:
         p = paging.page(current_page)
     except InvalidPage, EmptyPage:
-        return redirect('/papershare/admin/papershare/supplier/')
+        research_field_exact = request.GET.get('research_field__exact', '')        
+        return redirect('/papershare/admin/papershare/supplier/?research_field__exact='+research_field_exact)
     
     """ 
     Danh sách các phân trang
