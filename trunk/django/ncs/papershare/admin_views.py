@@ -39,62 +39,60 @@ def reinitialize(object_list):
     i = 0
     result = []
     for item in object_list:
-        if item.user.username != '':
-            a3 = (Request.objects.filter(supplier=item.user.id).count())
-            SUPPLIED_STATUS = [REQ_STA_SUPPLIED, REQ_STA_THANKED]
-            BAD_STATUS = [REQ_STA_PENDING, REQ_STA_ASSIGNED, REQ_STA_REASSIGNED, REQ_STA_LASTCHANCE]
-            m =re.compile(';%s' % item.user.username)
-            findstring = lambda x: m.search(x)
-            #a4 = str(Request.objects.filter(Q(supplier=item.user.id),Q(status__in=BAD_STATUS)).count())        
-            a5,a6 = 0,0
-            for raw in Request.objects.filter(Q(previously_assigned__contains=item.user.username)):
-                try:
-                    if raw.previously_assigned.split(';')[1] != item.user.username:
-                        a5 = a5 + 1
-                except:
-                    pass
-                if raw.status in SUPPLIED_STATUS: 
-                    if findstring(raw.previously_assigned): 
-                        a6 = a6 +1
-            a7 = str(Request.objects.filter( Q(supplier=item.user.id),\
-                                             Q(status__in=[REQ_STA_PENDING, REQ_STA_ASSIGNED,\
-                                                            REQ_STA_REASSIGNED, REQ_STA_LASTCHANCE])).count())
-            a1, a2, a4, a8 = 0,0,0,0
-            for raw in Request.objects.filter(Q(supplier=item.user.id)):
-                days_late = 0
-                if raw.date_supplied:
-                    if (raw.date_supplied-raw.date_assigned).days > 2:
-                        a4 = a4+1
-                else:
-                    if (datetime.datetime.now()-raw.date_assigned).days > 2:
-                        a2 = a2+1
-                        if int(a7)>0:
-                            if (datetime.datetime.now()-raw.date_assigned).days>days_late:
-                                days_late = (datetime.datetime.now()-raw.date_assigned).days
-                if raw.date_passed:
-                    if (raw.date_passed-raw.date_assigned).days > 2:
-                        a1 = a1+1                
-                    a8 = a8 + 1
-            i = i + 1
-            research_name = filter(lambda x: x[0]==item.research_field, RESEARCH_FIELDS)
-            item.user.last_login = (datetime.datetime.today() - item.user.last_login).days
-            result.append({
-                           'paper_late_passed':a1,# so bai bao chuyen tre
-                           'paper_late_now':a2,#so bai bao hien dang tre
-                           'days_late':days_late,# so ngay tre
-                           'paper_supply':a3,#so bai bao duoc phan cong
-                           'late_supply':a4,#so bai bao cung cap tre
-                           'paper_someone_supplied':a5,#so bai bao duoc cung cap boi supplier khac
-                           'paper_supplied':a6,#so bai bao da cung cap
-                           'paper_waiting':a7,# so bai bao dang cho
-                           'paper_passed':a8, #so bai bao da chuyen
-                           'paper_help_supplied':max(0,int(a3)-int(a5)),
-                           'username':item.user.username,
-                           'userid':item.user.id,
-                           'last_login':item.user.last_login,
-                           'date_joined':item.user.date_joined,
-                           'research_field':research_name[0][1],
-                           })
+        a3 = (Request.objects.filter(supplier=item.user.id).count())
+        SUPPLIED_STATUS = [REQ_STA_SUPPLIED, REQ_STA_THANKED]
+        BAD_STATUS = [REQ_STA_PENDING, REQ_STA_ASSIGNED, REQ_STA_REASSIGNED, REQ_STA_LASTCHANCE]
+        m =re.compile(';%s' % item.user.username)
+        findstring = lambda x: m.search(x)
+        #a4 = str(Request.objects.filter(Q(supplier=item.user.id),Q(status__in=BAD_STATUS)).count())        
+        a5,a6 = 0,0
+        for raw in Request.objects.filter(Q(previously_assigned__contains=item.user.username)):
+            try:
+                if raw.previously_assigned.split(';')[1] != item.user.username:
+                    a5 = a5 + 1
+            except:
+                pass
+            if raw.status in SUPPLIED_STATUS: 
+                if findstring(raw.previously_assigned): 
+                    a6 = a6 +1
+        a7 = str(Request.objects.filter( Q(supplier=item.user.id),\
+                                         Q(status__in=[REQ_STA_PENDING, REQ_STA_ASSIGNED,\
+                                                        REQ_STA_REASSIGNED, REQ_STA_LASTCHANCE])).count())
+        a1, a2, a4, a8 = 0,0,0,0
+        for raw in Request.objects.filter(Q(supplier=item.user.id)):
+            days_late = 0
+            if raw.date_supplied:
+                if (raw.date_supplied-raw.date_assigned).days > 2:
+                    a4 = a4+1
+            else:
+                if (datetime.datetime.now()-raw.date_assigned).days > 2:
+                    a2 = a2+1
+                    if (datetime.datetime.now()-raw.date_assigned).days>days_late:
+                        days_late = (datetime.datetime.now()-raw.date_assigned).days
+            if raw.date_passed:
+                if (raw.date_passed-raw.date_assigned).days > 2:
+                    a1 = a1+1                
+                a8 = a8 + 1
+        i = i + 1
+        research_name = filter(lambda x: x[0]==item.research_field, RESEARCH_FIELDS)
+        item.user.last_login = (datetime.datetime.today() - item.user.last_login).days
+        result.append({
+                       'paper_late_passed':a1,# so bai bao chuyen tre
+                       'paper_late_now':a2,#so bai bao hien dang tre
+                       'days_late':days_late,# so ngay tre
+                       'paper_supply':a3,#so bai bao duoc phan cong
+                       'late_supply':a4,#so bai bao cung cap tre
+                       'paper_someone_supplied':a5,#so bai bao duoc cung cap boi supplier khac
+                       'paper_supplied':a6,#so bai bao da cung cap
+                       'paper_waiting':int(a7),# so bai bao dang cho
+                       'paper_passed':a8, #so bai bao da chuyen
+                       'paper_help_supplied':max(0,int(a3)-int(a5)),
+                       'username':item.user.username,
+                       'userid':item.user.id,
+                       'last_login':item.user.last_login,
+                       'date_joined':item.user.date_joined,
+                       'research_field':research_name[0][1],
+                       })
     return result
 
 def supplier_change_list(request):

@@ -19,8 +19,6 @@ jsloading = ('/media/js/tiny_mce/tiny_mce.js', '/media/js/tiny_mce/textarea.js')
 ################################################
 # Supplier
 class Supplier(models.Model):
-    def get_absolute_url(self):
-        return 'hehe'
     class Meta:
         verbose_name_plural = 'Supplier manager'
 admin.site.register(Supplier)
@@ -106,9 +104,9 @@ class Paper(models.Model):
 class Request(models.Model):
     paper = models.ForeignKey(Paper, related_name = "paper to request")
     date_requested = models.DateTimeField()
-    date_assigned = models.DateTimeField(null = True)
-    date_supplied = models.DateTimeField(null = True)
-    date_passed = models.DateTimeField(null = True)
+    date_assigned = models.DateTimeField(null = True, blank = True)
+    date_supplied = models.DateTimeField(null = True, blank = True)
+    date_passed = models.DateTimeField(null = True, blank = True)
     requester = models.ForeignKey(User, related_name = "paper requester")
     supplier =  models.ForeignKey(User, related_name = "paper supplier", null = True)
     status = models.SmallIntegerField(choices = REQUEST_STATUS_CHOICES)
