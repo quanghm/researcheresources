@@ -102,7 +102,8 @@
 		<td title="Số bài báo đã chuyển cho người khác: {{item.paper_passed}}/Số bài chuyển trễ: {{item.paper_late_passed}}">
 			{{item.paper_passed}}/{{item.paper_late_passed}}</td>
 		<td title="Số bài báo hiện đang chờ: {{item.paper_waiting}}/Số ngày chờ lâu nhất: {% ifnotequal item.days_late 0 %} / {{item.days_late}} day(s) {% endifnotequal %}">
-			{{item.paper_waiting}}{% ifnotequal item.days_late 0 %} / {{item.days_late}} day(s) {% endifnotequal %}</td>
+			{{item.paper_waiting}}{% ifnotequal item.days_late 0 %} / {{item.days_late}} day(s) {% endifnotequal %}
+		</td>
 		<td title="Số bài báo được cung cấp bởi thành viên khác: {{item.paper_someone_supplied}}">
 			{{item.paper_someone_supplied}}</td>
 		<td title="Số bài báo giúp các supplier khác: {{item.paper_help_supplied}}">
