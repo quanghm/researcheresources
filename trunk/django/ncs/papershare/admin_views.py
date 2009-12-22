@@ -34,7 +34,7 @@ def disable_supplier(supplier_id):
  
 def reinitialize(object_list):
     """
-    Xây dựng lại cấu trúc dữ liệu
+    Xￃﾢy d￡ﾻﾱng l￡ﾺﾡi c￡ﾺﾥu trￃﾺc d￡ﾻﾯ li￡ﾻﾇu
     """
     i = 0
     result = []
@@ -62,17 +62,26 @@ def reinitialize(object_list):
         for raw in Request.objects.filter(Q(supplier=item.user.id)):
             days_late = 0
             if raw.date_supplied:
-                if (raw.date_supplied-raw.date_assigned).days > 2:
-                    a4 = a4+1
+                try:
+                    if (raw.date_supplied-raw.date_assigned).days > 2:
+                        a4 = a4+1
+                except TypeError:
+                    pass
             else:
-                if (datetime.datetime.now()-raw.date_assigned).days > 2:
-                    a2 = a2+1
-                    if (datetime.datetime.now()-raw.date_assigned).days>days_late:
-                        days_late = (datetime.datetime.now()-raw.date_assigned).days
+                try:
+                    if (datetime.datetime.now()-raw.date_assigned).days > 2:
+                        a2 = a2+1
+                        if (datetime.datetime.now()-raw.date_assigned).days>days_late:
+                            days_late = (datetime.datetime.now()-raw.date_assigned).days
+                except TypeError:
+                    pass
             if raw.date_passed:
-                if (raw.date_passed-raw.date_assigned).days > 2:
-                    a1 = a1+1                
-                a8 = a8 + 1
+                try:
+                    if (raw.date_passed-raw.date_assigned).days > 2:
+                        a1 = a1+1                
+                        a8 = a8 + 1
+                except TypeError:
+                    pass
         i = i + 1
         research_name = filter(lambda x: x[0]==item.research_field, RESEARCH_FIELDS)
         item.user.last_login = (datetime.datetime.today() - item.user.last_login).days
