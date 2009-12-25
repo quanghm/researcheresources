@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 
 import datetime,os,re
@@ -222,7 +221,6 @@ def uploadPaper(request):
                                      subject=_(u"Some one has provided a paper request that was assigned to you"),
                                      template_name="papershare/request_processed_email.html",
                                      context=context)
-                    paperRequest.supplier = request.user
                     paperRequest.previously_supplied += ';%s' % (request.user.username) 
                 paperRequest.date_supplied = datetime.datetime.now()
                 paperRequest.save()
@@ -236,17 +234,6 @@ def uploadPaper(request):
                 context.update({'form':form})
                 return render_to_response('papershare/upload_error.html',context)
         
-        elif request.POST.get("buttonPass") is not None: #pass to other supplier
-            requestId = request.POST.get('request_id')
-            if requestId is not None and requestId.isdigit():
-                paperRequest = Request.objects.get(id=int(requestId))
-                paperRequest.supplier = None
-                paperRequest.status = 0 #pending. 
-                paperRequest.date_assigned = datetime.datetime.now()
-                paperRequest.save()
-                message = _(u"Yêu cầu %d đã được chuyển cho người khác, tuy nhiên bạn vẫn có thể vào public pool để cung cấp nếu muốn" % paperRequest.id)
-                context.update({'message' : message}) 
-                return render_to_response('ncs/simple_message.html', context)
         elif request.POST.get("buttonFail") is not None: #report fail by admin
             requestId = request.POST.get('request_id')
             if requestId is not None and requestId.isdigit():
@@ -258,7 +245,8 @@ def uploadPaper(request):
                 message = _(u"Yêu cầu %d da duoc chuyen vao trash pool" % paperRequest.id)
                 context.update({'message' : message}) 
                 return render_to_response('ncs/simple_message.html', context)
-        elif request.POST.get("buttonAssign") is not None:
+            
+        elif request.POST.get("buttonAssign") is not None: # Chuyển bài báo cho 1 supplier khác
             """
             Khi admin chuyen bai bao cho mot thanh vien khac thi:
             - Neu user dc chuyen toi chua la supplier thi set thanh supplier va thong bao cho user biet.
@@ -268,30 +256,36 @@ def uploadPaper(request):
             if request.POST['username'] != "":
                 user_name   = request.POST['username']
                 request_id = request.POST['request_id']
-                user_obj = User.objects.get(username=user_name)
-                if user_obj is not None:
-                    request_obj = Request.objects.get(pk=request_id)
-                    request_obj.date_passed = datetime.datetime.now()
-                    request_obj.save()
-                    
-                    full_path="http://"+request.get_host()+request.get_full_path()
-                    send_mail(_("Ban nhan duoc email tu nghiencuusinh.org"),
-                                _("Co mot bai bao vua duoc chuyen sang cho ban. Click vao day de xem chi tiet ")
-                                +full_path,
-                                settings.DEFAULT_FROM_EMAIL,
-                                [user_obj.email])
-                    send_mail(_("Ban nhan duoc email tu nghiencuusinh.org"),
-                                _("Bai bao "+request_obj.paper.title+" vua duoc chuyen sang cho thanh vien "+user_obj.email+". Click vao day de xem chi tiet ")+ full_path,
-                                settings.DEFAULT_FROM_EMAIL,
-                                [request_obj.supplier.email])
-                    
+                user_obj = User()
+                try:
+                    user_obj = User.objects.get(username=user_name)
+                except user_obj.DoesNotExist:
+                    return render_to_response("ncs/simple_message.html", {"message":_(u"Không tìm thấy thành viên ")+user_name})
+                
+                if user_obj.id is not None:
                     u_profile=PaperShareProfile.objects.get(user=user_obj)
                     if u_profile.is_supplier is not True:
                         u_profile.is_supplier=True
                         u_profile.save()
-                    return render_to_response("ncs/simple_message.html", {"message":_("Bài báo đã được chuyển cho các thành viên liên quan.")})
-                else:
-                    return render_to_response("ncs/simple_message.html", {"message":_("Không tìm thấy thành viên ")+user_name})
+                    
+                    request_obj = Request.objects.get(id=int(request_id))
+                    request_obj.status = 2 #reassigned, pending. 
+                    request_obj.date_passed = datetime.datetime.now()
+                    request_obj.previously_assigned += ';%s'%(user_name) 
+                    
+                    full_path="http://"+request.get_host()+request.get_full_path()
+                    send_mail(_(u"Ban nhan duoc email tu nghiencuusinh.org"),
+                                _(u"Co mot bai bao vua duoc chuyen sang cho ban. Click vao day de xem chi tiet ")
+                                +full_path,
+                                settings.DEFAULT_FROM_EMAIL,
+                                [user_obj.email])
+                    send_mail(_(u"Ban nhan duoc email tu nghiencuusinh.org"),
+                                _(u"Bai bao "+request_obj.paper.title+" vua duoc chuyen sang cho thanh vien "+user_obj.email+". Click vao day de xem chi tiet ")+ full_path,
+                                settings.DEFAULT_FROM_EMAIL,
+                                [request_obj.supplier.email])
+                    request_obj.save()
+                    
+                    return render_to_response("ncs/simple_message.html", {"message":_(u"Bài báo đã được chuyển cho các thành viên liên quan.")})
     return HttpResponseRedirect("/papershare/")
 
 def handle_uploaded_file(f):
@@ -314,7 +308,7 @@ def feedback(request):
         if form.is_valid():
             form.save()
             context = getCommonContext(request)
-            context.update({'message' : _('Cám ơn bạn đã góp ý cho chúng tôi.')})
+            context.update({'message' : _(u'Cám ơn bạn đã góp ý cho chúng tôi.')})
             return render_to_response('ncs/simple_message.html', context)
     else:
         form = FeedbackForm()
@@ -327,7 +321,7 @@ def contact(request, toUserId):
         if form.is_valid():
             form.save()
             context = getCommonContext(request)
-            context.update({'message' : _('Your message has been sent')})
+            context.update({'message' : _(u'Your message has been sent')})
             return render_to_response('ncs/simple_message.html', context)
     else:        
         form = ContactUserForm()
@@ -342,7 +336,7 @@ def contactPaper(request, requestId):
         if form.is_valid():
             form.save()
             context = getCommonContext(request)
-            context.update({'message' : _('Your message has been sent')})
+            context.update({'message' : _(u'Your message has been sent')})
             return render_to_response('ncs/simple_message.html', context)
     else:        
         paperRequest = Request.objects.get(id=requestId)
