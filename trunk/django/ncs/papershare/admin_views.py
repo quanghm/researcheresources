@@ -46,10 +46,12 @@ def reinitialize(object_list):
         a1, a2 = 0,0
         a3 = (Request.objects.filter(supplier=item.user.id).count())
         a4 = str(Request.objects.filter(Q(previously_supplied__contains=item.user.username)).count())        
-        a4, a5, a6, a8 = 0,0,0,0
+        a5, a6 = 0,0
         a7 = str(Request.objects.filter( Q(supplier=item.user.id),\
                                          Q(status__in=[REQ_STA_PENDING, REQ_STA_ASSIGNED,\
                                                         REQ_STA_REASSIGNED, REQ_STA_LASTCHANCE])).count())
+        a8 = (Request.objects.filter( Q(supplier=item.user.id),\
+                                         Q(status__in=[REQ_STA_REASSIGNED])).count())
         for raw in Request.objects.filter(Q(supplier=item.user.id)):
             days_late = 0
             if raw.previously_supplied != '':
@@ -64,11 +66,10 @@ def reinitialize(object_list):
                             days_late = (datetime.datetime.now()-raw.date_assigned).days
                 except TypeError:
                     pass
-            if raw.date_passed:
+            if raw.date_passed not in ('', '0000-00-00 00:00:00'):
                 try:
                     if (raw.date_passed-raw.date_assigned).days > 2:
                         a1 = a1 + 1 # Số bài báo chuyển trễ
-                        a8 = a8 + 1 # Số bài báo đã chuyển cho supplier khác
                 except TypeError:
                     pass
         i = i + 1
@@ -81,10 +82,10 @@ def reinitialize(object_list):
                        'paper_supply':a3,#so bai bao duoc phan cong
                        'late_supply':a4,#so bai bao cung cap tre
                        'paper_someone_supplied':a5,#so bai bao duoc cung cap boi supplier khac
-                       'paper_supplied':a6,#so bai bao da cung cap
+                       'paper_supplied':int(a6)-int(a5),#so bai bao da cung cap
                        'paper_waiting':int(a7),# so bai bao dang cho
                        'paper_passed':a8, #so bai bao da chuyen
-                       'paper_help_supplied':a4,
+                       'paper_help_supplied':a4, # so bai bao da cung cap cho supplier khac
                        'username':item.user.username,
                        'userid':item.user.id,
                        'last_login':item.user.last_login,
