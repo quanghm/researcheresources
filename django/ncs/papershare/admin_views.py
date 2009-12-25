@@ -34,40 +34,29 @@ def disable_supplier(supplier_id):
  
 def reinitialize(object_list):
     """
-    Xￃﾢy d￡ﾻﾱng l￡ﾺﾡi c￡ﾺﾥu trￃﾺc d￡ﾻﾯ li￡ﾻﾇu
+    Xử lý dữ liệu
     """
     i = 0
     result = []
     for item in object_list:
-        a3 = (Request.objects.filter(supplier=item.user.id).count())
         SUPPLIED_STATUS = [REQ_STA_SUPPLIED, REQ_STA_THANKED]
         BAD_STATUS = [REQ_STA_PENDING, REQ_STA_ASSIGNED, REQ_STA_REASSIGNED, REQ_STA_LASTCHANCE]
-        m =re.compile(';%s' % item.user.username)
+        m =re.compile(';'+item.user.username)
         findstring = lambda x: m.search(x)
-        #a4 = str(Request.objects.filter(Q(supplier=item.user.id),Q(status__in=BAD_STATUS)).count())        
-        a5,a6 = 0,0
-        for raw in Request.objects.filter(Q(previously_assigned__contains=item.user.username)):
-            try:
-                if raw.previously_assigned.split(';')[1] != item.user.username:
-                    a5 = a5 + 1
-            except:
-                pass
-            if raw.status in SUPPLIED_STATUS: 
-                if findstring(raw.previously_assigned): 
-                    a6 = a6 +1
+        a1, a2 = 0,0
+        a3 = (Request.objects.filter(supplier=item.user.id).count())
+        a4 = str(Request.objects.filter(Q(previously_supplied__contains=item.user.username)).count())        
+        a4, a5, a6, a8 = 0,0,0,0
         a7 = str(Request.objects.filter( Q(supplier=item.user.id),\
                                          Q(status__in=[REQ_STA_PENDING, REQ_STA_ASSIGNED,\
                                                         REQ_STA_REASSIGNED, REQ_STA_LASTCHANCE])).count())
-        a1, a2, a4, a8 = 0,0,0,0
         for raw in Request.objects.filter(Q(supplier=item.user.id)):
             days_late = 0
-            if raw.date_supplied:
-                try:
-                    if (raw.date_supplied-raw.date_assigned).days > 2:
-                        a4 = a4+1
-                except TypeError:
-                    pass
-            else:
+            if raw.previously_supplied != '':
+                a5 = a5 + 1 # Số bài báo được cung cấp bởi supplier khác
+            if raw.status in SUPPLIED_STATUS: 
+                a6 = a6 +1 # Số bài báo đã cung cấp
+            if raw.date_supplied is None:
                 try:
                     if (datetime.datetime.now()-raw.date_assigned).days > 2:
                         a2 = a2+1
@@ -78,8 +67,8 @@ def reinitialize(object_list):
             if raw.date_passed:
                 try:
                     if (raw.date_passed-raw.date_assigned).days > 2:
-                        a1 = a1+1                
-                        a8 = a8 + 1
+                        a1 = a1 + 1 # Số bài báo chuyển trễ
+                        a8 = a8 + 1 # Số bài báo đã chuyển cho supplier khác
                 except TypeError:
                     pass
         i = i + 1
@@ -95,7 +84,7 @@ def reinitialize(object_list):
                        'paper_supplied':a6,#so bai bao da cung cap
                        'paper_waiting':int(a7),# so bai bao dang cho
                        'paper_passed':a8, #so bai bao da chuyen
-                       'paper_help_supplied':max(0,int(a3)-int(a5)),
+                       'paper_help_supplied':a4,
                        'username':item.user.username,
                        'userid':item.user.id,
                        'last_login':item.user.last_login,

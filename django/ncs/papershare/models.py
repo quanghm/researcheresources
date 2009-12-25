@@ -111,6 +111,7 @@ class Request(models.Model):
     supplier =  models.ForeignKey(User, related_name = "paper supplier", null = True)
     status = models.SmallIntegerField(choices = REQUEST_STATUS_CHOICES)
     previously_assigned = models.CharField(max_length = 255)
+    previously_supplied = models.CharField(max_length = 255)
     
     def __unicode__(self):
         if self.status == 0:
