@@ -223,7 +223,7 @@ def uploadPaper(request):
                                      template_name="papershare/request_processed_email.html",
                                      context=context)
                     paperRequest.supplier = request.user
-                    paperRequest.previously_assigned += ';%s' % (request.user.username) 
+                    paperRequest.previously_supplied += ';%s' % (request.user.username) 
                 paperRequest.date_supplied = datetime.datetime.now()
                 paperRequest.save()
                 
