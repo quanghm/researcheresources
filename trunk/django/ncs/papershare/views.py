@@ -253,40 +253,99 @@ def uploadPaper(request):
             - Thong bao cho supplier cu cua bai bao do duoc biet.
             """
             
-            if request.POST['username'] != "":
-                user_name   = request.POST['username']
-                request_id = request.POST['request_id']
-                user_obj = User()
-                try:
-                    user_obj = User.objects.get(username=user_name)
-                except user_obj.DoesNotExist:
-                    return render_to_response("ncs/simple_message.html", {"message":_(u"Không tìm thấy thành viên ")+user_name})
-                
-                if user_obj.id is not None:
-                    u_profile=PaperShareProfile.objects.get(user=user_obj)
-                    if u_profile.is_supplier is not True:
-                        u_profile.is_supplier=True
-                        u_profile.save()
-                    
-                    request_obj = Request.objects.get(id=int(request_id))
-                    request_obj.status = 2 #reassigned, pending. 
-                    request_obj.date_passed = datetime.datetime.now()
-                    request_obj.previously_assigned += ';%s'%(user_name) 
-                    
-                    full_path="http://"+request.get_host()+request.get_full_path()
-                    send_mail(_(u"Ban nhan duoc email tu nghiencuusinh.org"),
-                                _(u"Co mot bai bao vua duoc chuyen sang cho ban. Click vao day de xem chi tiet ")
-                                +full_path,
-                                settings.DEFAULT_FROM_EMAIL,
-                                [user_obj.email])
-                    send_mail(_(u"Ban nhan duoc email tu nghiencuusinh.org"),
-                                _(u"Bai bao "+request_obj.paper.title+" vua duoc chuyen sang cho thanh vien "+user_obj.email+". Click vao day de xem chi tiet ")+ full_path,
-                                settings.DEFAULT_FROM_EMAIL,
-                                [request_obj.supplier.email])
-                    request_obj.save()
-                    
-                    return render_to_response("ncs/simple_message.html", {"message":_(u"Bài báo đã được chuyển cho các thành viên liên quan.")})
+            request_id   = request.POST.get("request_id")
+            paperRequest = Request.objects.get(id=int(request_id))
+            requester    = paperRequest.requester
+            oldSupplier  = paperRequest.supplier
+            newSupplier  = User()
+
+            suggestedNewSupplierUsername = request.POST.get("username")
+
+            try:
+                if suggestedNewSupplierUsername == "":
+                    newSupplier = random_new_supplier(requester, oldSupplier)
+                else:
+                    newSupplier = confirmed_suggested_new_supplier(suggestedNewSupplierUsername, requester, oldSupplier)
+
+            except NoSuppliersInResearchField as field:
+                return render_to_response("ncs/simple_message.html", {"message":_(u"Không có người cung cấp trong ngành ") + field.parameter})
+
+            except User.DoesNotExist:
+                return render_to_response("ncs/simple_message.html", {"message":_(u"Không tìm thấy thành viên ") + suggestedNewSupplierUsername})
+
+            except UserIsNotSupplier:
+                return render_to_response("ncs/simple_message.html", {"message":_(u"Không tìm thấy người cung cấp  ") + suggestedNewSupplierUsername})
+
+
+            paperRequest.status = REQ_STA_REASSIGNED; #reassigned, pending. TODO check this
+            paperRequest.data_passed = datetime.datetime.now()            
+            paperRequest.previously_assigned += ';' + oldSupplier.username
+            paperRequest.supplier_id = newSupplier.id
+
+            full_path = "http://"+request.get_host()+request.get_full_path()
+            send_mail(_(u"Ban nhan duoc email tu nghiencuusinh.org"),
+                        _(u"Co mot bai bao vua duoc chuyen sang cho ban. Click vao day de xem chi tiet ")
+                        +full_path,
+                        settings.DEFAULT_FROM_EMAIL,
+                        [newSupplier.email])
+            send_mail(_(u"Ban nhan duoc email tu nghiencuusinh.org"),
+                        _(u"Bai bao "+paperRequest.paper.title+" vua duoc chuyen sang cho thanh vien "+newSupplier.email+". Click vao day de xem chi tiet ")+ full_path,
+                        settings.DEFAULT_FROM_EMAIL,
+                        [oldSupplier.email])
+
+            paperRequest.save()
+
+            return render_to_response("ncs/simple_message.html", {"message":_(u"Bài báo đã được chuyển cho các thành viên " + newSupplier.username + ".")})
+
     return HttpResponseRedirect("/papershare/")
+
+
+class NoSuppliersInResearchField(Exception):
+    def __init__(self, value):
+       self.parameter = value
+    def __str__(self):
+       return repr(self.parameter)
+
+class UserIsNotSupplier(Exception):
+   def __init__(self, value):
+       self.parameter = value
+   def __str__(self):
+       return repr(self.parameter)
+
+class UserDoesNotExist(Exception):
+   def __init__(self, value):
+       self.parameter = value
+   def __str__(self):
+       return repr(self.parameter)
+
+def confirmed_suggested_new_supplier(suggestedNewSupplierUsername, requester, oldSupplier):
+    suggestedNewSupplier        = User.objects.get(username=suggestedNewSupplierUsername)
+    suggestedNewSupplierProfile = PaperShareProfile.objects.get(user=suggestedNewSupplier.id)
+
+    if not suggestedNewSupplierProfile.is_supplier:
+        raise UserIsNotSupplier(suggestedNewSupplier.username)
+
+    else:
+        return suggestedNewSupplier         
+
+# select a new random supplier from the database
+# who is in the same field with the *requester*
+#   alternatively, one-could select the new supplier
+#   from the same field as the old supplier
+def random_new_supplier(requester, oldSupplier):    
+
+    from django.db import connection
+    try:
+        requesterProfile=PaperShareProfile.objects.get(user=requester.id)
+        command = "select user_id from %s.papershare_papershareprofile where is_supplier='1' and research_field='%s' and user_id!='%s' and user_id!='%s' order by rand() limit 1" % (settings.DATABASE_NAME, requesterProfile.research_field, oldSupplier.id, requester.id)
+        cursor=connection.cursor()
+        cursor.execute(command)
+        randomNewSupplierId = cursor.fetchone()[0]
+        return User.objects.get(id=randomNewSupplierId)
+
+    except:
+        raise NoSuppliersInResearchField(requesterProfile.research_field)
+
 
 def handle_uploaded_file(f):
     #see tempfile note
