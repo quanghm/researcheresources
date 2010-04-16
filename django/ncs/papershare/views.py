@@ -267,7 +267,7 @@ def uploadPaper(request):
                 else:
                     newSupplier = confirmed_suggested_new_supplier(suggestedNewSupplierUsername, requester, oldSupplier)
 
-            except NoSuppliersInResearchField as field:
+            except NoSuppliersInResearchField , field:
                 return render_to_response("ncs/simple_message.html", {"message":_(u"Không có người cung cấp trong ngành ") + field.parameter})
 
             except User.DoesNotExist:
