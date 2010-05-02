@@ -1,5 +1,4 @@
 # Django settings for ncs project.
-# Vi co gi ma khong commit duoc? Dien cai dau!
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -12,49 +11,16 @@ DEFAULT_FROM_EMAIL = '"nghiencuusinh.org"<admin@nghiencuusinh.org>'
 
 MANAGERS = ADMINS
 
-DATABASE_ENGINE = 'mysql'           # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-DATABASE_NAME = 'nghiencuusinh'             # Or path to database file if using sqlite3.
-DATABASE_USER = 'root'             # Not used with sqlite3.
-DATABASE_PASSWORD = '123456'         # Not used with sqlite3.
-DATABASE_HOST = 'localhost'             # Set to empty string for localhost. Not used with sqlite3.
-DATABASE_PORT = ''             # Set to empty string for default. Not used with sqlite3.
-
-# Absolute path to the directory that holds media.
-# Example: "/home/media/media.lawrence.com/"
-# make sure you create a folder "uploaded" and make it world-read-writable for uploaded files
-MEDIA_ROOT = 'C:/Users/KimCuong/Documents/Work/nghiencuusinh.org/trunk/django/ncs/media'
-SHARE_DIR_URL = 'http://nghiencuusinh.net/static/'
-SHARE_DIR_ROOT = '/production/nghiencuusinh.org/share'
-LOG_FILE = SHARE_DIR_ROOT + "/_ncs_logs/django.log"
-
-FILE_UPLOAD_TEMP_DIR = SHARE_DIR_ROOT + '/uploaded'
-
-# URL that handles the media served from MEDIA_ROOT. Make sure to use a
-# trailing slash if there is a path component (optional in other cases).
-# Examples: "http://media.lawrence.com", "http://example.com/media/"
-MEDIA_URL = 'http://localhost:8000/static/'
 
 
-TEMPLATE_DIRS = (
-    # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
-    'C:/Users/KimCuong/Documents/Work/nghiencuusinh.org/trunk/django/ncs/templates',
-)
 
-LOG_FILE = MEDIA_ROOT + "/_ncs_logs/django.log"
-
-#for smtplib 
-EMAIL_HOST = "smtp.comcast.net"
-EMAIL_HOST_USER="thefirstofnovember@comcast.net"
-EMAIL_HOST_PASSWORD=""
 
 #======================================================================================================
 
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
 # trailing slash.
 # Examples: "http://foo.com/media/", "/media/".
-ADMIN_MEDIA_PREFIX = '/media/'
+ADMIN_MEDIA_PREFIX = '/papershare/media/'
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = '44sq)ql(mc*zv!%1(a(r&hi(3tltr-k#!d7paya-fk6u3yvmpc'
@@ -115,3 +81,45 @@ SITE_ID = 1
 # If you set this to False, Django will make some optimizations so as not
 # to load the internationalization machinery.
 USE_I18N = True
+
+
+LOGIN_URL='/papershare/accounts/login/'
+
+
+#################################################
+## Make sure to set these at each client
+WORKING_DIR = "C:/working/nghiencuusinh.org/trunk/django/ncs"
+
+DOMAIN_NAME = 'http://localhost:8000'
+SHARE_DIR_ROOT = "C:/working/nghiencuusinh.org"
+
+
+# URL that handles the media served from MEDIA_ROOT. Make sure to use a
+# trailing slash if there is a path component (optional in other cases).
+# Examples: "http://media.lawrence.com", "http://example.com/media/"
+MEDIA_URL = DOMAIN_NAME + '/papershare/media/'
+
+
+DATABASE_ENGINE = 'mysql'           # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
+DATABASE_NAME = 'nghiencuusinh'             # Or path to database file if using sqlite3.
+DATABASE_USER = 'root'             # Not used with sqlite3.
+DATABASE_PASSWORD = '123456'         # Not used with sqlite3.
+DATABASE_HOST = 'localhost'             # Set to empty string for localhost. Not used with sqlite3.
+DATABASE_PORT = ''             # Set to empty string for default. Not used with sqlite3.
+
+
+##################################################
+# Dependent
+TEMPLATE_DIRS = (
+    # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
+    # Always use forward slashes, even on Windows.
+    # Don't forget to use absolute paths, not relative paths.
+    WORKING_DIR + '/templates',
+)
+# Absolute path to the directory that holds media.
+# Example: "/home/media/media.lawrence.com/"
+# make sure you create a folder "uploaded" and make it world-read-writable for uploaded files
+MEDIA_ROOT = WORKING_DIR + '/media'
+SHARE_DIR_URL = DOMAIN_NAME + '/static/'
+FILE_UPLOAD_TEMP_DIR = MEDIA_ROOT + '/uploaded'
+LOG_FILE = MEDIA_ROOT + "/logs/django.log"
