@@ -23,8 +23,8 @@ def disable_supplier(supplier_id):
     """ Disable supplier """
     PaperShareProfile.objects.filter(Q(user__in=supplier_id)).update(is_supplier=0)
     """
-    Chuyển các request đã giao cho người này sang trạng thái pending để assign cho supplier khác, 
-    ngoại trừ những request nào có status supplied, re-assigned và thanked
+    Chuyá»ƒn cÃ¡c request Ä‘Ã£ giao cho ngÆ°á»�i nÃ y sang tráº¡ng thÃ¡i pending Ä‘á»ƒ assign cho supplier khÃ¡c, 
+    ngoáº¡i trá»« nhá»¯ng request nÃ o cÃ³ status supplied, re-assigned vÃ  thanked
     """
     Request.objects.filter(
         Q(supplier=supplier_id),
@@ -34,10 +34,11 @@ def disable_supplier(supplier_id):
  
 def reinitialize(object_list):
     """
-    Xử lý dữ liệu
+    Xá»­ lÃ½ dá»¯ liá»‡u
     """
     i = 0
     result = []
+    days_late = 0
     for item in object_list:
         SUPPLIED_STATUS = [REQ_STA_SUPPLIED, REQ_STA_THANKED]
         BAD_STATUS = [REQ_STA_PENDING, REQ_STA_ASSIGNED, REQ_STA_REASSIGNED, REQ_STA_LASTCHANCE]
@@ -55,9 +56,9 @@ def reinitialize(object_list):
         for raw in Request.objects.filter(Q(supplier=item.user.id)):
             days_late = 0
             if raw.previously_supplied != '':
-                a5 = a5 + 1 # Số bài báo được cung cấp bởi supplier khác
+                a5 = a5 + 1 # Sá»‘ bÃ i bÃ¡o Ä‘Æ°á»£c cung cáº¥p bá»Ÿi supplier khÃ¡c
             if raw.status in SUPPLIED_STATUS: 
-                a6 = a6 +1 # Số bài báo đã cung cấp
+                a6 = a6 +1 # Sá»‘ bÃ i bÃ¡o Ä‘Ã£ cung cáº¥p
             if raw.date_supplied is None:
                 try:
                     if (datetime.datetime.now()-raw.date_assigned).days > 2:
@@ -69,7 +70,7 @@ def reinitialize(object_list):
             if raw.date_passed not in ('', '0000-00-00 00:00:00'):
                 try:
                     if (raw.date_passed-raw.date_assigned).days > 2:
-                        a1 = a1 + 1 # Số bài báo chuyển trễ
+                        a1 = a1 + 1 # Sá»‘ bÃ i bÃ¡o chuyá»ƒn trá»…
                 except TypeError:
                     pass
         i = i + 1
@@ -96,7 +97,7 @@ def reinitialize(object_list):
 
 def supplier_change_list(request):
     """
-    Hiển thị danh sách các supplier cùng các thông tin kèm theo.
+    Hiá»ƒn thá»‹ danh sÃ¡ch cÃ¡c supplier cÃ¹ng cÃ¡c thÃ´ng tin kÃ¨m theo.
     """
     template_name= 'admin/papershare/supplier_change_list.html'
     item_per_page = 100
@@ -104,7 +105,7 @@ def supplier_change_list(request):
 
     if request.POST.get('action', '') == 'delete_selected':
         """
-        Xử lý các supplier bị disable
+        Xá»­ lÃ½ cÃ¡c supplier bá»‹ disable
         """
         template_name= 'admin/papershare/supplier_delete_confirmation.html'
         if request.POST.get('post', '') == 'yes':
@@ -132,7 +133,7 @@ def supplier_change_list(request):
         return redirect('/papershare/admin/papershare/supplier/?research_field__exact='+research_field_exact)
     
     """ 
-    Danh sách các phân trang
+    Danh sÃ¡ch cÃ¡c phÃ¢n trang
     """
     pages = [n for n in range(current_page-5,current_page+5+1) if n>=1 and n<=paging.num_pages]
     
@@ -197,7 +198,7 @@ def supplier_change_form(request, supplier_id):
         except:
             content = t.render(c) + '<br/>BQT.'
         
-        sendmailFromHtml(settings.DEFAULT_FROM_EMAIL ,supplier_disable.user.email, _('Bạn nhận được 1 email từ nghiencuusinh.org'),content)
+        sendmailFromHtml(settings.DEFAULT_FROM_EMAIL ,supplier_disable.user.email, _('Báº¡n nháº­n Ä‘Æ°á»£c 1 email tá»« nghiencuusinh.org'),content)
         
     vars_assign = {'mail_content':mail_content,
                    'content':content}
