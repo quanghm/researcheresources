@@ -53,8 +53,8 @@ def reinitialize(object_list):
                                                         REQ_STA_REASSIGNED, REQ_STA_LASTCHANCE])).count())
         a8 = (Request.objects.filter( Q(supplier=item.user.id),\
                                          Q(status__in=[REQ_STA_REASSIGNED])).count())
+        days_late = 0
         for raw in Request.objects.filter(Q(supplier=item.user.id)):
-            days_late = 0
             if raw.previously_supplied != '':
                 a5 = a5 + 1 # Sá»‘ bÃ i bÃ¡o Ä‘Æ°á»£c cung cáº¥p bá»Ÿi supplier khÃ¡c
             if raw.status in SUPPLIED_STATUS: 
@@ -66,7 +66,7 @@ def reinitialize(object_list):
                         if (datetime.datetime.now()-raw.date_assigned).days>days_late:
                             days_late = (datetime.datetime.now()-raw.date_assigned).days
                 except TypeError:
-                    pass
+                    days_late = 0
             if raw.date_passed not in ('', '0000-00-00 00:00:00'):
                 try:
                     if (raw.date_passed-raw.date_assigned).days > 2:
@@ -124,7 +124,11 @@ def supplier_change_list(request):
     supplier_list = PaperShareProfile.objects.filter(
                     Q(is_supplier=1),
                     Q(research_field__contains=research_field_exact))
-    
+    #import logging
+    #logging.basicConfig(level=logging.DEBUG, filename="debug.log")
+    #logging.info(len(supplier_list))
+    if len(supplier_list)==0:
+        return redirect('/papershare/admin/')
     paging = Paginator(supplier_list, item_per_page)
     try:
         p = paging.page(current_page)
