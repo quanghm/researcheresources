@@ -221,7 +221,10 @@ def uploadPaper(request):
                                      subject=_(u"Some one has provided a paper request that was assigned to you"),
                                      template_name="papershare/request_processed_email.html",
                                      context=context)
-                    paperRequest.previously_supplied += ';%s' % (request.user.username) 
+#                    if paperRequest.previously_supplied is None:
+#                        paperRequest.previously_supplied = ""
+#                    paperRequest.previously_supplied += ';' + request.user.username
+
                 paperRequest.date_supplied = datetime.datetime.now()
                 paperRequest.save()
                 
@@ -278,8 +281,9 @@ def uploadPaper(request):
 
 
             paperRequest.status = REQ_STA_REASSIGNED; #reassigned, pending. TODO check this
-            paperRequest.data_passed = datetime.datetime.now()            
-            paperRequest.previously_assigned += ';' + oldSupplier.username
+            paperRequest.data_passed = datetime.datetime.now()
+            if oldSupplier is not None: 
+                paperRequest.previously_assigned += ';' + oldSupplier.username
             paperRequest.supplier_id = newSupplier.id
 
             full_path = "http://"+request.get_host()+request.get_full_path()
@@ -288,7 +292,8 @@ def uploadPaper(request):
                         +full_path,
                         settings.DEFAULT_FROM_EMAIL,
                         [newSupplier.email])
-            send_mail(_(u"Ban nhan duoc email tu nghiencuusinh.org"),
+            if oldSupplier is not None:
+                send_mail(_(u"Ban nhan duoc email tu nghiencuusinh.org"),
                         _(u"Bai bao "+paperRequest.paper.title+" vua duoc chuyen sang cho thanh vien "+newSupplier.email+". Click vao day de xem chi tiet ")+ full_path,
                         settings.DEFAULT_FROM_EMAIL,
                         [oldSupplier.email])
@@ -335,9 +340,13 @@ def confirmed_suggested_new_supplier(suggestedNewSupplierUsername, requester, ol
 def random_new_supplier(requester, oldSupplier):    
 
     from django.db import connection
+
     try:
+        notToSameSupplierPhrase = ""
+        if oldSupplier is not None and oldSupplier.id is not None:
+            notToSameSupplierPhrase = "and user_id!='%s'" % (oldSupplier.id)
         requesterProfile=PaperShareProfile.objects.get(user=requester.id)
-        command = "select user_id from %s.papershare_papershareprofile where is_supplier='1' and research_field='%s' and user_id!='%s' and user_id!='%s' order by rand() limit 1" % (settings.DATABASE_NAME, requesterProfile.research_field, oldSupplier.id, requester.id)
+        command = "select user_id from %s.papershare_papershareprofile where is_supplier='1' and research_field='%s' and user_id!='%s' %s order by rand() limit 1" % (settings.DATABASE_NAME, requesterProfile.research_field, requester.id, notToSameSupplierPhrase)
         cursor=connection.cursor()
         cursor.execute(command)
         randomNewSupplierId = cursor.fetchone()[0]
@@ -401,10 +410,10 @@ def contactPaper(request, requestId):
         paperRequest = Request.objects.get(id=requestId)
        
         subject = _(u"Bài báo của bạn :" + paperRequest.paper.title) 
-        content = _(u"Chào bạn " + paperRequest.requester.username + u",\n") \
-                + _(u"Đây là bài báo mà tôi tìm được giúp bạn \n") \
-                + _(u"Thân, \n") \
-                + request.user.username 
+        content = _(u"Chào bạn " + u"" + u",\n" \
+                + u"Đây là bài báo mà tôi tìm được giúp bạn \n" \
+                + u"Thân, \n"# \
+                + request.user.username) 
                 
         form = ContactUserForm()
         form.setInitial(request.user, 
