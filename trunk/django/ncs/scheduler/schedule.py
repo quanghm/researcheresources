@@ -14,12 +14,17 @@ import re
 
 FAIL_LIMIT = 3
 
+# use ISO-formatted timestamps for each event
+def timestamp():
+    return datetime.now().isoformat()
+
 def findSupplier(request):
     numberOfAssignments = len(request.previously_assigned.split(";")) - 1
     if (request.previously_assigned  is not None and numberOfAssignments >= FAIL_LIMIT ):
-        print "Request %s (%s) is failed , last_assignment : %s" % (unicode(request), 
-                                                          request.date_requested, 
-                                                          request.previously_assigned)
+        print "[%s] Request %s (%s) is failed , last_assignment : %s" % (timestamp(),
+                                                                         unicode(request), 
+                                                                         request.date_requested, 
+                                                                         request.previously_assigned)
         request.status = REQUEST_STATUS_CHOICES[5][0] #"failed"
         request.save();
         sendReminderEmailToRequester(request)
@@ -28,7 +33,7 @@ def findSupplier(request):
     try:    
         supplierProfile = PaperShareProfile.objects.filter(is_supplier=True,research_field=request.paper.research_field).filter(~Q(user=request.requester)).order_by('last_assignment')[0]
     except IndexError, django.db.models.base.DoesNotExist:
-        print "!!!!! Field %s doesn't have any supplier [%s]" % (request.paper.research_field, request)
+        print "[%s] !!!!! Field %s doesn't have any supplier [%s]" % (timestamp(), request.paper.research_field, request)
         return
     
     request.supplier = supplierProfile.user
@@ -55,15 +60,14 @@ def findSupplier(request):
     
     request.save()
     sendReminderEmailToSupplier(request)
-    print "Request %s (%s) is assigned to user %s(%s)" % (unicode(request), 
-                                                          request.date_requested, 
-                                                          unicode(supplierProfile.user),
-                                                          last_assignment)
-
-
+    print "[%s] Request %s (%s) is assigned to user %s (%s)" % (timestamp(),
+                                                                unicode(request), 
+                                                                request.date_requested, 
+                                                                unicode(supplierProfile.user),
+                                                                last_assignment)
 
 def main(argv):
-    print "Running request scheduler"
+    print "[%s] Running request scheduler" % timestamp()
     requestQueue = Request.objects.filter(status__exact=0).order_by('date_requested')
     #requestQueue = Request.objects.all().order_by('date_requested')
     for request in requestQueue:
