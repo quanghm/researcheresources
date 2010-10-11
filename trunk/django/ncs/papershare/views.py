@@ -221,9 +221,9 @@ def uploadPaper(request):
                                      subject=_(u"Some one has provided a paper request that was assigned to you"),
                                      template_name="papershare/request_processed_email.html",
                                      context=context)
-#                    if paperRequest.previously_supplied is None:
-#                        paperRequest.previously_supplied = ""
-#                    paperRequest.previously_supplied += ';' + request.user.username
+                    if paperRequest.previously_supplied is None:
+                        paperRequest.previously_supplied = ""
+                    paperRequest.previously_supplied += ';' + request.user.username
 
                 paperRequest.date_supplied = datetime.datetime.now()
                 paperRequest.save()
@@ -410,11 +410,11 @@ def contactPaper(request, requestId):
         paperRequest = Request.objects.get(id=requestId)
        
         subject = _(u"Bài báo của bạn :" + paperRequest.paper.title) 
+    #    subject = settings.EMAIL_HOST
         content = _(u"Chào bạn " + u"" + u",\n" \
                 + u"Đây là bài báo mà tôi tìm được giúp bạn \n" \
-                + u"Thân, \n"# \
+                + u"Thân, \n" \
                 + request.user.username) 
-                
         form = ContactUserForm()
         form.setInitial(request.user, 
                         paperRequest.requester,

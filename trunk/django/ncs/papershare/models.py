@@ -124,7 +124,7 @@ class RequestAdmin(admin.ModelAdmin):
     list_display = ('paper', 'requester', 'date_requested', 'status','supplier')
     list_filter = ('status',)
     date_hierarchy = 'date_requested'
-    search_fields = ['paper__title']
+    search_fields = ['paper__title','requester__username']
 
 admin.site.register(Request,RequestAdmin)
 
@@ -188,7 +188,7 @@ admin.site.register(PaperShareProfile,ProfileAdmin)
 # 
 
 class UserAdmin(admin.ModelAdmin):
-    list_display = ('username', 'first_name', 'last_name', 'email','is_staff','last_login','date_joined')
+    list_display = ('id','username', 'first_name', 'last_name', 'email','is_staff','last_login','date_joined')
     list_filter = ('is_staff',)
 #    date_hierarchy = 'date_requested'
     search_fields = ['username','email','first_name','last_name']
