@@ -20,7 +20,7 @@ MANAGERS = ADMINS
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
 # trailing slash.
 # Examples: "http://foo.com/media/", "/media/".
-ADMIN_MEDIA_PREFIX = '/papershare/media/'
+ADMIN_MEDIA_PREFIX = '/media/'
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = '44sq)ql(mc*zv!%1(a(r&hi(3tltr-k#!d7paya-fk6u3yvmpc'

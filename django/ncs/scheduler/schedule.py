@@ -74,4 +74,5 @@ def main(argv):
         if request.status == 0:
             findSupplier(request)
     del requestQueue
+    print "[%s] Running request scheduler - [DONE]" % timestamp()
     

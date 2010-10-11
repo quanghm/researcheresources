@@ -22,8 +22,8 @@ urlpatterns = patterns('',
     (r'^papershare/admin/(.*)', admin.site.root),
 )
 
-if settings.DEBUG is True:
-    urlpatterns += patterns('',
-        (r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT, 'show_indexes':True}),
-    )
+#if settings.DEBUG is True:
+#    urlpatterns += patterns('',
+#        (r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT, 'show_indexes':True}),
+#    )
     
