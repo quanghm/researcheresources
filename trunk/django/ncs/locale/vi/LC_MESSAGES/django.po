@@ -342,7 +342,7 @@ msgstr "Bạn hãy chọn ngành học"
 
 #: .\templates\registration\registration_form.html.py:80
 msgid "Can you supply?"
-msgstr "Bạn có muốn cung cấp bài báo?"
+msgstr "Bạn có muốn trở thành người cung cấp bài báo cho các thành viên khác?"
 
 #: .\templates\registration\registration_form.html.py:89
 msgid "term_of_service"
