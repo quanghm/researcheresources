@@ -18,15 +18,29 @@ Ban nen download phan mem [http://tortoisesvn.tigris.org/ TortoiseSVN] cho windo
 
 Ban can dang ky 1 gmail account, roi gui email cho project owner de add vao developer list. Sau khi tro thanh project member, ban vao phan [http://code.google.com/p/researcheresources/source/checkout Source] cua Google Code de generate password cho minh.
 
-3. Install local servers
+4. Install MySQL database
+{{{
+sudo yum install mysql-server.x86_64
+}}}
+5. Install Python
 
-Ban can cai LAMP (Apache server, MySQL server, PHP, Linux is preferred,
-but not required).
-Tao virtual directory http://localhost/PaperShare tro vao thu muc
-PaperShare vua check out.
+6. [http://docs.djangoproject.com/en/dev/intro/install/ Install Django]
+{{{
+#install MySQLdb 
+sudo yum install MySQL-python.x86_64
+#install Django
+wget http://www.djangoproject.com/download/1.2.3/tarball/
+tar -zxvf Django-1.2.3.tar.gz
+cd Django-1.2.3
+sudo python setup.py install
+}}}
 
-4. Database
+== Check out and build ==
 
-Please send an email to one of project owners de biet chi tiet
-
-5. FTP server. 
+1. 
+{{{
+mkdir svn
+cd svn
+[cuong@localhost svn]$ svn checkout https://researcheresources.googlecode.com/s
+vn/trunk/django django --username kimcuong 
+}}}
